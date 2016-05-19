@@ -1,0 +1,143 @@
+#!/bin/bash
+# Usage:
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background.
+#
+
+apply_tweaks()
+{
+	OIFS=$IFS
+	IFS=","
+	list=($ETHERNET_NICS)
+	for ((i=0; i<${#list[@]}; ++i)); do
+		nic=${list[$i]}
+
+		if [ $FLOW_CONTROL = "yes" ]; then
+			/usr/sbin/ethtool -A $nic autoneg off rx off tx off &>/dev/null
+		else
+			/usr/sbin/ethtool -A $nic autoneg on rx on tx on &>/dev/null
+		fi
+
+		if [ $TSO_OFFLOAD = "yes" ]; then
+			/usr/sbin/ethtool -K $nic tso off &>/dev/null
+			/usr/sbin/ethtool -K $nic gso off &>/dev/null
+		else
+			/usr/sbin/ethtool -K $nic tso on &>/dev/null
+			/usr/sbin/ethtool -K $nic gso on &>/dev/null
+		fi
+
+		/usr/sbin/ethtool -G $nic rx $RX_BUFFER &>/dev/null 
+		/usr/sbin/ethtool -G $nic tx $TX_BUFFER &>/dev/null
+	done
+	IFS=$OIFS
+
+	sysctl vm.dirty_ratio=$VM_DIRTY &>/dev/null
+	sysctl vm.dirty_background_ratio=$VM_BACKGROUND &>/dev/null
+
+	logger "Tweaks Applied" -t$PROG_NAME
+}
+
+flow_control() {
+	flow="Off"
+	OIFS=$IFS
+	IFS=","
+	list=($ETHERNET_NICS)
+	for ((i=0; i<${#list[@]}; ++i)); do
+		nic=${list[$i]}
+		if [  `/usr/sbin/ethtool -a $nic | grep -i 'RX:' | /bin/awk '{print $2}' 2>/dev/null` = "on" ]; then
+			flow="On"
+		fi
+	done
+	IFS=$OIFS
+
+	echo $flow
+}
+
+
+tso_offload() {
+	offload="Off"
+	OIFS=$IFS
+	IFS=","
+	list=($ETHERNET_NICS)
+	for ((i=0; i<${#list[@]}; ++i)); do
+		nic=${list[$i]}
+		if [ `/usr/sbin/ethtool -k eth0 | grep -i 'tcp-segmentation-offload:' | /bin/awk '{print $2}' 2>/dev/null`  = "on" ]; then
+			offload="On"
+		fi
+	done
+	IFS=$OIFS
+
+	echo $offload
+}
+
+rx_buffer() {
+	rx=0
+	OIFS=$IFS
+	IFS=","
+	list=($ETHERNET_NICS)
+	for ((i=0; i<${#list[@]}; ++i)); do
+		nic=${list[$i]}
+		value=`/usr/sbin/ethtool -g eth0  | grep -i 'RX:' | tr -d '\n' | /bin/awk '{print $3}' 2>/dev/null`
+		if [ $value > $rx ]; then
+			rx=$value
+		fi
+	done
+	IFS=$OIFS
+
+	echo $rx
+}
+
+tx_buffer() {
+	tx=0
+	OIFS=$IFS
+	IFS=","
+	list=($ETHERNET_NICS)
+	for ((i=0; i<${#list[@]}; ++i)); do
+		nic=${list[$i]}
+		value=`/usr/sbin/ethtool -g eth0  | grep -i 'TX:' | tr -d '\n' | /bin/awk '{print $3}' 2>/dev/null`
+		if [ $value > $tx ]; then
+			tx=$value
+		fi
+	done
+	IFS=$OIFS
+
+	echo $tx
+}
+
+vm_dirty() {
+	sysctl vm.dirty_ratio
+}
+
+vm_background() {
+	sysctl vm.dirty_background_ratio
+}
+
+# read our configuration.
+CONFIG="/boot/config/plugins/tips.and.tweaks/tips.and.tweaks.cfg"
+source $CONFIG
+PROG_NAME="tips.and.tweaks"
+
+case "$1" in
+	'apply')
+		apply_tweaks
+	;;
+	'flow')
+		flow_control
+	;;
+	'offload')
+		tso_offload
+	;;
+	'rx_buffer')
+		rx_buffer
+	;;
+	'tx_buffer')
+		tx_buffer
+	;;
+	'vm_dirty')
+		vm_dirty
+	;;
+	'vm_background')
+		vm_background
+	;;
+	*)
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background"
+esac
