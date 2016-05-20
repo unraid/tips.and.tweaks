@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "tips.and.tweaks">
 <!ENTITY author     "dlandon">
-<!ENTITY version    "2016.05.19a">
+<!ENTITY version    "2016.05.20">
 <!ENTITY launch    "Settings/TipsAndTweaks">
 <!ENTITY pluginURL  "https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"3d9539b57a8f03581d6e180dcf36e210">
+<!ENTITY MD5		"4aa69bd51ff946f52577f18621de6f48">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,12 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Help text was overwriting the current settings.
+- Add: Additional descirptions and help text.
+- Fix: Ability to have multiple NICs where some do not support certain features, while others do.
+- Add: Lots of help text.
+
+###2016.05.19a
 - Initial unRAID V6.0 release.
 </CHANGES>
 

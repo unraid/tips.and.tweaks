@@ -3,7 +3,7 @@ Title="Tips and Tweaks"
 Icon="tips.and.tweaks.png"
 ---
 <?PHP
-/* Copyright 2015, Dan Landon.
+/* Copyright 2016, Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -25,37 +25,26 @@ $vm_dirty = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_dirt
 $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_background" );
 ?>
 
-<div style="width: 80%; float:left">
+<div style="width: 90%; float:left">
+	<strong><p>The first thing you should do is to install the "Fix Common Problems" plugin to find and fix
+	common problems.  Correct any problems that are identified before doing any 'tweaking'.  You may actually cause
+	more problems than you solve if there are problems with your unRaid configuration.</p>
+	<p>Make one change at a time and verify if it improves your situation.  Make changes slowly.  Making changes here can can briefly interrupt your network operation.  Some of the settings will consume RAM and may end up causing Linux to terminate some processes to free up RAM.</p>
+	<p>Click on 'Help' for more information.</p></strong>
+</div>
+
+<div style="width: 70%; float:left">
 	<form markdown="1" name="tips_and_tweaks" method="POST" action="/update.php" target="progressFrame">
 	<input type="hidden" name="#file" value="tips.and.tweaks/tips.and.tweaks.cfg">
 	<input type="hidden" name="#command" value="/plugins/tips.and.tweaks/scripts/rc.tweaks">
 	<input type="hidden" name="#arg[1]" value="apply">
 
-	<strong><p>The first thing you should do is to install the "Fix Common Problems" plugin to find and fix
-	common problems.  Correct any problems that are identified before doing any 'tweaking'.  You may actually cause
-	more problems than you solve if there are problems with your unRaid configuration.</p>
-	<p>Make one change at a time and verify if it improves your situation.  Make changes slowly.  Making changes here can can briefly interrupt your network operation.
-	Click on 'Help' for more information.</p></strong>
-
-	<div style="width: 40%; float:right">
-		<strong>
-		<p>Current NIC settings:</p>
-		<p>Flow Control: <?=$flow_control?></p>
-		<p>NIC Offload: <?=$tso_offload?></p>
-		<p>NIC Rx Buffer: <?=$rx_buffer?></p>
-		<p>NIC Tx Buffer: <?=$tx_buffer?></p>
-		<p>Disk Cache Settings:</p>
-		<p><?=$vm_background?></p>
-		<p><?=$vm_dirty?></p>
-		</strong>
-	</div>
-
 	> Some Recommendations:
 	>
-	> + Use a static IP address for your unRaid server.
+	> + Use a static IP address for your unRaid server.  Be sure you reserve the IP address on your router, or set a very high IP address to prevent conflicts.
 	> + Don't use Jumbo Frames.
-	> + Don't set vm.dirty.ratio above 10% unless you have a UPS backup for your unRaid.  You may lose data that has not been written to disk.
-	> + Don't set vm.dirty_background_ratio over 1/2 of vm.dirty.ratio.
+	> + Don't set vm.dirty.ratio above 20% unless you have a UPS backup for your unRaid.  You may lose data that has not been written to disk on a power failure.
+	> + Don't set vm.dirty_background_ratio over 1/2 of vm.dirty_ratio.
 
 	Disable NIC Flow Control?
 	: <select name="FLOW_CONTROL" size="1">
@@ -67,7 +56,7 @@ $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm
 	> networks with mixed speed devices.  It doesn't seem to be as necessary on today's networks.  If you
 	> have a managed switch, flow control can generally be turned on and off on the switch.  If you have
 	> a consumer grade switch, you won't have that level of control.  Flow Control has been known to create
-	> network issues in certain circumstances.  It is recommended to disable off Flow Control.
+	> network issues in certain circumstances.  It is recommended to disable Flow Control.
 
 	Disable NIC Offload?
 	: <select name="TSO_OFFLOAD" size="1">
@@ -92,7 +81,7 @@ $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm
 		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "2048", "2048");?>
 	  </select>
 
-	> Select the size of the NIC Rx ring buffer.  Some NICs have a limit on the size of the Rx ring buffer.  The default value is best.
+	> Select the size of the NIC Rx ring buffer.  Some NICs have a limit on the size of the Rx ring buffer.  The default value is recommended.
 
 	Ethernet NIC Tx Buffer:
 	: <select name="TX_BUFFER" size="1">
@@ -106,28 +95,47 @@ $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm
 		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "2048", "2048");?>
 	  </select>
 
-	> Select the size of the NIC Tx ring buffer.  Some NICs have a limit on the size of the Tx ring buffer.  The default value is best.
+	> Select the size of the NIC Tx ring buffer.  Some NICs have a limit on the size of the Tx ring buffer.  The default value is recommended.
 
 	Ethernet NICS:
 	: <input type="text" name="ETHERNET_NICS" class="narrow" maxlength="100" value="<?=$tips_and_tweaks_cfg['ETHERNET_NICS'];?>">
 
-	> List the NICs to apply the above settings separated by commas.  Flow Control, TSO, and NIC buffer settings will
+	> List the NICs to apply the above settings separated by commas.  If you have multiple NICs that are bonded, be sure to include all of them.  Flow Control, TSO, and NIC buffer settings will
 	> be applied to these NICs.
 
-	Disk Cache 'vm.dirty_background_ratio':
+	<strong><p>Don't change the Disk Cache settings until you have read and understand this <u><a href=https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/>Guide</a></u>.</p>
+	<p>Caution: Don't increase these values beyond the default settings unless you have a UPS that will reliably shut down unRaid.</p></strong>
+
+	Disk Cache 'vm.dirty_background_ratio' (%):
 	: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>">
 
-	> Set the 'vm.dirty_background_ratio' as a percentage of ram memory.  Read this <u><a href=https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/>Guide</a></u> on disk cache settings.
-	> The default setting is recommended.
+	> Set the 'vm.dirty_background_ratio' as a percentage of total RAM memory.
+	> The default setting of 10% is recommended.
 
-	Disk Cache 'vm.dirty_ratio:
+	Disk Cache 'vm.dirty_ratio (%):
 	: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>">
 
-	> Set the 'vm.dirty_ratio' as a percentage of ram memory.  Read this <u><a href=https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/>Guide</a></u> on disk cache settings.
-	> The default setting is recommended.
+	> Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
+	> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended.
 
 	<input type="submit" name="#default" value="Default">
 	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href=http://lime-technology.com/forum/index.php?topic=49163>unRaid Forum</a></u></dd>
 	</form>
+</div>
 
+<div>
+	<div style="width: 30%; float:right">
+		<strong>
+		<p><u>Current NIC settings</u></p>
+		<p>Flow Control: <?=$flow_control?></p>
+		<p>NIC Offload: <?=$tso_offload?></p>
+		<p>NIC Rx Buffer: <?=$rx_buffer?></p>
+		<p>NIC Tx Buffer: <?=$tx_buffer?></p>
+		<p><u>Current Disk Cache Settings</u></p>
+		<p><?=$vm_background?></p>
+		<p><?=$vm_dirty?></p>
+		<p>N/A - The feature is not available on your NIC(s).</p>
+		<p>Any NIC that supports the feature will show it available and its setting.</p>
+		</strong>
+	</div>
 </div>

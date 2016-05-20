@@ -41,6 +41,7 @@ apply_tweaks()
 
 flow_control() {
 	flow="Off"
+	avail="no"
 	OIFS=$IFS
 	IFS=","
 	list=($ETHERNET_NICS)
@@ -51,17 +52,21 @@ flow_control() {
 			if [ $value  == "on" ]; then
 				flow="On"
 			fi
-		else
-			flow="N/A"
+			avail="yes"
 		fi
 	done
 	IFS=$OIFS
 
-	echo $flow
+	if [ $avail = "yes"  ]; then
+		echo $flow
+	else
+		echo $not_avail
+	fi
 }
 
 tso_offload() {
 	offload="Off"
+	avail="no"
 	OIFS=$IFS
 	IFS=","
 	list=($ETHERNET_NICS)
@@ -72,17 +77,21 @@ tso_offload() {
 			if [ $value  == "on" ]; then
 				offload="On"
 			fi
-		else
-			offload="N/A"
+			avail="yes"
 		fi
 	done
 	IFS=$OIFS
 
-	echo $offload
+	if [ $avail = "yes"  ]; then
+		echo $offload
+	else
+		echo $not_avail
+	fi
 }
 
 rx_buffer() {
 	rx=0
+	avail="no"
 	OIFS=$IFS
 	IFS=","
 	list=($ETHERNET_NICS)
@@ -91,15 +100,21 @@ rx_buffer() {
 		value=`/usr/sbin/ethtool -g $nic 2>/dev/null | grep -i 'RX:' 2>/dev/null | tr -d '\n' | /bin/awk '{print $3}'`
 		if [ $value > $rx ]; then
 			rx=$value
+			avail="yes"
 		fi
 	done
 	IFS=$OIFS
 
-	echo $rx
+	if [ $avail = "yes"  ]; then
+		echo $rx
+	else
+		echo $no_buffer
+	fi
 }
 
 tx_buffer() {
 	tx=0
+	avail="no"
 	OIFS=$IFS
 	IFS=","
 	list=($ETHERNET_NICS)
@@ -108,11 +123,16 @@ tx_buffer() {
 		value=`/usr/sbin/ethtool -g $nic 2>/dev/null | grep -i 'TX:' 2</dev/null | tr -d '\n' | /bin/awk '{print $3}'`
 		if [ $value > $tx ]; then
 			tx=$value
+			avail="yes"
 		fi
 	done
 	IFS=$OIFS
 
-	echo $tx
+	if [ $avail = "yes"  ]; then
+		echo $tx
+	else
+		echo $no_buffer
+	fi
 }
 
 vm_dirty() {
@@ -127,6 +147,9 @@ vm_background() {
 CONFIG="/boot/config/plugins/tips.and.tweaks/tips.and.tweaks.cfg"
 source $CONFIG
 PROG_NAME="tips.and.tweaks"
+
+not_avail="N/A (Off)"
+no_buffer="N/A"
 
 case "$1" in
 	'apply')
