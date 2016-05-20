@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "tips.and.tweaks">
 <!ENTITY author     "dlandon">
-<!ENTITY version    "2016.05.19">
+<!ENTITY version    "2016.05.19a">
 <!ENTITY launch    "Settings/TipsAndTweaks">
 <!ENTITY pluginURL  "https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"32dbc69ad7527efca67f40de6c1b0406">
+<!ENTITY MD5		"3d9539b57a8f03581d6e180dcf36e210">
 ]>
 
 <PLUGIN  name="&name;"

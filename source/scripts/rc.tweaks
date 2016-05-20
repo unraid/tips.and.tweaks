@@ -16,6 +16,7 @@ apply_tweaks()
 		else
 			/usr/sbin/ethtool -A $nic autoneg on rx on tx on &>/dev/null
 		fi
+		sleep 0.25
 
 		if [ $TSO_OFFLOAD = "yes" ]; then
 			/usr/sbin/ethtool -K $nic tso off &>/dev/null
@@ -24,9 +25,11 @@ apply_tweaks()
 			/usr/sbin/ethtool -K $nic tso on &>/dev/null
 			/usr/sbin/ethtool -K $nic gso on &>/dev/null
 		fi
+		sleep 0.25
 
 		/usr/sbin/ethtool -G $nic rx $RX_BUFFER &>/dev/null 
 		/usr/sbin/ethtool -G $nic tx $TX_BUFFER &>/dev/null
+		sleep 0.25
 	done
 	IFS=$OIFS
 
@@ -43,15 +46,19 @@ flow_control() {
 	list=($ETHERNET_NICS)
 	for ((i=0; i<${#list[@]}; ++i)); do
 		nic=${list[$i]}
-		if [  `/usr/sbin/ethtool -a $nic | grep -i 'RX:' | /bin/awk '{print $2}' 2>/dev/null` = "on" ]; then
-			flow="On"
+		value=`/usr/sbin/ethtool -a $nic 2>/dev/null | grep -i 'RX:' | /bin/awk '{print $2}'`
+		if [ ! -z $value ]; then
+			if [ $value  == "on" ]; then
+				flow="On"
+			fi
+		else
+			flow="N/A"
 		fi
 	done
 	IFS=$OIFS
 
 	echo $flow
 }
-
 
 tso_offload() {
 	offload="Off"
@@ -60,8 +67,13 @@ tso_offload() {
 	list=($ETHERNET_NICS)
 	for ((i=0; i<${#list[@]}; ++i)); do
 		nic=${list[$i]}
-		if [ `/usr/sbin/ethtool -k eth0 | grep -i 'tcp-segmentation-offload:' | /bin/awk '{print $2}' 2>/dev/null`  = "on" ]; then
-			offload="On"
+		value=`/usr/sbin/ethtool -k $nic 2>/dev/null | grep -i 'tcp-segmentation-offload:' | /bin/awk '{print $2}'`
+		if [ ! -z $value ]; then
+			if [ $value  == "on" ]; then
+				offload="On"
+			fi
+		else
+			offload="N/A"
 		fi
 	done
 	IFS=$OIFS
@@ -76,7 +88,7 @@ rx_buffer() {
 	list=($ETHERNET_NICS)
 	for ((i=0; i<${#list[@]}; ++i)); do
 		nic=${list[$i]}
-		value=`/usr/sbin/ethtool -g eth0  | grep -i 'RX:' | tr -d '\n' | /bin/awk '{print $3}' 2>/dev/null`
+		value=`/usr/sbin/ethtool -g $nic 2>/dev/null | grep -i 'RX:' 2>/dev/null | tr -d '\n' | /bin/awk '{print $3}'`
 		if [ $value > $rx ]; then
 			rx=$value
 		fi
@@ -93,7 +105,7 @@ tx_buffer() {
 	list=($ETHERNET_NICS)
 	for ((i=0; i<${#list[@]}; ++i)); do
 		nic=${list[$i]}
-		value=`/usr/sbin/ethtool -g eth0  | grep -i 'TX:' | tr -d '\n' | /bin/awk '{print $3}' 2>/dev/null`
+		value=`/usr/sbin/ethtool -g $nic 2>/dev/null | grep -i 'TX:' 2</dev/null | tr -d '\n' | /bin/awk '{print $3}'`
 		if [ $value > $tx ]; then
 			tx=$value
 		fi
