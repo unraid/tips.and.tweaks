@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "tips.and.tweaks">
 <!ENTITY author     "dlandon">
-<!ENTITY version    "2016.05.20a">
+<!ENTITY version    "2016.05.21">
 <!ENTITY launch    "Settings/TipsAndTweaks">
 <!ENTITY pluginURL  "https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"d01cae85c7df2150077a881da4b6175f">
+<!ENTITY MD5		"75cd20e3b8138a8a1bdc1b4943e9cec6">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Link to forum post for the Tips and Tweaks plugin.
+
+###2016.05.20a
 - Fix: Help text was overwriting the current settings.
 - Add: Additional descirptions and help text.
 - Fix: Ability to have multiple NICs where some do not support certain features, while others do.
