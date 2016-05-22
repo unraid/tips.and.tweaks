@@ -106,7 +106,7 @@ $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm
 	> List the NICs to apply the above settings separated by commas.  If you have multiple NICs that are bonded, be sure to include all of them.  Flow Control, TSO, and NIC buffer settings will
 	> be applied to these NICs.
 
-	<strong>Don't change the Disk Cache settings until you have read and understand this <u><a href=https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/>Guide</a></u>.</strong>
+	<strong>Don't change the Disk Cache settings until you read and understand this <u><a href=https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/>Guide</a></u>.</strong>
 	> For streaming and gaming VMs, set the values low in the single digits.  Recommended values are: vm.dirty_background_ratio=2% and vm.dirty_ratio=3%.
 	> If you have large amounts of RAM, smaller is better.
 	> Caution: Don't increase these values beyond the default settings unless you have a UPS that will reliably shut down unRAID.
@@ -139,8 +139,7 @@ $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm
 		<p><u>Current Disk Cache Settings</u></p>
 		<p><?=$vm_background?></p>
 		<p><?=$vm_dirty?></p>
-		<p>N/A - The feature is not available on your NIC(s).</p>
-		<p>Any NIC that supports the feature will show it available and its setting.</p>
+		<p>N/A - The feature is not available on any of your NICs.</p>
 		</strong>
 	</div>
 </div>
