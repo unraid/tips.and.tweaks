@@ -1,4 +1,5 @@
 Menu="Utilities"
+Type="xmenu"
 Title="Tips and Tweaks"
 Icon="tips.and.tweaks.png"
 ---
@@ -25,120 +26,22 @@ $vm_dirty = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_dirt
 $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_background" );
 ?>
 
+<table class="tablesorter shift ups">
+<thead><tr><th>Tips</th></tr></thead>
+</table>
+
 <div style="width: 90%; float:left">
-	<strong><p style="color:#FF0000; font-size:16px;">Note: If you are using 6.2 beta, there is currently a fix for large file transfers that hang the system and crash VMs.  Go to Settings->Disk Settings and set the 'num_stripes'=8192 then stop and restart unRAID.</p>
-	<p>The first thing you should do is to install the "Fix Common Problems" plugin to find and fix
-	common problems.  Correct any problems that are identified before doing any 'tweaking'.  You may actually cause
-	more problems than you solve if there are problems with your unRAID configuration.</p>
-	<p>Make one change at a time and verify if it improves your situation.  Make changes slowly.  Making changes here can briefly interrupt your network operation.  Some of the settings will consume RAM and may end up causing Linux to terminate some processes to free up RAM.</p>
-	<p>Click on 'Help' for more information.</p></strong>
+	<strong>
+	<p>The Tips below are suggestions, workarounds for known problems, and potential fixes for different versions of unRAID.</p>
+	<p><u>All v6 versions</u></p>
+	<li>Install the "Fix Common Problems" plugin and resolve any unRAID configuration problems.</il>
+	<li>Check the <u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u> for additional ideas on improving your unRAID performance and solving problems.</li>
+	<li>Some have reported better VM performance with media streaming and gaming VMs with the suggestions on this <u><a href=http://lime-technology.com/forum/index.php?topic=49051.0>post</a></u>.</li>
+	<li>Some have reported faster and more consistent network performance by making changes in networking parameters on the 'Tweaks' tab of this plugin.</li>
+	<p><u>6.2 beta 21</u></p>
+	<li>There is currently a fix for large file transfers that hang the system and crash/hang VMs.  Go to Settings->Disk Settings and set the 'num_stripes'=8192 then stop and restart unRAID.</li>
+	<li>Apply the fix on the the <u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u> for the 'Fix SMART database update'.</li>
+	<li>Some have reported better VM performance with the following change to the vdisk setting in the VM xml: <u>driver name='qemu' type='raw' cache='directsync'</u>.  You have to edit the xml to make this change.  It will be lost if you use the built in VM editor.</li>
+	<li>Some have reported better performance with media streaming and gaming VMs by adjusting the disk caching on the 'Tweaks' tab of this plugin.</li>
+	</strong>
 </div>
-
-<div style="width: 70%; float:left">
-	<form markdown="1" name="tips_and_tweaks" method="POST" action="/update.php" target="progressFrame">
-	<input type="hidden" name="#file" value="tips.and.tweaks/tips.and.tweaks.cfg">
-	<input type="hidden" name="#command" value="/plugins/tips.and.tweaks/scripts/rc.tweaks">
-	<input type="hidden" name="#arg[1]" value="apply">
-
-	> Some General Recommendations:
-	>
-	> + Use of a static IP address can help in certain cases.  NFS shares are referenced by IP address.  Be sure you reserve the IP address on your router, or set a very high IP address to prevent conflicts.
-	> + Use of Jumbo Frames is discouraged.  Jumbo Frames have been known to cause issues with some Dockers.
-	> + Don't set vm.dirty.ratio above 20% unless you have a UPS backup for your unRAID.  You may lose data that has not been written to disk on a power failure.
-	> + A value of vm.dirty_background_ratio over 1/2 of vm.dirty_ratio is not recommended unless using single digits for both values.
-
-	Disable NIC Flow Control?
-	: <select name="FLOW_CONTROL" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "no", "No");?>
-		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "yes", "Yes");?>
-	  </select>
-
-	> Set to 'Yes' to disable NIC Flow Control.  NIC Flow Control was originally implemented to help in
-	> networks with mixed speed devices.  It doesn't seem to be as necessary on today's networks.  If you
-	> have a managed switch, flow control can generally be turned on and off on the switch.  If you have
-	> a consumer grade switch, you won't have that level of control.  Flow Control has been known to create
-	> network issues in certain circumstances.  It is recommended to disable Flow Control.
-
-	Disable NIC Offload?
-	: <select name="TSO_OFFLOAD" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "no", "No");?>
-		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "yes", "Yes");?>
-	  </select>
-
-	> Set to 'Yes' to disable NIC TSO.  TSO (Transmit Segment Offload) was developed to offload some
-	> network processing to the NIC and off the main CPU.  This was intended to save some CPU processing
-	> load.  TSO has been known to cause network issues in certain circumstances.  It is recommended to
-	> disable NIC Offload.
-
-	Ethernet NIC Rx Buffer:
-	: <select name="RX_BUFFER" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "256", "256");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "512", "512");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "768", "768");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1024", "1024");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1280", "1280");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1536", "1536");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1792", "1792");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "2048", "2048");?>
-	  </select>
-
-	> Select the size of the NIC Rx ring buffer.  Some NICs have a limit on the size of the Rx ring buffer.  The default value of 256 is recommended.
-
-	Ethernet NIC Tx Buffer:
-	: <select name="TX_BUFFER" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "256", "256");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "512", "512");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "768", "768");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1024", "1024");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1280", "1280");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1536", "1536");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1792", "1792");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "2048", "2048");?>
-	  </select>
-
-	> Select the size of the NIC Tx ring buffer.  Some NICs have a limit on the size of the Tx ring buffer.  The default value of 256 is recommended.
-
-	Ethernet NICS:
-	: <input type="text" name="ETHERNET_NICS" class="narrow" maxlength="100" value="<?=$tips_and_tweaks_cfg['ETHERNET_NICS'];?>">
-
-	> List the NICs to apply the above settings separated by commas.  If you have multiple NICs that are bonded, be sure to include all of them.  Flow Control, TSO, and NIC buffer settings will
-	> be applied to these NICs.
-
-	<strong><p>Don't change the Disk Cache settings until you have read and understand this <u><a href=https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/>Guide</a></u>.</p>
-	<p>For streaming and gaming VMs, set the values low in the single digits.  Recommended values are: vm.dirty_background_ratio=2% and vm.dirty_ratio=3%.</p>
-	<p>Caution: Don't increase these values beyond the default settings unless you have a UPS that will reliably shut down unRAID.</p></strong>
-
-	Disk Cache 'vm.dirty_background_ratio' (%):
-	: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>">
-
-	> Set the 'vm.dirty_background_ratio' as a percentage of total RAM memory.
-	> The default setting of 10% is recommended in most cases.  For media streaming and gaming VMs, use a value of 2%.
-
-	Disk Cache 'vm.dirty_ratio (%):
-	: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>">
-
-	> Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
-	> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended in most cases.  For media streaming and gaming VMs, use a value of 3%.
-
-	<input type="submit" name="#default" value="Default">
-	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href=http://lime-technology.com/forum/index.php?topic=49233.0>unRAID Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=http://lime-technology.com/forum/index.php?topic=49163>Tips and Tweaks feedback</a></u></dd>
-	</form>
-</div>
-
-<div>
-	<div style="width: 30%; float:right">
-		<strong>
-		<p><u>Current NIC settings</u></p>
-		<p>Flow Control: <?=$flow_control?></p>
-		<p>NIC Offload: <?=$tso_offload?></p>
-		<p>NIC Rx Buffer: <?=$rx_buffer?></p>
-		<p>NIC Tx Buffer: <?=$tx_buffer?></p>
-		<p><u>Current Disk Cache Settings</u></p>
-		<p><?=$vm_background?></p>
-		<p><?=$vm_dirty?></p>
-		<p>N/A - The feature is not available on your NIC(s).</p>
-		<p>Any NIC that supports the feature will show it available and its setting.</p>
-		</strong>
-	</div>
-</div>
-
