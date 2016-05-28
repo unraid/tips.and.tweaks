@@ -15,17 +15,6 @@ Icon="tips.and.tweaks.png"
  */
 ?>
 
-<?PHP
-$plugin = "tips.and.tweaks";
-$tips_and_tweaks_cfg = parse_ini_file( "/boot/config/plugins/{$plugin}/{$plugin}.cfg" );
-$flow_control = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks flow" );
-$tso_offload = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks offload" );
-$rx_buffer = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
-$tx_buffer = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
-$vm_dirty = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
-$vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_background" );
-?>
-
 <table class="tablesorter shift ups">
 <thead><tr><th>Tips</th></tr></thead>
 </table>
@@ -38,6 +27,7 @@ $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm
 	<li>Check the <u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u> for additional ideas on improving your unRAID performance and solving problems.</li>
 	<li>Some have reported better VM performance with media streaming and gaming VMs with the suggestions on this <u><a href=http://lime-technology.com/forum/index.php?topic=49051.0>post</a></u>.</li>
 	<li>Some have reported faster and more consistent network performance by making changes in networking parameters on the 'Tweaks' tab of this plugin.</li>
+	<li>If you have an Intel CPU, it may not frequency scale and be constantly running at Turbo Boost frequency.  There is an issue with the intel pstate driver that prevents proper frequency scaling on some Intel CPUs.  Read this <u><a href=http://lime-technology.com/forum/index.php?topic=36575.0>post</a></u> on how to disable the intel pstate driver.</li>
 	<p><u>6.1.9</u></p>
 	<li>Apply the fix on the the <u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u> for the 'Fix SMART database update'.</li>
 	<p><u>6.2 beta 21</u></p>

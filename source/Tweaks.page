@@ -22,6 +22,8 @@ $rx_buffer = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks rx_buf
 $tx_buffer = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
 $vm_dirty = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
 $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_background" );
+$cpu_freq_driver = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
+$cpu_governor = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 ?>
 
 <table class="tablesorter shift ups">
@@ -123,6 +125,18 @@ $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm
 	> Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
 	> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended in most cases.  For media streaming and gaming VMs, use a value of 3%.
 
+	CPU Scaling Governor:
+	: <select name="CPU_GOVERNOR" size="1">
+		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "powersave", ($cpu_freq_driver == "Intel Pstate" ? "Power Save" : "On Demand") );?>
+		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "performance", "Performance");?>
+	  </select>
+
+	> Select the CPU Scaling Governor you want to use.
+	>
+	> + "Power Save" - default for the Intel Pstate driver.  Scales CPU frequency based on load.
+	> + "On Demand" - default for ACPI CPU Freq driver.  Scales CPU frequency based on load.
+	> + "Performance" - run all CPUs at full frequency regardless of load.
+
 	<input type="submit" name="#default" value="Default">
 	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href=http://lime-technology.com/forum/index.php?topic=49233.0>unRAID Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=http://lime-technology.com/forum/index.php?topic=49163>Tips and Tweaks feedback</a></u></dd>
 	</form>
@@ -136,10 +150,13 @@ $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm
 		<p>NIC Offload: <?=$tso_offload?></p>
 		<p>NIC Rx Buffer: <?=$rx_buffer?></p>
 		<p>NIC Tx Buffer: <?=$tx_buffer?></p>
+		<p>N/A - The feature is not available on any of your NICs.</p>
 		<p><u>Current Disk Cache Settings</u></p>
 		<p><?=$vm_background?></p>
 		<p><?=$vm_dirty?></p>
-		<p>N/A - The feature is not available on any of your NICs.</p>
+		<p><u>CPU Frequency Scaling</u></p>
+		<p>Driver: <?=$cpu_freq_driver?></p>
+		<p>Governor: <?=$cpu_governor?></p>
 		</strong>
 	</div>
 </div>

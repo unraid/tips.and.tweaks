@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_backgroundcpu_freq_driver|cpu_governor.
 #
 
 apply_tweaks()
@@ -35,6 +35,15 @@ apply_tweaks()
 
 	sysctl vm.dirty_ratio=$VM_DIRTY &>/dev/null
 	sysctl vm.dirty_background_ratio=$VM_BACKGROUND &>/dev/null
+
+	scaling=$CPU_GOVERNOR
+	value=`cat /sys/devices/system/cpu/cpufreq/policy0/scaling_driver`
+	if [ $value != "intel_pstate" ]; then
+		if [ $scaling = "powersave" ]; then
+			scaling="ondemand"
+		fi
+	fi
+	echo $scaling | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor &>/dev/null
 
 	logger "Tweaks Applied" -t$PROG_NAME
 }
@@ -143,6 +152,37 @@ vm_background() {
 	sysctl vm.dirty_background_ratio
 }
 
+cpu_freq_driver() {
+	value=`cat /sys/devices/system/cpu/cpufreq/policy0/scaling_driver`
+	case "$value" in
+		'acpi-cpufreq')
+			echo "ACPI CPU Freq"
+		;;
+		'intel_pstate')
+			echo "Intel Pstate"
+		;;
+		*)
+			echo $value
+	esac
+}
+
+cpu_governor() {
+	value=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
+	case "$value" in
+		'ondemand')
+			echo "On Demand"
+		;;
+		'performance')
+			echo "Performance"
+		;;
+		'powersave')
+			echo "Power Save"
+		;;
+		*)
+			echo $value
+	esac
+}
+
 # read our configuration.
 CONFIG="/boot/config/plugins/tips.and.tweaks/tips.and.tweaks.cfg"
 source $CONFIG
@@ -173,6 +213,12 @@ case "$1" in
 	'vm_background')
 		vm_background
 	;;
+	'cpu_freq_driver')
+		cpu_freq_driver
+	;;
+	'cpu_governor')
+		cpu_governor
+	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background"
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor"
 esac
