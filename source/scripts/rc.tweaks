@@ -36,14 +36,23 @@ apply_tweaks()
 	sysctl vm.dirty_ratio=$VM_DIRTY &>/dev/null
 	sysctl vm.dirty_background_ratio=$VM_BACKGROUND &>/dev/null
 
-	scaling=$CPU_GOVERNOR
-	value=`cat /sys/devices/system/cpu/cpufreq/policy0/scaling_driver`
-	if [ $value != "intel_pstate" ]; then
-		if [ $scaling = "powersave" ]; then
-			scaling="ondemand"
-		fi
+	if [ $CPU_GOVERNOR = "timed" ]; then
+		IFS=":"
+		list=($START_TIME)
+		printf "# Set cpu governor to performance:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
+		printf "${list[1]} ${list[0]} * * * /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks set_governor performance &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+		list=($STOP_TIME)
+		printf "# Set cpu governor to powersave:\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+		printf "${list[1]} ${list[0]} * * * /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks set_governor powersave &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+	else
+		# Remove dynamix set governor cron file.
+		rm -f /boot/config/plugins/dynamix/cpu_governor.cron
+
+		set_governor $CPU_GOVERNOR
 	fi
-	echo $scaling | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor &>/dev/null
+
+	# Reload dynamix crons.
+	/usr/local/sbin/update_cron
 
 	logger "Tweaks Applied" -t$PROG_NAME
 }
@@ -178,9 +187,23 @@ cpu_governor() {
 		'powersave')
 			echo "Power Save"
 		;;
+		'conservative')
+			echo "Conservative"
+		;;
 		*)
 			echo $value
 	esac
+}
+
+set_governor() {
+	scaling=$1
+	value=`cat /sys/devices/system/cpu/cpufreq/policy0/scaling_driver`
+	if [ $value != "intel_pstate" ]; then
+		if [ $scaling = "powersave" ]; then
+			scaling="ondemand"
+		fi
+	fi
+	echo $scaling | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor &>/dev/null
 }
 
 # read our configuration.
@@ -219,6 +242,9 @@ case "$1" in
 	'cpu_governor')
 		cpu_governor
 	;;
+	'set_governor')
+		set_governor $2
+	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor"
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor"
 esac

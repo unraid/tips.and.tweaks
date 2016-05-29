@@ -2,7 +2,7 @@ Menu="TipsAndTweaks"
 Title="Tweaks"
 ---
 <?PHP
-/* Copyright 2016, Dan Landon.
+/* Copyright 2016 Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -128,14 +128,30 @@ $cpu_governor = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu
 	CPU Scaling Governor:
 	: <select name="CPU_GOVERNOR" size="1">
 		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "powersave", ($cpu_freq_driver == "Intel Pstate" ? "Power Save" : "On Demand") );?>
+		<?if ($cpu_freq_driver != "Intel Pstate"):?>
+			<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "conservative", "Conservative");?>
+		<?endif;?>
 		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "performance", "Performance");?>
+		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "timed", "Scheduled");?>
 	  </select>
 
 	> Select the CPU Scaling Governor you want to use.
 	>
 	> + "Power Save" - default for the Intel Pstate driver.  Scales CPU frequency based on load.
-	> + "On Demand" - default for ACPI CPU Freq driver.  Scales CPU frequency based on load.
-	> + "Performance" - run all CPUs at full frequency regardless of load.
+	> + "On Demand" - default for ACPI CPU Freq driver.  Scales CPU frequency based on load.  Frequency stepping is aggressive.
+	> + "Conservative" - Scales CPU frequency based on load.  Frequency stepping is gentler.  Can cause some latency.
+	> + "Performance" - set all CPUs at full frequency regardless of load.  This can have a positive influence on performance and latency.
+	> + "Scheduled" - At start time set governor to "Performance".  At stop time set governor to "Powersave" or "On Demand" depending on driver used.
+
+	Time to set 'Performance':
+	: <input type="text" name="START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['START_TIME'];?>">
+
+	> Enter the time you want to set the governor to "Performance" in 24 hour format hh:mm.
+
+	Time to set '<?=($cpu_freq_driver == "Intel Pstate" ? "Power Save" : "On Demand"); ?>':
+	: <input type="text" name="STOP_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['STOP_TIME'];?>">
+
+	> Enter the time you want to set the governor to "Power Save" for Intel Pstate or "On Demand" in 24 hour format hh:mm.
 
 	<input type="submit" name="#default" value="Default">
 	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href=http://lime-technology.com/forum/index.php?topic=49233.0>unRAID Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=http://lime-technology.com/forum/index.php?topic=49163>Tips and Tweaks feedback</a></u></dd>
