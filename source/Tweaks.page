@@ -24,6 +24,7 @@ $vm_dirty = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_dirt
 $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_background" );
 $cpu_freq_driver = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
 $cpu_governor = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
+$freq_latency = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks freq_latency" );
 ?>
 
 <table class="tablesorter shift ups">
@@ -127,7 +128,10 @@ $cpu_governor = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu
 
 	CPU Scaling Governor:
 	: <select name="CPU_GOVERNOR" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "powersave", ($cpu_freq_driver == "Intel Pstate" ? "Power Save" : "On Demand") );?>
+		<?if ($cpu_freq_driver != "Intel Pstate"):?>
+			<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "ondemand", "On Demand");?>
+		<?endif;?>
+		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "powersave", "Power Save");?>
 		<?if ($cpu_freq_driver != "Intel Pstate"):?>
 			<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "conservative", "Conservative");?>
 		<?endif;?>
@@ -173,6 +177,7 @@ $cpu_governor = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu
 		<p><u>CPU Frequency Scaling</u></p>
 		<p>Driver: <?=$cpu_freq_driver?></p>
 		<p>Governor: <?=$cpu_governor?></p>
+		<p>Max Freq. Latency: <?=$freq_latency?>
 		</strong>
 	</div>
 </div>

@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "tips.and.tweaks">
 <!ENTITY author     "dlandon">
-<!ENTITY version    "2016.05.29">
+<!ENTITY version    "2016.05.30">
 <!ENTITY launch    "Settings/TipsAndTweaks">
 <!ENTITY pluginURL  "https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"5b3754b8064c3b466df22158722be983">
+<!ENTITY MD5		"85690987af05fc5bea26bf43502024d2">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Errors on console.
+
+###2016.05.30
 - Add: "Scheduled" to set cpu governor for performance.
 
 ###2016.05.28

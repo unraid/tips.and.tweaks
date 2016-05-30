@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_backgroundcpu_freq_driver|cpu_governor.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor|freq_latency.
 #
 
 apply_tweaks()
@@ -31,25 +31,27 @@ apply_tweaks()
 		/usr/sbin/ethtool -G $nic tx $TX_BUFFER &>/dev/null
 		sleep 0.25
 	done
-	IFS=$OIFS
 
 	sysctl vm.dirty_ratio=$VM_DIRTY &>/dev/null
 	sysctl vm.dirty_background_ratio=$VM_BACKGROUND &>/dev/null
 
-	if [ $CPU_GOVERNOR = "timed" ]; then
-		IFS=":"
-		list=($START_TIME)
-		printf "# Set cpu governor to performance:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
-		printf "${list[1]} ${list[0]} * * * /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks set_governor performance &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
-		list=($STOP_TIME)
-		printf "# Set cpu governor to powersave:\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
-		printf "${list[1]} ${list[0]} * * * /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks set_governor powersave &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
-	else
-		# Remove dynamix set governor cron file.
-		rm -f /boot/config/plugins/dynamix/cpu_governor.cron
+	if [ ! -z $CPU_GOVERNOR ]; then
+		if [ $CPU_GOVERNOR = "timed" ]; then
+			IFS=":"
+			list=($START_TIME)
+			printf "# Set cpu governor to performance:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
+			printf "${list[1]} ${list[0]} * * * /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks set_governor performance &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+			list=($STOP_TIME)
+			printf "# Set cpu governor to powersave:\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+			printf "${list[1]} ${list[0]} * * * /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks set_governor powersave &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+		else
+			# Remove dynamix set governor cron file.
+			rm -f /boot/config/plugins/dynamix/cpu_governor.cron
 
-		set_governor $CPU_GOVERNOR
+			set_governor $CPU_GOVERNOR
+		fi
 	fi
+	IFS=$OIFS
 
 	# Reload dynamix crons.
 	/usr/local/sbin/update_cron
@@ -162,7 +164,7 @@ vm_background() {
 }
 
 cpu_freq_driver() {
-	value=`cat /sys/devices/system/cpu/cpufreq/policy0/scaling_driver`
+	value=`/usr/bin/cpufreq-info -d 2>/dev/null`
 	case "$value" in
 		'acpi-cpufreq')
 			echo "ACPI CPU Freq"
@@ -176,7 +178,7 @@ cpu_freq_driver() {
 }
 
 cpu_governor() {
-	value=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
+	value=`/usr/bin/cpufreq-info -p  | /bin/awk '{print $3}' 2>/dev/null`
 	case "$value" in
 		'ondemand')
 			echo "On Demand"
@@ -196,14 +198,14 @@ cpu_governor() {
 }
 
 set_governor() {
-	scaling=$1
-	value=`cat /sys/devices/system/cpu/cpufreq/policy0/scaling_driver`
-	if [ $value != "intel_pstate" ]; then
-		if [ $scaling = "powersave" ]; then
-			scaling="ondemand"
-		fi
-	fi
-	echo $scaling | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor &>/dev/null
+	cpus=`cat /proc/cpuinfo | grep processor | wc -l` 2>/dev/null
+	for ((i=0; i<${cpus}; ++i)); do
+		/usr/bin/cpufreq-set -c $i -g $1 &>/dev/null
+	done
+}
+
+freq_latency() {
+	/usr/bin/cpufreq-info -y -m 2>/dev/null
 }
 
 # read our configuration.
@@ -245,6 +247,9 @@ case "$1" in
 	'set_governor')
 		set_governor $2
 	;;
+	'freq_latency')
+		freq_latency
+	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor"
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor|freq_latency"
 esac

@@ -27,7 +27,7 @@ Icon="tips.and.tweaks.png"
 	<li>Check the <u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u> for additional ideas on improving your unRAID performance and solving problems.</li>
 	<li>Some have reported better VM performance with media streaming and gaming VMs with the suggestions on this <u><a href=http://lime-technology.com/forum/index.php?topic=49051.0>post</a></u>.</li>
 	<li>Some have reported faster and more consistent network performance by making changes in networking parameters on the 'Tweaks' tab of this plugin.</li>
-	<li>If you have an Intel CPU, it may not frequency scale and be constantly running at Turbo Boost frequency.  There is an issue with the intel pstate driver that prevents proper frequency scaling on some Intel CPUs.  Read this <u><a href=http://lime-technology.com/forum/index.php?topic=36575.0>post</a></u> on how to disable the intel pstate driver.</li>
+	<li>If you have an Intel CPU, it may appear that all cpus are constantly running at Turbo Boost frequency.  The dashboard will show full Turbo speeds on the cpus, but the scaling governor is working properly.  Read this <u><a href=http://lime-technology.com/forum/index.php?topic=36575.0>post</a></u> for information on the issue.  It is recommended to use the pstate driver on Intel processors and ignore the dashboard display of frequencies.</li>
 	<p><u>6.1.9</u></p>
 	<li>Apply the fix on the the <u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u> for the 'Fix SMART database update'.</li>
 	<p><u>6.2 beta 21</u></p>
