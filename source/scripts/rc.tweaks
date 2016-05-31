@@ -51,9 +51,7 @@ apply_tweaks()
 			set_governor $CPU_GOVERNOR
 
 			if [ `/usr/bin/cpufreq-info -d 2>/dev/null` == "intel_pstate" ]; then
-				echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo &>/dev/null
-				sleep 0.25
-				echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo &>/dev/null
+				/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
 			fi
 		fi
 	fi
