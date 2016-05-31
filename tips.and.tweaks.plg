@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "tips.and.tweaks">
 <!ENTITY author     "dlandon">
-<!ENTITY version    "2016.05.30">
+<!ENTITY version    "2016.05.31">
 <!ENTITY launch    "Settings/TipsAndTweaks">
 <!ENTITY pluginURL  "https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"85690987af05fc5bea26bf43502024d2">
+<!ENTITY MD5		"6b0a9d7b96b8fb76bbe4aa224703f248">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,10 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Changed all links to open a new page in the browser.
+- Add: Turn off Turbo Speed mode on Intel pstate driver to keep cpu frequencies from going excessively high.
+
+###2016.05.30
 - Fix: Errors on console.
 
 ###2016.05.30

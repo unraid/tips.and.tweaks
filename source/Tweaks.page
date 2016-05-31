@@ -24,7 +24,6 @@ $vm_dirty = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_dirt
 $vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_background" );
 $cpu_freq_driver = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
 $cpu_governor = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
-$freq_latency = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks freq_latency" );
 ?>
 
 <table class="tablesorter shift ups">
@@ -109,7 +108,7 @@ $freq_latency = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks fre
 	> List the NICs to apply the above settings separated by commas.  If you have multiple NICs that are bonded, be sure to include all of them.  Flow Control, TSO, and NIC buffer settings will
 	> be applied to these NICs.
 
-	<strong>Don't change the Disk Cache settings until you read and understand this <u><a href=https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/>Guide</a></u>.</strong>
+	<strong>Don't change the Disk Cache settings until you read and understand this <u><a href='https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/', target='_blank'>Guide</a></u>.</strong>
 	> For streaming and gaming VMs, set the values low in the single digits.  Recommended values are: vm.dirty_background_ratio=2% and vm.dirty_ratio=3%.
 	> If you have large amounts of RAM, smaller is better.
 	> Caution: Don't increase these values beyond the default settings unless you have a UPS that will reliably shut down unRAID.
@@ -118,13 +117,13 @@ $freq_latency = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks fre
 	: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>">
 
 	> Set the 'vm.dirty_background_ratio' as a percentage of total RAM memory.
-	> The default setting of 10% is recommended in most cases.  For media streaming and gaming VMs, use a value of 2%.
+	> The default setting of 10% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 2%.
 
 	Disk Cache 'vm.dirty_ratio (%):
 	: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>">
 
 	> Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
-	> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended in most cases.  For media streaming and gaming VMs, use a value of 3%.
+	> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 3%.
 
 	CPU Scaling Governor:
 	: <select name="CPU_GOVERNOR" size="1">
@@ -158,7 +157,7 @@ $freq_latency = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks fre
 	> Enter the time you want to set the governor to "Power Save" for Intel Pstate or "On Demand" in 24 hour format hh:mm.
 
 	<input type="submit" name="#default" value="Default">
-	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href=http://lime-technology.com/forum/index.php?topic=49233.0>unRAID Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=http://lime-technology.com/wiki/index.php/Tips_and_Tweaks>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=http://lime-technology.com/forum/index.php?topic=49163>Tips and Tweaks feedback</a></u></dd>
+	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>unRAID Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
 	</form>
 </div>
 
@@ -177,7 +176,6 @@ $freq_latency = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks fre
 		<p><u>CPU Frequency Scaling</u></p>
 		<p>Driver: <?=$cpu_freq_driver?></p>
 		<p>Governor: <?=$cpu_governor?></p>
-		<p>Max Freq. Latency: <?=$freq_latency?>
 		</strong>
 	</div>
 </div>

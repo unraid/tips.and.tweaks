@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor|freq_latency.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor.
 #
 
 apply_tweaks()
@@ -49,6 +49,12 @@ apply_tweaks()
 			rm -f /boot/config/plugins/dynamix/cpu_governor.cron
 
 			set_governor $CPU_GOVERNOR
+
+			if [ `/usr/bin/cpufreq-info -d 2>/dev/null` == "intel_pstate" ]; then
+				echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo &>/dev/null
+				sleep 0.25
+				echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo &>/dev/null
+			fi
 		fi
 	fi
 	IFS=$OIFS
@@ -198,14 +204,10 @@ cpu_governor() {
 }
 
 set_governor() {
-	cpus=`cat /proc/cpuinfo | grep processor | wc -l` 2>/dev/null
+	cpus=`cat /proc/cpuinfo | grep processor | wc -l 2>/dev/null`
 	for ((i=0; i<${cpus}; ++i)); do
 		/usr/bin/cpufreq-set -c $i -g $1 &>/dev/null
 	done
-}
-
-freq_latency() {
-	/usr/bin/cpufreq-info -y -m 2>/dev/null
 }
 
 # read our configuration.
@@ -247,9 +249,6 @@ case "$1" in
 	'set_governor')
 		set_governor $2
 	;;
-	'freq_latency')
-		freq_latency
-	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor|freq_latency"
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor"
 esac
