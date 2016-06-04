@@ -176,8 +176,15 @@ cpu_freq_driver() {
 		'intel_pstate')
 			echo "Intel Pstate"
 		;;
+		'powernow_k8')
+			echo "Powernow K8/K10"
+		;;
 		*)
-			echo $value
+			if [ $value != "" ]; then
+				echo $value
+			else
+				echo "* no driver *"
+			fi
 	esac
 }
 

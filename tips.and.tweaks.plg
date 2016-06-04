@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "tips.and.tweaks">
 <!ENTITY author     "dlandon">
-<!ENTITY version    "2016.05.31a">
+<!ENTITY version    "2016.06.04">
 <!ENTITY launch    "Settings/TipsAndTweaks">
 <!ENTITY pluginURL  "https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"32aca2547cb7897609280c35a5cc4b30">
+<!ENTITY MD5		"5e2d6fce4496b409e933371af7182e93">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,10 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Show '* no driver *' as driver when a cpu scaling driver is not found.
+- Add: Support for powernow_k8 driver.
+
+###2016.05.31a
 - Fix: Changed all links to open a new page in the browser.
 - Add: Turn off Turbo Speed mode on Intel pstate driver to keep cpu frequencies from going excessively high.
 
@@ -25,7 +29,7 @@
 - Fix: Errors on console.
 
 ###2016.05.30
-- Add: "Scheduled" to set cpu governor for performance.
+- Add: "Scheduled" to set cpu governor for performance on a schedule.
 
 ###2016.05.28
 - Add: Tip about intel_pstate cpu scaling driver.
