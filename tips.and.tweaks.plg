@@ -1,11 +1,11 @@
 <?xml version='1.0' standalone='yes'?>
 
 <!DOCTYPE PLUGIN [
-<!ENTITY name       "tips.and.tweaks">
-<!ENTITY author     "dlandon">
-<!ENTITY version    "2016.06.12">
-<!ENTITY launch    "Settings/TipsAndTweaks">
-<!ENTITY pluginURL  "https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
+<!ENTITY name		"tips.and.tweaks">
+<!ENTITY author		"dlandon">
+<!ENTITY version	"2016.06.12">
+<!ENTITY launch		"Settings/TipsAndTweaks">
+<!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY MD5		"0a7907c0e9884c157ecfcc0b0cb6cef5">
 ]>
 
@@ -18,7 +18,7 @@
 <CHANGES>
 ##&name;
 ###&version;
-- Add: Tips for 6.2 b22 & b23.
+- Add: Tips for 6.2 b22 and b23.
 
 ###2016.06.04
 - Add: Show '* no driver *' as driver when a cpu scaling driver is not found.
