@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "tips.and.tweaks">
 <!ENTITY author     "dlandon">
-<!ENTITY version    "2016.06.04">
+<!ENTITY version    "2016.06.12">
 <!ENTITY launch    "Settings/TipsAndTweaks">
 <!ENTITY pluginURL  "https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"5e2d6fce4496b409e933371af7182e93">
+<!ENTITY MD5		"0a7907c0e9884c157ecfcc0b0cb6cef5">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Tips for 6.2 b22 & b23.
+
+###2016.06.04
 - Add: Show '* no driver *' as driver when a cpu scaling driver is not found.
 - Add: Support for powernow_k8 driver.
 
