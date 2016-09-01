@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.06.12">
+<!ENTITY version	"2016.09.01">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"0a7907c0e9884c157ecfcc0b0cb6cef5">
+<!ENTITY MD5		"04c139056afc7367c84848678a1631fc">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Disable FTP Server and Telnet.
+
+###2016.06.12
 - Add: Tips for 6.2 b22 and b23.
 
 ###2016.06.04
@@ -116,6 +119,7 @@ RX_BUFFER="256"
 TX_BUFFER="256"
 VM_BACKGROUND="10"
 VM_DIRTY="20"
+FTP_TELNET="no"
 ]]>
 </INLINE>
 </FILE>

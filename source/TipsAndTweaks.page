@@ -36,5 +36,7 @@ Icon="tips.and.tweaks.png"
 	<li>Some have reported better performance with media streaming and gaming VMs by adjusting the disk caching on the 'Tweaks' tab of this plugin.</li>
 	<p><u>6.2 beta 22 & 23</u></p>
 	<li>Go to Settings->Disk Settings and remove the 8192 in 'num_stripes' then stop and restart unRAID.  This will reset 'num_stripes' back to the default.  This was a temporary fix in 6.2 beta 21 for a large file transfer bug that froze up unRAID and VMs.</li>
+	<p><u>6.2 RCs</u></p>
+	<li>None.</li>
 	</strong>
 </div>
