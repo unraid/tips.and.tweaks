@@ -1,0 +1,75 @@
+#!/bin/bash
+#
+# Copyright (C) 2016 byDan Landon
+#
+# This file is part of the Powerdown package for unRAID.
+#
+# Powerdown is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Powerdown is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Powerdown.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+
+# capture the system diagnostics
+logger "Capture diagnostics to /boot/logs"
+echo "Capture diagnostics to /boot/logs"
+rm -f /boot/logs/*diagnostics*.zip
+/usr/local/sbin/diagnostics
+
+# If the LOG directory does not exist, make it!
+[ ! -d ${LOGDIR} ] && mkdir -p ${LOGDIR}
+
+LOGDIR=/boot/logs/
+LOGSAVE="10"
+TS="%Y%m%d-%H%M%S"
+LOGDATE=`ls -l --time-style="+${TS}" /var/log/syslog | cut -d' ' -f6`
+LOGNAME="${LOGDIR}syslog-${LOGDATE}.txt"
+
+# Save only the $LOGSAVE number of current files
+# save all logs if -1
+if [ ${LOGSAVE} -ne "-1" ]
+then
+	i=0
+	ls -1t ${LOGDIR}syslog*.txt | while read SYSLOG
+	do  ((i++))
+		if [ $i -ge ${LOGSAVE} ]
+		   then echo "Removing old syslog: ${SYSLOG}"
+				rm -f ${SYSLOG}
+		fi
+	done
+fi
+
+echo "Saving current syslog: ${LOGNAME}"
+todos < /var/log/syslog > "${LOGNAME}"
+touch --reference=/var/log/syslog ${LOGNAME}
+chmod a-x ${LOGNAME}
+
+# Save latest syslog in a .zip archive for uploading
+# logger "zipping current syslog to ${LOGDIR}syslog.zip"
+# only zip a new syslog.txt if syslog newer then current .zip
+
+if [ ! -x /usr/bin/zip ]
+   then echo "zip not installed. Consider installing to automatically zip current syslog"
+		return
+fi
+
+if [ /var/log/syslog -nt ${LOGDIR}syslog.zip ]
+   then cd /var/log
+		# make a symlink to syslog.txt for windows viewing
+		ln -s  syslog syslog.txt
+		rm -f  ${LOGDIR}syslog.zip
+		# -o (set .zip time to mtime of syslog)
+		# -l (convert lf to crlf on the fly!)
+		zip -o -l ${LOGDIR}syslog.zip syslog.txt
+		rm -f  syslog.txt  # remove symlink
+		chmod a-x ${LOGDIR}syslog.zip # remove samba attributes
+fi

@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.09.01">
+<!ENTITY version	"2016.09.16">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"04c139056afc7367c84848678a1631fc">
+<!ENTITY MD5		"81473640d5f5b97129c408c176eab7d9">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add powerdown enhancements - Diagnostics saved on shutdown, logs archived on shutdown, and enabled the Ctrl-Alt-Del powerdown.
+
+###2016.09.01
 - Add: Disable FTP Server and Telnet.
 
 ###2016.06.12
@@ -120,6 +123,7 @@ TX_BUFFER="256"
 VM_BACKGROUND="10"
 VM_DIRTY="20"
 FTP_TELNET="no"
+POWERDOWN="no"
 ]]>
 </INLINE>
 </FILE>

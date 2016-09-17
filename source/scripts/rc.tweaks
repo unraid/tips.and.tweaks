@@ -62,6 +62,16 @@ apply_tweaks()
 		/etc/rc.d/rc.inetd restart
 	fi
 
+	#remove the old entry in rc.local_shutdown
+	sed "/#Tips_and_tweaks_start/,/#Tips_and_tweaks_end/d" /etc/rc.d/rc.local_shutdown >> rc.local_shutdown.tmp
+	printf %s "$(< rc.local_shutdown.tmp)" > /etc/rc.d/rc.local_shutdown
+	rm -f rc.local_shutdown.tmp
+	if [ $POWERDOWN = "yes" ]; then
+		echo -e "\n\n#Tips_and_tweaks_start\n[ -x /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.unRAID ] && /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.unRAID\n#Tips_and_tweaks_end\n" >> /etc/rc.d/rc.local_shutdown
+		sed --in-place=.bak -e 's/\/sbin\/shutdown .*/\/usr\/local\/sbin\/powerdown/g' /etc/inittab
+		/sbin/telinit q
+	fi
+
 	# Reload dynamix crons.
 	/usr/local/sbin/update_cron
 

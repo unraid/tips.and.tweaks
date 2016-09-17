@@ -156,6 +156,14 @@ $cpu_governor = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu
 
 	> Enter the time you want to set the governor to "Power Save" for Intel Pstate or "On Demand" in 24 hour format hh:mm.
 
+	Enable Powerdown Enhancements?
+	: <select name="POWERDOWN" size="1">
+		<?=mk_option($tips_and_tweaks_cfg['POWERDOWN'], "no", "No");?>
+		<?=mk_option($tips_and_tweaks_cfg['POWERDOWN'], "yes", "Yes");?>
+	  </select>
+
+	> Set to 'Yes' to enable log archiving and saving diagnostics on shutdown.  This will also enable Ctrl-Alt-Del shutdown of the server.
+
 	Disable FTP Server & Telnet?
 	: <select name="FTP_TELNET" size="1">
 		<?=mk_option($tips_and_tweaks_cfg['FTP_TELNET'], "no", "No");?>
