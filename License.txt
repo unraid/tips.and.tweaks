@@ -1,4 +1,4 @@
-### enhanced.log plugin for unRAID
+### Tips and Tweaks plugin for unRAID
 
 Copyright (C) 2016 Dan Landon
 
