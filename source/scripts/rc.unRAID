@@ -2,14 +2,14 @@
 #
 # Copyright (C) 2016 byDan Landon
 #
-# This file is part of the Powerdown package for unRAID.
+# This file is part of the Tips and Tweaks plugin for unRAID.
 #
-# Powerdown is free software: you can redistribute it and/or modify
+# Tips and Tweaks is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Powerdown is distributed in the hope that it will be useful,
+# Tips and Tweaks is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
@@ -18,6 +18,16 @@
 # along with Powerdown.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+logger()
+{
+  typeset F=${1##-t*}
+  if [ "${F}" != "${1}" ]
+	 then F=""
+	 else F="-t${P}[$$]"
+  fi
+
+  /usr/bin/logger -i -plocal7.info ${F} $*
+}
 
 # capture the system diagnostics
 logger "Capture diagnostics to /boot/logs"
@@ -47,6 +57,8 @@ then
 		fi
 	done
 fi
+
+/sbin/mount > /boot/logs/still_mounted
 
 echo "Saving current syslog: ${LOGNAME}"
 todos < /var/log/syslog > "${LOGNAME}"
