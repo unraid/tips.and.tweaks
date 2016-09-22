@@ -67,6 +67,7 @@ apply_tweaks()
 	printf %s "$(< rc.local_shutdown.tmp)" > /etc/rc.d/rc.local_shutdown
 	rm -f rc.local_shutdown.tmp
 	if [ $POWERDOWN = "yes" ]; then
+		cp /usr/local/emhttp/plugins/tips.and.tweaks/scripts/powerdown /usr/local/sbin/powerdown 2>/dev/null
 		echo -e "\n\n#Tips_and_tweaks_start\n[ -x /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.unRAID ] && /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.unRAID\n#Tips_and_tweaks_end\n" >> /etc/rc.d/rc.local_shutdown
 		sed --in-place=.bak -e 's/\/sbin\/shutdown .*/\/usr\/local\/sbin\/powerdown/g' /etc/inittab
 		/sbin/telinit q

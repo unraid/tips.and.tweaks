@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.09.16">
+<!ENTITY version	"2016.09.22">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"81473640d5f5b97129c408c176eab7d9">
+<!ENTITY MD5		"87ca33aaf87e44633fd88a573d8b17bd">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,10 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Powerdown enhancements - Add in new powerdown script for users that have changed their emhttp port.  The powerdown enhancements option will be removed on the next release of unRAID.
+- Fixed license and copyrights.
+
+###2016.09.16
 - Add powerdown enhancements - Diagnostics saved on shutdown, logs archived on shutdown, and enabled the Ctrl-Alt-Del powerdown.
 
 ###2016.09.01
