@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.09.22">
+<!ENTITY version	"2016.09.25">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"87ca33aaf87e44633fd88a573d8b17bd">
+<!ENTITY MD5		"fa8541962fa5e99944ac253b143d4057">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Removed powerdown enhancement.  Removed 6.2 beta and RC notes.
+
+###2016.09.22
 - Powerdown enhancements - Add in new powerdown script for users that have changed their emhttp port.  The powerdown enhancements option will be removed on the next release of unRAID.
 - Fixed license and copyrights.
 
@@ -127,7 +130,6 @@ TX_BUFFER="256"
 VM_BACKGROUND="10"
 VM_DIRTY="20"
 FTP_TELNET="no"
-POWERDOWN="no"
 ]]>
 </INLINE>
 </FILE>

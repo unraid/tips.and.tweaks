@@ -30,13 +30,7 @@ Icon="tips.and.tweaks.png"
 	<li>If you have an Intel CPU, it may appear that all cpus are constantly running at full speed.  The dashboard will show full speed on the cpus, but the scaling governor is probably working properly.  Read this <u><a href='http://lime-technology.com/forum/index.php?topic=36575.0', target='_blank'>post</a></u> for information on the issue.  It is recommended to use the pstate driver on Intel processors if you want the most performance and then just ignore the dashboard display of frequencies.  Note: The dashboard shows CPU loading and not CPU frequency in 6.2.  You can check CPU frequencies on the command line with 'watch grep \"cpu MHz\" /proc/cpuinfo'.</li>
 	<p><u>6.1.9</u></p>
 	<li>Apply the fix on the the <u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u> for the 'Fix SMART database update'.</li>
-	<p><u>6.2 beta 21</u></p>
-	<li>There is currently a fix for large file transfers that hang the system and crash/hang VMs.  Go to Settings->Disk Settings and set the 'num_stripes'=8192 then stop and restart unRAID.</li>
-	<li>Some have reported better VM performance with the following change to the vdisk setting in the VM xml: <u>driver name='qemu' type='raw' cache='directsync'</u>.  You have to edit the xml to make this change.  It will be lost if you use the built in VM editor.</li>
-	<li>Some have reported better performance with media streaming and gaming VMs by adjusting the disk caching on the 'Tweaks' tab of this plugin.</li>
-	<p><u>6.2 beta 22 & 23</u></p>
-	<li>Go to Settings->Disk Settings and remove the 8192 in 'num_stripes' then stop and restart unRAID.  This will reset 'num_stripes' back to the default.  This was a temporary fix in 6.2 beta 21 for a large file transfer bug that froze up unRAID and VMs.</li>
-	<p><u>6.2 RCs</u></p>
+	<p><u>6.2</u></p>
 	<li>None.</li>
 	</strong>
 </div>
