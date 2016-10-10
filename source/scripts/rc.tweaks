@@ -11,14 +11,14 @@ apply_tweaks()
 	for ((i=0; i<${#list[@]}; ++i)); do
 		nic=${list[$i]}
 
-		if [ $FLOW_CONTROL = "yes" ]; then
+		if [ "$FLOW_CONTROL" = "yes" ]; then
 			/usr/sbin/ethtool -A $nic autoneg off rx off tx off &>/dev/null
 		else
 			/usr/sbin/ethtool -A $nic autoneg on rx on tx on &>/dev/null
 		fi
 		sleep 0.25
 
-		if [ $TSO_OFFLOAD = "yes" ]; then
+		if [ "$TSO_OFFLOAD" = "yes" ]; then
 			/usr/sbin/ethtool -K $nic tso off &>/dev/null
 			/usr/sbin/ethtool -K $nic gso off &>/dev/null
 		else
@@ -36,7 +36,7 @@ apply_tweaks()
 	sysctl vm.dirty_background_ratio=$VM_BACKGROUND &>/dev/null
 
 	if [ ! -z $CPU_GOVERNOR ]; then
-		if [ $CPU_GOVERNOR = "timed" ]; then
+		if [ "$CPU_GOVERNOR" = "timed" ]; then
 			IFS=":"
 			list=($START_TIME)
 			printf "# Set cpu governor to performance:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
@@ -50,14 +50,14 @@ apply_tweaks()
 
 			set_governor $CPU_GOVERNOR
 
-			if [ `/usr/bin/cpufreq-info -d 2>/dev/null` == "intel_pstate" ]; then
+			if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
 				/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
 			fi
 		fi
 	fi
 	IFS=$OIFS
 
-	if [ $FTP_TELNET = "yes" ]; then
+	if [ "$FTP_TELNET" = "yes" ]; then
 		sed -i -e 's/^telnet/#telnet/;s/^ftp/#ftp/' /etc/inetd.conf
 		/etc/rc.d/rc.inetd restart
 	fi
@@ -78,7 +78,7 @@ flow_control() {
 		nic=${list[$i]}
 		value=`/usr/sbin/ethtool -a $nic 2>/dev/null | grep -i 'RX:' | /bin/awk '{print $2}'`
 		if [ ! -z $value ]; then
-			if [ $value  == "on" ]; then
+			if [ "$value"  == "on" ]; then
 				flow="On"
 			fi
 			avail="yes"
@@ -86,7 +86,7 @@ flow_control() {
 	done
 	IFS=$OIFS
 
-	if [ $avail = "yes"  ]; then
+	if [ "$avail" = "yes"  ]; then
 		echo $flow
 	else
 		echo $not_avail
@@ -103,7 +103,7 @@ tso_offload() {
 		nic=${list[$i]}
 		value=`/usr/sbin/ethtool -k $nic 2>/dev/null | grep -i 'tcp-segmentation-offload:' | /bin/awk '{print $2}'`
 		if [ ! -z $value ]; then
-			if [ $value  == "on" ]; then
+			if [ "$value"  == "on" ]; then
 				offload="On"
 			fi
 			avail="yes"
@@ -111,7 +111,7 @@ tso_offload() {
 	done
 	IFS=$OIFS
 
-	if [ $avail = "yes"  ]; then
+	if [ "$avail" = "yes"  ]; then
 		echo $offload
 	else
 		echo $not_avail
@@ -134,7 +134,7 @@ rx_buffer() {
 	done
 	IFS=$OIFS
 
-	if [ $avail = "yes"  ]; then
+	if [ "$avail" = "yes"  ]; then
 		echo $rx
 	else
 		echo $no_buffer
@@ -157,7 +157,7 @@ tx_buffer() {
 	done
 	IFS=$OIFS
 
-	if [ $avail = "yes"  ]; then
+	if [ "$avail" = "yes"  ]; then
 		echo $tx
 	else
 		echo $no_buffer
