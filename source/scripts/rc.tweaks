@@ -185,7 +185,7 @@ cpu_freq_driver() {
 			echo "Powernow K8/K10"
 		;;
 		*)
-			if [ $value != "" ]; then
+			if [ "$value" != "" ]; then
 				echo $value
 			else
 				echo "* no driver *"

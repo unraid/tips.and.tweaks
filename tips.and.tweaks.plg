@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.09.25">
+<!ENTITY version	"2016.10.09">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"fa8541962fa5e99944ac253b143d4057">
+<!ENTITY MD5		"133875edf96f2e213d373c6e9fbed0d2">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Fixed a type in rc script.
+
+###2016.09.25
 - Removed powerdown enhancement.  Removed 6.2 beta and RC notes.
 
 ###2016.09.22
