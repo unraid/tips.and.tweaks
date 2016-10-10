@@ -18,7 +18,7 @@
 <CHANGES>
 ##&name;
 ###&version;
-- Fixed a typos in rc script.
+- Fixed typos in rc script.
 
 ###2016.09.25
 - Removed powerdown enhancement.  Removed 6.2 beta and RC notes.
