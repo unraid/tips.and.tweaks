@@ -164,6 +164,20 @@ $cpu_governor = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu
 
 	> Set to 'Yes' to disable the FTP Server and Telnet.  You will have to reboot to enable them again once you select "No".
 
+	Enable syslog Archiving?
+	: <select name="ARCHIVE_LOGS" size="1">
+		<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "no", "No");?>
+		<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "yes", "Yes");?>
+	  </select>
+
+	> Set to 'Yes' to enable the capture and archive of syslogs and run a diagnostics on shutdown.  Logs and diagnostics are saved to /boot/logs/.
+
+	Number of syslogs to Archive:
+	: <input type="text" name="LOGSAVE" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['LOGSAVE'];?>">
+
+	> Set the number of syslogs to save in the archive.
+	> Set zero to save only last syslog.  Set to -1 to save all logs.  Default setting is 10.
+
 	<input type="submit" name="#default" value="Default">
 	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>unRAID Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
 	</form>

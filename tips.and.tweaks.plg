@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.10.10">
+<!ENTITY version	"2016.10.21">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"2d96519a339ad12db9f6de220bdda5c2">
+<!ENTITY MD5		"6195ef156088291ba02b21e3b3200449">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Added feature to capture and archive syslogs and diagnostics when shutting down.
+
+###2016.10.10
 - Fixed typos in rc script.
 
 ###2016.09.25
@@ -133,6 +136,8 @@ TX_BUFFER="256"
 VM_BACKGROUND="10"
 VM_DIRTY="20"
 FTP_TELNET="no"
+ARCHIVE_LOGS="no"
+LOGSAVE="10"
 ]]>
 </INLINE>
 </FILE>
@@ -159,6 +164,9 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
+# Remove the hook for log archiving
+/usr/local/emhttp/plugins/&name;/scripts/rc.tweaks remove_syslog
+
 # Remove dynamix set governor cron file.
 rm -f /boot/config/plugins/dynamix/cpu_governor.cron
 

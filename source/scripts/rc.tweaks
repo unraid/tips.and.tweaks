@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor|save_syslog|remove_syslog.
 #
 
 apply_tweaks()
@@ -60,6 +60,12 @@ apply_tweaks()
 	if [ "$FTP_TELNET" = "yes" ]; then
 		sed -i -e 's/^telnet/#telnet/;s/^ftp/#ftp/' /etc/inetd.conf
 		/etc/rc.d/rc.inetd restart
+	fi
+
+	if [ "$ARCHIVE_LOGS" = "yes" ]; then
+		echo -e "\n\n#archive_logs_start\n/usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks save_syslog\n#archive_logs_end" >> /etc/rc.d/rc.local_shutdown
+	else
+		remove_syslog
 	fi
 
 	# Reload dynamix crons.
@@ -220,6 +226,70 @@ set_governor() {
 	done
 }
 
+save_syslog()
+{
+	# capture the system diagnostics
+	logger "Capture diagnostics to /boot/logs"
+	echo "Capture diagnostics to /boot/logs"
+	rm -f /boot/logs/*diagnostics*.zip
+	/usr/local/sbin/diagnostics
+
+	# If the LOG directory does not exist, make it!
+	[ ${LOGSAVE} -ne "0" ] && [ ! -d ${LOGDIR} ] && mkdir -p ${LOGDIR}
+
+	TS="%Y%m%d-%H%M%S"
+	LOGDATE=`ls -l --time-style="+${TS}" /var/log/syslog | cut -d' ' -f6`
+	LOGNAME="/boot/logs/syslog-${LOGDATE}.txt"
+
+	# Save only the $LOGSAVE number of current files
+	# save all logs if -1
+	if [ ${LOGSAVE} -ne "-1" ] && [ ! -z "`ls -1t /boot/logs/syslog*.txt 2>/dev/null`" ]; then
+		i=0
+		ls -1t /boot/logs/syslog*.txt | while read SYSLOG
+		do  ((i++))
+			if [ $i -ge ${LOGSAVE} ]
+			   then echo "Removing old syslog: ${SYSLOG}"
+					rm -f ${SYSLOG}
+			fi
+		done
+	fi
+
+	echo "Saving current syslog: ${LOGNAME}"
+	todos < /var/log/syslog > "${LOGNAME}"
+	touch --reference=/var/log/syslog ${LOGNAME}
+	chmod a-x ${LOGNAME}
+
+	# Save latest syslog in a .zip archive for uploading
+	# logger "zipping current syslog to /boot/logs/syslog.zip"
+	# only zip a new syslog.txt if syslog newer then current .zip
+
+	if [ ! -x /usr/bin/zip ]; then
+		echo "zip not installed. Consider installing to automatically zip current syslog"
+		return
+	fi
+
+	if [ /var/log/syslog -nt /boot/logs/syslog.zip ]; then
+			cd /var/log
+			# make a symlink to syslog.txt for windows viewing
+			ln -s  syslog syslog.txt
+			rm -f  /boot/logs/syslog.zip
+			# -o (set .zip time to mtime of syslog)
+			# -l (convert lf to crlf on the fly!)
+			zip -o -l /boot/logs/syslog.zip syslog.txt
+			rm -f  syslog.txt  # remove symlink
+			chmod a-x /boot/logs/syslog.zip # remove samba attributes
+	fi
+}
+
+remove_syslog() {
+	# Remove archive_logs from rc.local_shutdown.
+	if [ -f "/etc/rc.d/rc.local_shutdown" ]; then
+		sed '/#archive_logs_start/,/#archive_logs_end/d' /etc/rc.d/rc.local_shutdown >> rc.local_shutdown.tmp
+		printf %s "$(< rc.local_shutdown.tmp)" > /etc/rc.d/rc.local_shutdown
+		rm -f rc.local_shutdown.tmp
+	fi
+}
+
 # read our configuration.
 CONFIG="/boot/config/plugins/tips.and.tweaks/tips.and.tweaks.cfg"
 source $CONFIG
@@ -227,6 +297,14 @@ PROG_NAME="tips.and.tweaks"
 
 not_avail="N/A (Off)"
 no_buffer="N/A"
+
+# Set LOG directory
+LOGDIR=/boot/logs/
+
+# Be sure $LOGSAVE is defined.
+if [ -z ${LOGSAVE} ]; then
+	LOGSAVE="10"
+fi
 
 case "$1" in
 	'apply')
@@ -259,6 +337,12 @@ case "$1" in
 	'set_governor')
 		set_governor $2
 	;;
+		'save_syslog')
+		save_syslog
+	;;
+		'remove_syslog')
+		remove_syslog
+	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor"
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor|save_syslog|remove_syslog"
 esac
