@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.10.21">
+<!ENTITY version	"2016.10.22">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"6195ef156088291ba02b21e3b3200449">
+<!ENTITY MD5		"0820e5aa7d4f9ff5e4e6f3b4be41a50d">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Updates for compatibility with unRAID 6.2 and later.
+
+###2016.10.21
 - Added feature to capture and archive syslogs and diagnostics when shutting down.
 
 ###2016.10.10
@@ -79,7 +82,7 @@
 
 <!--
 Copyright 2016, Dan Landon
-his plugin lets you set certain settings to adjust Linux for better unRaid performance.
+This plugin lets you set certain settings to adjust Linux and unRAID for better performance.
 -->
 
 <!--

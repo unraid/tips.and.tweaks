@@ -16,14 +16,14 @@ Title="Tweaks"
 <?PHP
 $plugin = "tips.and.tweaks";
 $tips_and_tweaks_cfg = parse_ini_file( "/boot/config/plugins/{$plugin}/{$plugin}.cfg" );
-$flow_control = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks flow" );
-$tso_offload = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks offload" );
-$rx_buffer = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
-$tx_buffer = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
-$vm_dirty = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
-$vm_background = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks vm_background" );
-$cpu_freq_driver = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
-$cpu_governor = exec( "/usr/local/emhttp/plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
+$flow_control = exec( "plugins/{$plugin}/scripts/rc.tweaks flow" );
+$tso_offload = exec( "plugins/{$plugin}/scripts/rc.tweaks offload" );
+$rx_buffer = exec( "plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
+$tx_buffer = exec( "plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
+$vm_dirty = exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
+$vm_background = exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
+$cpu_freq_driver = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
+$cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 ?>
 
 <table class="tablesorter shift ups">
