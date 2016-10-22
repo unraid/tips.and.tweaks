@@ -40,10 +40,10 @@ apply_tweaks()
 			IFS=":"
 			list=($START_TIME)
 			printf "# Set cpu governor to performance:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
-			printf "${list[1]} ${list[0]} * * * /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks set_governor performance &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+			printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor performance &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
 			list=($STOP_TIME)
 			printf "# Set cpu governor to powersave:\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
-			printf "${list[1]} ${list[0]} * * * /usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks set_governor powersave &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+			printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor powersave &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
 		else
 			# Remove dynamix set governor cron file.
 			rm -f /boot/config/plugins/dynamix/cpu_governor.cron
@@ -63,7 +63,7 @@ apply_tweaks()
 	fi
 
 	if [ "$ARCHIVE_LOGS" = "yes" ]; then
-		echo -e "\n\n#archive_logs_start\n/usr/local/emhttp/plugins/tips.and.tweaks/scripts/rc.tweaks save_syslog\n#archive_logs_end" >> /etc/rc.d/rc.local_shutdown
+		echo -e "\n\n#archive_logs_start\n${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks save_syslog\n#archive_logs_end" >> /etc/rc.d/rc.local_shutdown
 	else
 		remove_syslog
 	fi
@@ -291,15 +291,17 @@ remove_syslog() {
 }
 
 # read our configuration.
-CONFIG="/boot/config/plugins/tips.and.tweaks/tips.and.tweaks.cfg"
+plugin="tips.and.tweaks"
+CONFIG="/boot/config/plugins/${plugin}/${plugin}.cfg"
 source $CONFIG
-PROG_NAME="tips.and.tweaks"
+PROG_NAME=${plugin}
+DOCROOT="/usr/local/emhttp"
 
 not_avail="N/A (Off)"
 no_buffer="N/A"
 
 # Set LOG directory
-LOGDIR=/boot/logs/
+LOGDIR="/boot/logs/"
 
 # Be sure $LOGSAVE is defined.
 if [ -z ${LOGSAVE} ]; then
