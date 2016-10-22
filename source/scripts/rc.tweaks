@@ -62,10 +62,10 @@ apply_tweaks()
 		/etc/rc.d/rc.inetd restart
 	fi
 
+	remove_syslog
+
 	if [ "$ARCHIVE_LOGS" = "yes" ]; then
 		echo -e "\n\n#archive_logs_start\n${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks save_syslog\n#archive_logs_end" >> /etc/rc.d/rc.local_shutdown
-	else
-		remove_syslog
 	fi
 
 	# Reload dynamix crons.
