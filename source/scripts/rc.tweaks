@@ -295,7 +295,10 @@ plugin="tips.and.tweaks"
 CONFIG="/boot/config/plugins/${plugin}/${plugin}.cfg"
 source $CONFIG
 PROG_NAME=${plugin}
-DOCROOT="/usr/local/emhttp"
+DOCROOT=`grep -Po '^chdir = \K.*' /etc/php-fpm.d/www.conf`
+if [ -z ${DOCROOT} ];then
+	DOCROOT="/usr/local/emhttp"
+fi
 
 not_avail="N/A (Off)"
 no_buffer="N/A"

@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.10.22b">
+<!ENTITY version	"2016.10.23">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"87602faed81078cb0c5c466faed885cd">
+<!ENTITY MD5		"4ec9287cc75bfd85f491737fe39db7a7">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Changed absolute path using $docroot in preparation for moving from emhttp.
+
+###2016.10.22b
 - Updates for compatibility with unRAID 6.2 and later.
 
 ###2016.10.21
