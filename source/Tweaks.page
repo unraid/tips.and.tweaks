@@ -146,6 +146,19 @@ $cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 	> + "Performance" - set all CPUs at full frequency regardless of load.  This can have a positive influence on performance and latency.
 	> + "Scheduled" - At start time set governor to "Performance".  At stop time set governor to "Powersave" or "On Demand" depending on driver used.
 
+	Enable Intel Turbo Boost?
+	: <select name="TURBO_BOOST" size="1">
+		<?if ($cpu_freq_driver == "Intel Pstate"):?>
+			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "No");?>
+			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "Yes");?>
+		<?endif;?>
+		<?if ($cpu_freq_driver != "Intel Pstate"):?>
+			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "", "", 'disabled');?>
+		<?endif;?>
+	  </select>
+
+	> Set to 'Yes' to enable the Intel Pstate driver Turbo Mode.
+
 	Time to set 'Performance':
 	: <input type="text" name="START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['START_TIME'];?>">
 
@@ -162,7 +175,7 @@ $cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 		<?=mk_option($tips_and_tweaks_cfg['FTP_TELNET'], "yes", "Yes");?>
 	  </select>
 
-	> Set to 'Yes' to disable the FTP Server and Telnet.  You will have to reboot to enable them again once you select "No".
+	> Set to 'Yes' to disable the FTP Server and Telnet.  You will have to reboot to enable them again once you select 'No'.
 
 	Enable syslog Archiving?
 	: <select name="ARCHIVE_LOGS" size="1">

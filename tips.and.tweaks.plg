@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.10.23">
+<!ENTITY version	"2016.12.04">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"4ec9287cc75bfd85f491737fe39db7a7">
+<!ENTITY MD5		"ffea2e99572ff4b621f5870b15b49a7b">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Added option to turn on/off the Intel turbo mode.
+
+###2016.10.23
 - Changed absolute path using $docroot in preparation for moving from emhttp.
 
 ###2016.10.22b
