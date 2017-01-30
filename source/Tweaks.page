@@ -2,7 +2,7 @@ Menu="TipsAndTweaks"
 Title="Tweaks"
 ---
 <?PHP
-/* Copyright 2016 Dan Landon.
+/* Copyright 2016-2017 Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -145,6 +145,10 @@ $cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 	> + "Conservative" - Scales CPU frequency based on load.  Frequency stepping is gentler.  Can cause some latency.
 	> + "Performance" - set all CPUs at full frequency regardless of load.  This can have a positive influence on performance and latency.
 	> + "Scheduled" - At start time set governor to "Performance".  At stop time set governor to "Powersave" or "On Demand" depending on driver used.
+	>
+	> You can now set the CPU governor with the rc.tweaks script.  Use the command:
+	> /usr/local/sbin/rc.tweaks set_governor 'governor'
+	> The 'governor' choices are: 'ondemand', 'performance', 'powersave', and 'conservative'.
 
 	Enable Intel Turbo Boost?
 	: <select name="TURBO_BOOST" size="1">

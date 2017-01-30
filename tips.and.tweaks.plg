@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2016.12.04">
+<!ENTITY version	"2017.01.30">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"ffea2e99572ff4b621f5870b15b49a7b">
+<!ENTITY MD5		"10c77328c2797db674f9e5da0feb28f8">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add option to rc.tweaks script to set cpu governor from a user script.  Click 'Help' and read under setting the CPU governor to see how to use the script.
+
+###2016.12.04
 - Added option to turn on/off the Intel turbo mode.
 
 ###2016.10.23
@@ -154,14 +157,16 @@ LOGSAVE="10"
 
 <!--
 The 'post-install' script.
-
 -->
 <FILE Run="/bin/bash">
 <INLINE>
+# Create a symlink to tips.and.tweaks script.
+ln -sf /usr/local/emhttp/plugins/&name;/scripts/rc.tweaks /usr/local/sbin
+
 echo ""
 echo "-----------------------------------------------------------"
 echo " Plugin &name; is installed."
-echo " Copyright 2016 Dan Landon"
+echo " Copyright 2016-2017 Dan Landon"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
@@ -181,6 +186,9 @@ rm -f /boot/config/plugins/dynamix/cpu_governor.cron
 
 # Reload dynamix crons.
 /usr/local/sbin/update_cron
+
+# Remove symlink to rc.tweaks script
+rm -f /usr/local/sbin/rc.tweaks
 
 # Remove all plugin files.
 rm -rf /boot/config/plugins/&name; 2>/dev/null
