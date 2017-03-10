@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2017.01.30">
+<!ENTITY version	"2017.03.10">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"10c77328c2797db674f9e5da0feb28f8">
+<!ENTITY MD5		"9f4a8eeccbd0f824943404a87b2bb507">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add max_user_watches setting for inotify.
+
+###2017.01.30
 - Add option to rc.tweaks script to set cpu governor from a user script.  Click 'Help' and read under setting the CPU governor to see how to use the script.
 
 ###2016.12.04
@@ -150,6 +153,7 @@ VM_DIRTY="20"
 FTP_TELNET="no"
 ARCHIVE_LOGS="no"
 LOGSAVE="10"
+MAX_WATCHES="524288"
 ]]>
 </INLINE>
 </FILE>

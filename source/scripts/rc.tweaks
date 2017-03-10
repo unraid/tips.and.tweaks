@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor|save_syslog|remove_syslog.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|save_syslog|remove_syslog.
 #
 
 apply_tweaks()
@@ -27,13 +27,23 @@ apply_tweaks()
 		fi
 		sleep 0.25
 
-		/usr/sbin/ethtool -G $nic rx $RX_BUFFER &>/dev/null 
-		/usr/sbin/ethtool -G $nic tx $TX_BUFFER &>/dev/null
+		/usr/sbin/ethtool -G $nic rx "$RX_BUFFER" &>/dev/null 
+		/usr/sbin/ethtool -G $nic tx "$TX_BUFFER" &>/dev/null
 		sleep 0.25
 	done
 
-	sysctl vm.dirty_ratio=$VM_DIRTY &>/dev/null
-	sysctl vm.dirty_background_ratio=$VM_BACKGROUND &>/dev/null
+	# Disk cache settings.
+	sysctl vm.dirty_ratio="$VM_DIRTY" &>/dev/null
+	sysctl vm.dirty_background_ratio="$VM_BACKGROUND" &>/dev/null
+
+	# Set the inotify max_user_watches.
+	if [ "$MAX_WATCHES" = "" ]; then
+		# Set the inotify max_user_watches.
+		sysctl fs.inotify.max_user_watches="524288" > /dev/null
+	else
+		# Set the inotify max_user_watches.
+		sysctl fs.inotify.max_user_watches="$MAX_WATCHES" > /dev/null
+	fi
 
 	if [ ! -z $CPU_GOVERNOR ]; then
 		if [ "$CPU_GOVERNOR" = "timed" ]; then
@@ -48,7 +58,7 @@ apply_tweaks()
 			# Remove dynamix set governor cron file.
 			rm -f /boot/config/plugins/dynamix/cpu_governor.cron
 
-			set_governor $CPU_GOVERNOR
+			set_governor "$CPU_GOVERNOR"
 
 			if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
 				if [ "$TURBO_BOOST" = "yes" ]; then
@@ -180,6 +190,10 @@ vm_dirty() {
 
 vm_background() {
 	sysctl vm.dirty_background_ratio
+}
+
+max_user_watches() {
+	sysctl fs.inotify.max_user_watches
 }
 
 cpu_freq_driver() {
@@ -337,6 +351,9 @@ case "$1" in
 	'vm_background')
 		vm_background
 	;;
+	'max_user_watches')
+		max_user_watches
+	;;
 	'cpu_freq_driver')
 		cpu_freq_driver
 	;;
@@ -353,5 +370,5 @@ case "$1" in
 		remove_syslog
 	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|cpu_freq_driver|cpu_governor|set_governor|save_syslog|remove_syslog"
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|save_syslog|remove_syslog"
 esac
