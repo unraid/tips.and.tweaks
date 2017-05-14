@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2017.03.10">
+<!ENTITY version	"2017.05.14">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"9f4a8eeccbd0f824943404a87b2bb507">
+<!ENTITY MD5		"7982b330113e37fd68d377c257f91e02">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Changed the menu tabs.
+
+###2017.03.10
 - Add max_user_watches setting for inotify.
 
 ###2017.01.30
