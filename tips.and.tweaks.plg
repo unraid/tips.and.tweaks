@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2017.05.14">
+<!ENTITY version	"2017.05.20">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"7982b330113e37fd68d377c257f91e02">
+<!ENTITY MD5		"a3509a0e3d0802868ec447cbac7d8161">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Minor adjustments to ui and small script modifications.
+
+###2017.05.14
 - Changed the menu tabs.
 
 ###2017.03.10
