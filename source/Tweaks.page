@@ -126,7 +126,7 @@ $cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 	> Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
 	> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 3%.
 
-	Max User Watches 'fs.inotify.max_user_watches':
+	Max Watches 'fs.inotify.max_user_watches':
 	: <input type="text" name="MAX_WATCHES" class="narrow" maxlength="20" value="<?=$tips_and_tweaks_cfg['MAX_WATCHES'];?>">
 
 	> If inotify fails to start because there are not enough user watches, increase the max_user_watches.
