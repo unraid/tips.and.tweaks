@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2017.06.07">
+<!ENTITY version	"2017.07.16">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"8b29a1f93c0f2c36d075236a1b130f42">
+<!ENTITY MD5		"3a2f3e13d70ea8f22cb2532ed83b4e61">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,8 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add ability to set turbo mode on 'ACPI CPU Freq' CPU Frequency Driver.
+
 2017.06.07
 - Fix text crowding on 'Tweaks' page with Azure and Gray themes.
 

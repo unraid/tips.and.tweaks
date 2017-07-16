@@ -25,6 +25,7 @@ $max_user_watches = exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_watches"
 $vm_background = exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
 $cpu_freq_driver = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
 $cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
+$cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 ?>
 
 <table class="tablesorter shift ups">
@@ -160,16 +161,15 @@ $cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 
 	Enable Intel Turbo Boost?
 	: <select name="TURBO_BOOST" size="1">
-		<?if ($cpu_freq_driver == "Intel Pstate"):?>
+		<?if ($cpu_turbo_boost == "yes"):?>
 			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "No");?>
 			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "Yes");?>
-		<?endif;?>
-		<?if ($cpu_freq_driver != "Intel Pstate"):?>
+		<?else:?>
 			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "", "", 'disabled');?>
 		<?endif;?>
 	  </select>
 
-	> Set to 'Yes' to enable the Intel Pstate driver Turbo Mode.
+	> Set to 'Yes' to enable the Intel Turbo Mode.
 
 	Time to set 'Performance':
 	: <input type="text" name="START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['START_TIME'];?>">

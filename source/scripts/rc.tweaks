@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|save_syslog|remove_syslog.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog.
 #
 
 apply_tweaks()
@@ -60,11 +60,19 @@ apply_tweaks()
 
 			set_governor "$CPU_GOVERNOR"
 
-			if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
+			if [ `turbo_mode` == "yes" ]; then
 				if [ "$TURBO_BOOST" = "yes" ]; then
-					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+					if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
+						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+					else
+						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "1" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
+					fi
 				else
-					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+					if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
+						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+					else
+						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "0" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
+					fi
 				fi
 			fi
 		fi
@@ -244,6 +252,19 @@ set_governor() {
 	done
 }
 
+turbo_mode() {
+	turbo_mode="no"
+	value=`/usr/bin/cpufreq-info -d 2>/dev/null`
+	case "$value" in
+		'acpi-cpufreq')
+			turbo_mode="yes"
+		;;
+		'intel_pstate')
+			turbo_mode="yes"
+	esac
+	echo ${turbo_mode}
+}
+
 save_syslog()
 {
 	# capture the system diagnostics
@@ -363,6 +384,9 @@ case "$1" in
 	'set_governor')
 		set_governor $2
 	;;
+	'turbo_mode')
+		turbo_mode
+	;;
 		'save_syslog')
 		save_syslog
 	;;
@@ -370,5 +394,5 @@ case "$1" in
 		remove_syslog
 	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|save_syslog|remove_syslog"
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog"
 esac
