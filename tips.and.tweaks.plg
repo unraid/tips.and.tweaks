@@ -20,7 +20,7 @@
 ###&version;
 - Add ability to set turbo mode on 'ACPI CPU Freq' CPU Frequency Driver.
 
-2017.06.07
+###2017.06.07
 - Fix text crowding on 'Tweaks' page with Azure and Gray themes.
 
 ###2017.05.20
