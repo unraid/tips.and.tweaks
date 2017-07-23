@@ -162,8 +162,8 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	Enable Intel Turbo Boost?
 	: <select name="TURBO_BOOST" size="1">
 		<?if ($cpu_turbo_boost == "yes"):?>
-			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "No");?>
 			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "Yes");?>
+			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "No");?>
 		<?else:?>
 			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "", "", 'disabled');?>
 		<?endif;?>

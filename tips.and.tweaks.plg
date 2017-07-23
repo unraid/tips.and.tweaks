@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2017.07.16">
+<!ENTITY version	"2017.07.22">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"3a2f3e13d70ea8f22cb2532ed83b4e61">
+<!ENTITY MD5		"f9c6a00427faa7a926b08cebce151e7f">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Default Turbo mode to on.
+
+###2017.07.16
 - Add ability to set turbo mode on 'ACPI CPU Freq' CPU Frequency Driver.
 
 ###2017.06.07
@@ -166,6 +169,7 @@ FTP_TELNET="no"
 ARCHIVE_LOGS="no"
 LOGSAVE="10"
 MAX_WATCHES="524288"
+TURBO_BOOST="yes"
 ]]>
 </INLINE>
 </FILE>
