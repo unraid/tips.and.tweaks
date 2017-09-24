@@ -30,7 +30,8 @@ Title="Tips"
 	<li>Apply the fix on the the <u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u> for the 'Fix SMART database update'.</li>
 	<p><u>6.2</u></p>
 	<li>None.</li>
-	<p><u>6.3</u></p>
+	<p><u>6.3 and 6.4</u></p>
 	<li>If you configure VLANs on unRAID, you should make unRAID the Master Browser.  If you don't unRAID may not detect the Master Browser for all network interfaces correctly.</li>
+	<li>Some people are reporting OOM (out of memory) errors in 6.4.  This seems to be occurring more now because of the large amounts of memory being installed in unRAID and the default disk cache settings defaulting too high.  If you are experiencing OOM errors try adjusting the Disk Cache settings on the Tweaks page.</li>
 	</strong>
 </div>
