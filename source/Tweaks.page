@@ -203,6 +203,13 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	> Set the number of syslogs to save in the archive.
 	> Set zero to save only last syslog.  Set to -1 to save all logs.  Default setting is 10.
 
+	Processes to kill when Array is Stopped:
+	: <input type="text" name="KILL" class="narrow" maxlength="30" value="<?=$tips_and_tweaks_cfg['KILL'];?>">
+
+	> Enter the names of process to kill when the array is stopped separated by commas.  For example, 'ssh' and 'bash'.  These processes can keep the array disks from unmounting.
+	>
+	> Note: Be careful with the processes you kill here.  You could lose data!
+
 	<input type="submit" name="#default" value="Default">
 	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>unRAID Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
 	</form>

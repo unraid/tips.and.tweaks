@@ -77,6 +77,17 @@ apply_tweaks()
 			fi
 		fi
 	fi
+
+	rm -f ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
+	list=($KILL)
+	for ((i=0; i<${#list[@]}; ++i)); do
+		process=${list[$i]}
+		echo "killall -eq -sSIGKILL ${process}" >> ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
+	done
+	if [ -f ${DOCROOT}/plugins/${plugin}/event/stopping_svcs ]; then
+		chmod +x ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
+	fi
+
 	IFS=$OIFS
 
 	if [ "$FTP_TELNET" = "yes" ]; then
