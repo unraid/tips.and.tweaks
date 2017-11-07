@@ -203,10 +203,10 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	> Set the number of syslogs to save in the archive.
 	> Set zero to save only last syslog.  Set to -1 to save all logs.  Default setting is 10.
 
-	Processes to kill when Array is Stopped:
+	Processes to kill before Array is Stopped:
 	: <input type="text" name="KILL" class="narrow" maxlength="30" value="<?=$tips_and_tweaks_cfg['KILL'];?>">
 
-	> Enter the names of process to kill when the array is stopped separated by commas.  For example, 'ssh' and 'bash'.  These processes can keep the array disks from unmounting.
+	> Enter the names of processes to kill before stopping the array, separated by commas.  For example, 'ssh' and 'bash'.  These processes can keep the array disks from unmounting causing unRAID to hang when the array is being stopped.
 	>
 	> Note: Be careful with the processes you kill here.  You could lose data!
 
