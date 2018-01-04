@@ -19,11 +19,9 @@ apply_tweaks()
 		sleep 0.25
 
 		if [ "$TSO_OFFLOAD" = "yes" ]; then
-			/usr/sbin/ethtool -K $nic tso off &>/dev/null
-			/usr/sbin/ethtool -K $nic gso off &>/dev/null
+			/usr/sbin/ethtool -K $nic gso off gro off tso off &>/dev/null
 		else
-			/usr/sbin/ethtool -K $nic tso on &>/dev/null
-			/usr/sbin/ethtool -K $nic gso on &>/dev/null
+			/usr/sbin/ethtool -K $nic gso on gro on tso on &>/dev/null
 		fi
 		sleep 0.25
 

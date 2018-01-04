@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2017.11.08">
+<!ENTITY version	"2018.01.04">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"e820ea31f4531270640fcee18f1419d4">
+<!ENTITY MD5		"b03e8714596c13e0b5e7cbe4234bd64d">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add gro (Generic Receive Offoad) to "Disable NIC Offload?"
+
+###2017.11.08
 - Save the kill tasks event and restore it when updating the plugin.
 
 ###2017.11.07

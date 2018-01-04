@@ -2,7 +2,7 @@ Menu="TipsAndTweaks:1"
 Title="Tips"
 ---
 <?PHP
-/* Copyright 2016-2017 Dan Landon.
+/* Copyright 2016-2018 Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -32,6 +32,6 @@ Title="Tips"
 	<li>None.</li>
 	<p><u>6.3 and 6.4</u></p>
 	<li>If you configure VLANs on unRAID, you should make unRAID the Master Browser.  If you don't unRAID may not detect the Master Browser for all network interfaces correctly.</li>
-	<li>Some people are reporting OOM (out of memory) errors in 6.4.  This seems to be occurring more now because of the large amounts of memory being installed in unRAID and the default disk cache settings defaulting too high.  If you are experiencing OOM errors try adjusting the Disk Cache settings on the Tweaks page.</li>
+	<li>Some people are reporting OOM (out of memory) errors.  This seems to be occurring more now because of the large amounts of memory being installed in unRAID and the default disk cache settings defaulting too high.  If you are experiencing OOM errors try adjusting the Disk Cache settings on the Tweaks page.</li>
 	</strong>
 </div>

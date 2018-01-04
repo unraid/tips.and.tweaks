@@ -1,6 +1,6 @@
 ### Tips and Tweaks plugin for unRAID
 
-Copyright (C) 2016-2017 Dan Landon
+Copyright (C) 2016-2018 Dan Landon
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
