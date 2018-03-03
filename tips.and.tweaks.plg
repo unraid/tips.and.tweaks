@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2018.01.04">
+<!ENTITY version	"2018.03.03">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"b03e8714596c13e0b5e7cbe4234bd64d">
+<!ENTITY MD5		"3e04179a34accf5ebdadc29546f8b6db">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add option to turn on php warnings.
+
+###2018.01.04
 - Add gro (Generic Receive Offoad) to "Disable NIC Offload?"
 
 ###2017.11.08
@@ -190,6 +193,7 @@ ARCHIVE_LOGS="no"
 LOGSAVE="10"
 MAX_WATCHES="524288"
 TURBO_BOOST="yes"
+PHP_WARNINGS="no"
 ]]>
 </INLINE>
 </FILE>
@@ -211,7 +215,7 @@ ln -sf /usr/local/emhttp/plugins/&name;/scripts/rc.tweaks /usr/local/sbin
 echo ""
 echo "-----------------------------------------------------------"
 echo " Plugin &name; is installed."
-echo " Copyright 2016-2017 Dan Landon"
+echo " Copyright 2016-2018 Dan Landon"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""

@@ -102,6 +102,14 @@ apply_tweaks()
 	# Reload dynamix crons.
 	/usr/local/sbin/update_cron
 
+	sed -i "s|\;error_reporting = |error_reporting = |" /etc/php/php.ini
+	if [ "$PHP_WARNINGS" = "yes" ]; then
+		sed -i "s|error_reporting = |\;error_reporting = |" /etc/php/php.ini
+	fi
+	echo "/etc/rc.d/rc.php-fpm reload 2>/dev/null" > /tmp/php.reload
+	chmod +x /tmp/php.reload
+	at -M -f /tmp/php.reload now 2>/dev/null
+
 	logger "Tweaks Applied" -t$PROG_NAME
 }
 
