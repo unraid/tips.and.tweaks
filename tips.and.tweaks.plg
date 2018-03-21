@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2018.03.03">
+<!ENTITY version	"2018.03.21">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"3e04179a34accf5ebdadc29546f8b6db">
+<!ENTITY MD5		"f0269b099f1f923e796319ef5900930a">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Update unRAID version check.
+
+###2018.03.03
 - Add option to turn on php warnings.
 
 ###2018.01.04
@@ -126,21 +129,36 @@
 </CHANGES>
 
 <!--
-Copyright 2016, Dan Landon
+Copyright 2016-2018, Dan Landon
 This plugin lets you set certain settings to adjust Linux and unRAID for better performance.
 -->
+
+<!-- The 'version-check' script. -->
+<FILE Run="/usr/bin/php">
+<INLINE>
+<![CDATA[
+<?
+  $version = parse_ini_file("/etc/unraid-version");
+  
+  if ( version_compare($version['version'],"6.0", "<") )
+  {
+    echo "*********************************************************\n";
+    echo "\n";
+    echo "Open Files Requires unRAID version 6.0 or greater to run.\n";
+    echo "\n";
+    echo "*********************************************************\n";
+    exit(1);
+  }
+?>
+]]>
+</INLINE>
+</FILE>
 
 <!--
 The 'pre-install' script.
 -->
 <FILE Run="/bin/bash">
 <INLINE>
-source /etc/unraid-version
-if [[ ${version:0:3} == 6.0 ]]; then
-  echo "unRAID version 6.1 or higher is required"
-  exit 1
-fi
-
 # Save a copy of the kill tasks event if we are updating the plugin.
 if [ -f /usr/local/emhttp/plugins/&name;/event/stopping_svcs ]; then
 	mv /usr/local/emhttp/plugins/&name;/event/stopping_svcs /tmp/
@@ -214,8 +232,8 @@ ln -sf /usr/local/emhttp/plugins/&name;/scripts/rc.tweaks /usr/local/sbin
 
 echo ""
 echo "-----------------------------------------------------------"
-echo " Plugin &name; is installed."
-echo " Copyright 2016-2018 Dan Landon"
+echo " &name; is installed."
+echo " Copyright 2016-2018 &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
@@ -245,7 +263,7 @@ rm -rf /usr/local/emhttp/plugins/&name; 2>/dev/null
 
 echo ""
 echo "-----------------------------------------------------------"
-echo " Plugin &name; has been removed."
+echo " &name; has been removed."
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
