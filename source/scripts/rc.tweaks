@@ -88,8 +88,8 @@ apply_tweaks()
 
 	IFS=$OIFS
 
-	if [ "$FTP_TELNET" = "yes" ]; then
-		sed -i -e 's/^telnet/#telnet/;s/^ftp/#ftp/' /etc/inetd.conf
+	if [ "$FTP" = "yes" ]; then
+		sed -i -e 's/^ftp/#ftp/' /etc/inetd.conf
 		/etc/rc.d/rc.inetd restart
 	fi
 

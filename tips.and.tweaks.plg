@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2018.04.23">
+<!ENTITY version	"2018.04.28">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"b2588a7c3c086f52a200aaabc3e7ab0e">
+<!ENTITY MD5		"2526ab883ecba1415a14bcbb099568a3">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Remove disable telnet.  This can now be managed in unRAID - Settings->Identification->Management Access.
+
+###2018.04.23
 - Remove all tips for V6 versions less than 6.4.
 - Minimum unRAID version is now 6.4.
 

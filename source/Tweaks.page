@@ -181,13 +181,13 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 
 	> Enter the time you want to set the governor to "Power Save" for Intel Pstate or "On Demand" in 24 hour format hh:mm.
 
-	Disable FTP Server & Telnet?
-	: <select name="FTP_TELNET" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['FTP_TELNET'], "no", "No");?>
-		<?=mk_option($tips_and_tweaks_cfg['FTP_TELNET'], "yes", "Yes");?>
+	Disable FTP Server?
+	: <select name="FTP" size="1">
+		<?=mk_option($tips_and_tweaks_cfg['FTP'], "no", "No");?>
+		<?=mk_option($tips_and_tweaks_cfg['FTP'], "yes", "Yes");?>
 	  </select>
 
-	> Set to 'Yes' to disable the FTP Server and Telnet.  You will have to reboot to enable them again once you select 'No'.
+	> Set to 'Yes' to disable the FTP Server.  You will have to reboot to enable it again once you select 'No'.
 
 	Enable syslog Archiving?
 	: <select name="ARCHIVE_LOGS" size="1">
