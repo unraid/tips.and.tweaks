@@ -35,7 +35,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 <div style="width: 90%; float:left">
 	<strong><p>The first thing you should do is to install the "Fix Common Problems" plugin to find and fix
 	common problems.  Correct any problems that are identified before doing any 'tweaking'.  You may actually cause
-	more problems than you solve if there are problems with your unRAID configuration.</p>
+	more problems than you solve if there are problems with your Unraid configuration.</p>
 	<p>Make one change at a time and verify if it improves your situation.  Make changes slowly.  Making changes here can briefly interrupt your network operation.  Some of the settings will consume RAM and may end up causing Linux to terminate some processes to free up RAM.</p>
 	<p>Click on 'Help' for more information.</p></strong>
 </div>
@@ -50,7 +50,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	>
 	> + Use of a static IP address can help in certain cases.  NFS shares are referenced by IP address.  Be sure you reserve the IP address on your router, or set a very high IP address to prevent conflicts.
 	> + Use of Jumbo Frames is discouraged.  Jumbo Frames have been known to cause issues with some Dockers.
-	> + Don't set vm.dirty.ratio above 20% unless you have a UPS backup for your unRAID.  You may lose data that has not been written to disk on a power failure.
+	> + Don't set vm.dirty.ratio above 20% unless you have a UPS backup for your Unraid.  You may lose data that has not been written to disk on a power failure.
 	> + A value of vm.dirty_background_ratio over 1/2 of vm.dirty_ratio is not recommended unless using single digits for both values.
 
 	Disable NIC Flow Control?
@@ -113,7 +113,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	<strong>Don't change the Disk Cache settings until you read and understand this <u><a href='https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/', target='_blank'>Guide</a></u>.</strong>
 	> For streaming and gaming VMs, set the values low in the single digits.  Recommended values are: vm.dirty_background_ratio=2% and vm.dirty_ratio=3%.
 	> If you have large amounts of RAM, smaller is better.
-	> Caution: Don't increase these values beyond the default settings unless you have a UPS that will reliably shut down unRAID.
+	> Caution: Don't increase these values beyond the default settings unless you have a UPS that will reliably shut down Unraid.
 
 	Disk Cache 'vm.dirty_background_ratio' (%):
 	: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>">
@@ -206,7 +206,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	Processes to kill before Array is Stopped:
 	: <input type="text" name="KILL" class="narrow" maxlength="30" value="<?=$tips_and_tweaks_cfg['KILL'];?>">
 
-	> Enter the names of processes to kill before stopping the array, separated by commas.  For example, 'ssh' and 'bash'.  These processes can keep the array disks from unmounting causing unRAID to hang when the array is being stopped.
+	> Enter the names of processes to kill before stopping the array, separated by commas.  For example, 'ssh' and 'bash'.  These processes can keep the array disks from unmounting causing Unraid to hang when the array is being stopped.
 	>
 	> Note: Be careful with the processes you kill here.  You could lose data!
 
@@ -219,7 +219,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	> Set to 'Yes' to turn on php warnings.  This is intended for development purposes at this time.
 
 	<input type="submit" name="#default" value="Default">
-	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>unRAID Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
+	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>Unraid Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
 	</form>
 </div>
 

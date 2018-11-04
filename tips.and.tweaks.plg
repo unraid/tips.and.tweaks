@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2018.04.28">
+<!ENTITY version	"2018.11.04">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"2526ab883ecba1415a14bcbb099568a3">
+<!ENTITY MD5		"4df4a0ea780060ab5246dcdd9f5f37c5">
 ]>
 
 <PLUGIN  name="&name;"
@@ -18,14 +18,17 @@
 <CHANGES>
 ##&name;
 ###&version;
-- Remove disable telnet.  This can now be managed in unRAID - Settings->Identification->Management Access.
+- Fix Unraid capitalization.
+
+###2018.04.28
+- Remove disable telnet.  This can now be managed in Unraid - Settings->Identification->Management Access.
 
 ###2018.04.23
 - Remove all tips for V6 versions less than 6.4.
-- Minimum unRAID version is now 6.4.
+- Minimum Unraid version is now 6.4.
 
 ###2018.03.21
-- Update unRAID version check.
+- Update Unraid version check.
 
 ###2018.03.03
 - Add option to turn on php warnings.
@@ -43,7 +46,7 @@
 - Add the ability to kill tasks when the array is stopped.
 
 ###2017.09.24
-- Additional tips and help modificatins for unRAID 6.4.
+- Additional tips and help modificatins for Unraid 6.4.
 
 ###2017.07.22
 - Default Turbo mode to on.
@@ -73,7 +76,7 @@
 - Changed absolute path using $docroot in preparation for moving from emhttp.
 
 ###2016.10.22b
-- Updates for compatibility with unRAID 6.2 and later.
+- Updates for compatibility with Unraid 6.2 and later.
 
 ###2016.10.21
 - Added feature to capture and archive syslogs and diagnostics when shutting down.
@@ -85,7 +88,7 @@
 - Removed powerdown enhancement.  Removed 6.2 beta and RC notes.
 
 ###2016.09.22
-- Powerdown enhancements - Add in new powerdown script for users that have changed their emhttp port.  The powerdown enhancements option will be removed on the next release of unRAID.
+- Powerdown enhancements - Add in new powerdown script for users that have changed their emhttp port.  The powerdown enhancements option will be removed on the next release of Unraid.
 - Fixed license and copyrights.
 
 ###2016.09.16
@@ -116,7 +119,7 @@
 - Add: Ability to change the cpu frequency governor.  Options are power saving (on demand) setting or performance setting.  Not sure this will survive in the plugin as I am questioning the value of the feature.
 
 ###2016.05.22a
-- Add: Tips page that shows current unRAID issues and suggested work arounds.
+- Add: Tips page that shows current Unraid issues and suggested work arounds.
 
 ###2016.05.22
 - Fix: Lots of help adjustments.
@@ -132,12 +135,12 @@
 - Add: Lots of help text.
 
 ###2016.05.19a
-- Initial unRAID V6.0 release.
+- Initial Unraid V6.0 release.
 </CHANGES>
 
 <!--
 Copyright 2016-2018, Dan Landon
-This plugin lets you set certain settings to adjust Linux and unRAID for better performance.
+This plugin lets you set certain settings to adjust Linux and Unraid for better performance.
 -->
 
 <!-- The 'version-check' script. -->
@@ -145,13 +148,13 @@ This plugin lets you set certain settings to adjust Linux and unRAID for better 
 <INLINE>
 <![CDATA[
 <?
-  $version = parse_ini_file("/etc/unraid-version");
+  $version = parse_ini_file("/etc/Unraid-version");
   
   if ( version_compare($version['version'],"6.4", "<") )
   {
     echo "*********************************************************\n";
     echo "\n";
-    echo "Open Files Requires unRAID version 6.4 or greater to run.\n";
+    echo "Open Files Requires Unraid version 6.4 or greater to run.\n";
     echo "\n";
     echo "*********************************************************\n";
     exit(1);
