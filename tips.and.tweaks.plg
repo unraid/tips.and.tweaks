@@ -152,11 +152,11 @@ This plugin lets you set certain settings to adjust Linux and Unraid for better 
   
   if ( version_compare($version['version'],"6.4", "<") )
   {
-    echo "*********************************************************\n";
+    echo "**************************************************************\n";
     echo "\n";
-    echo "Open Files Requires Unraid version 6.4 or greater to run.\n";
+    echo "Tips and Tweaks Requires Unraid version 6.4 or greater to run.\n";
     echo "\n";
-    echo "*********************************************************\n";
+    echo "**************************************************************\n";
     exit(1);
   }
 ?>
