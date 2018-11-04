@@ -148,7 +148,7 @@ This plugin lets you set certain settings to adjust Linux and Unraid for better 
 <INLINE>
 <![CDATA[
 <?
-  $version = parse_ini_file("/etc/unRAID-version");
+  $version = parse_ini_file("/etc/unraid-version");
   
   if ( version_compare($version['version'],"6.4", "<") )
   {
