@@ -3,21 +3,29 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2018.11.04">
+<!ENTITY version	"2019.01.14">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
-<!ENTITY MD5		"4df4a0ea780060ab5246dcdd9f5f37c5">
+<!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
+<!ENTITY MD5		"f61242787660b7f472544663190fb263">
 ]>
 
-<PLUGIN  name="&name;"
-         author="&author;"
-         version="&version;"
-         launch="&launch;"
-         pluginURL="&pluginURL;">
+<PLUGIN	name="&name;"
+		author="&author;"
+		version="&version;"
+		launch="&launch;"
+		pluginURL="&pluginURL;"
+		support="&supportURL;"
+		icon="gear"
+		min="6.4.0">
 
 <CHANGES>
 ##&name;
 ###&version;
+- Fix Help on Tweaks page.
+- Change icons for v6.
+
+###2018.11.04
 - Fix Unraid capitalization.
 
 ###2018.04.28
@@ -143,27 +151,6 @@ Copyright 2016-2018, Dan Landon
 This plugin lets you set certain settings to adjust Linux and Unraid for better performance.
 -->
 
-<!-- The 'version-check' script. -->
-<FILE Run="/usr/bin/php">
-<INLINE>
-<![CDATA[
-<?
-  $version = parse_ini_file("/etc/unraid-version");
-  
-  if ( version_compare($version['version'],"6.4", "<") )
-  {
-    echo "**************************************************************\n";
-    echo "\n";
-    echo "Tips and Tweaks Requires Unraid version 6.4 or greater to run.\n";
-    echo "\n";
-    echo "**************************************************************\n";
-    exit(1);
-  }
-?>
-]]>
-</INLINE>
-</FILE>
-
 <!--
 The 'pre-install' script.
 -->
@@ -243,7 +230,7 @@ ln -sf /usr/local/emhttp/plugins/&name;/scripts/rc.tweaks /usr/local/sbin
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; is installed."
-echo " Copyright 2016-2018 &author;"
+echo " Copyright 2016-2019 &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
