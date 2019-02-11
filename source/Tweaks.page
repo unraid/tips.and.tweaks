@@ -33,11 +33,11 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 </table>
 
 <div style="width: 90%; float:left">
-	<strong><p>The first thing you should do is to install the "Fix Common Problems" plugin to find and fix
+	<p>The first thing you should do is to install the "Fix Common Problems" plugin to find and fix
 	common problems.  Correct any problems that are identified before doing any 'tweaking'.  You may actually cause
 	more problems than you solve if there are problems with your Unraid configuration.</p>
 	<p>Make one change at a time and verify if it improves your situation.  Make changes slowly.  Making changes here can briefly interrupt your network operation.  Some of the settings will consume RAM and may end up causing Linux to terminate some processes to free up RAM.</p>
-	<p>Click on 'Help' for more information.</p></strong>
+	<p>Click on 'Help' for more information.</p>
 </div>
 
 <div style="width: 75%; float:left">
@@ -110,7 +110,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	> List the NICs to apply the above settings separated by commas.  If you have multiple NICs that are bonded, be sure to include all of them.  Flow Control, TSO, and NIC buffer settings will
 	> be applied to these NICs.
 
-	<strong>Don't change the Disk Cache settings until you read and understand this <u><a href='https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/', target='_blank'>Guide</a></u>.</strong>
+	Don't change the Disk Cache settings until you read and understand this <u><a href='https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/', target='_blank'>Guide</a></u>.
 
 	Disk Cache 'vm.dirty_background_ratio' (%):
 	: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>">
@@ -211,14 +211,6 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	>
 	> Note: Be careful with the processes you kill here.  You could lose data!
 
-	Turn on PHP warnings?
-	: <select name="PHP_WARNINGS" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['PHP_WARNINGS'], "no", "No");?>
-		<?=mk_option($tips_and_tweaks_cfg['PHP_WARNINGS'], "yes", "Yes");?>
-	  </select>
-
-	> Set to 'Yes' to turn on php warnings.  This is intended for development purposes at this time.
-
 	<input type="submit" name="#default" value="Default">
 	: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()"><u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>Unraid Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
 	</form>
@@ -226,7 +218,6 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 
 <div>
 	<div style="width: 25%; float:right">
-		<strong>
 		<p><u>Current NIC settings</u></p>
 		<p>Flow Control: <?=$flow_control?></p>
 		<p>NIC Offload: <?=$tso_offload?></p>
@@ -241,6 +232,5 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 		<p><u>CPU Frequency Scaling</u></p>
 		<p>Driver: <?=$cpu_freq_driver?></p>
 		<p>Governor: <?=$cpu_governor?></p>
-		</strong>
 	</div>
 </div>

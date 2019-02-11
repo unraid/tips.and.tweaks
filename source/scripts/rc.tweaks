@@ -90,7 +90,7 @@ apply_tweaks()
 
 	if [ "$FTP" = "yes" ]; then
 		sed -i -e 's/^ftp/#ftp/' /etc/inetd.conf
-		/etc/rc.d/rc.inetd restart
+		/etc/rc.d/rc.inetd restart &>/dev/null
 	fi
 
 	remove_syslog
@@ -101,14 +101,6 @@ apply_tweaks()
 
 	# Reload dynamix crons.
 	/usr/local/sbin/update_cron
-
-	sed -i "s|\;error_reporting = |error_reporting = |" /etc/php/php.ini
-	if [ "$PHP_WARNINGS" = "yes" ]; then
-		sed -i "s|error_reporting = |\;error_reporting = |" /etc/php/php.ini
-	fi
-	echo "/etc/rc.d/rc.php-fpm reload 2>/dev/null" > /tmp/php.reload
-	chmod +x /tmp/php.reload
-	at -M -f /tmp/php.reload now 2>/dev/null
 
 	logger "Tweaks Applied" -t$PROG_NAME
 }
@@ -194,7 +186,7 @@ tx_buffer() {
 	list=($ETHERNET_NICS)
 	for ((i=0; i<${#list[@]}; ++i)); do
 		nic=${list[$i]}
-		value=`/usr/sbin/ethtool -g $nic 2>/dev/null | grep -i 'TX:' 2</dev/null | tr -d '\n' | /bin/awk '{print $3}'`
+		value=`/usr/sbin/ethtool -g $nic 2>/dev/null | grep -i 'TX:' | tr -d '\n' | /bin/awk '{print $3}'`
 		if [ $value > $tx ]; then
 			tx=$value
 			avail="yes"
