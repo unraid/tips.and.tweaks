@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2019.02.11">
+<!ENTITY version	"2019.02.16">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"d04166a5ef96f0dae8cc8d44388bad17">
+<!ENTITY MD5		"ebae8d287ce4e03814fa561d3b689f14">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Additional tips text about the Syslog Server feature of Unraid 6.7.
+
+###2019.02.11
 - Fix: Changed all bold text to normal text.
 - Fix: Removed the PHP Warnings setting.  It no longer applies.
 
