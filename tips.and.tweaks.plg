@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2019.02.16">
+<!ENTITY version	"2019.03.29">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"ebae8d287ce4e03814fa561d3b689f14">
+<!ENTITY MD5		"acb1085f8861da1d898e026c701536eb">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Add 4096 as a selection to the NIC Rx and Tx buffer sizes.
+
+###2019.02.16
 - Add: Additional tips text about the Syslog Server feature of Unraid 6.7.
 
 ###2019.02.11
