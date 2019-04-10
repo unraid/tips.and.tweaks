@@ -19,15 +19,9 @@ apply_tweaks()
 		sleep 0.25
 
 		if [ "$TSO_OFFLOAD" = "yes" ]; then
-			TOE_OPTIONS="tso ufo gso gro lro"
-			for TOE_OPTION in $TOE_OPTIONS; do
-				/sbin/ethtool -K $nic $TOE_OPTION off &>/dev/null || true
-			done
+			/usr/sbin/ethtool -K $nic tso off ufo off gso off gro off lro off &>/dev/null
 		else
-			TOE_OPTIONS="tso ufo gso gro lro"
-			for TOE_OPTION in $TOE_OPTIONS; do
-				/sbin/ethtool -K $nic $TOE_OPTION on &>/dev/null || true
-			done
+			/usr/sbin/ethtool -K $nic tso on ufo on gso on gro on lro on &>/dev/null
 		fi
 		sleep 0.25
 
