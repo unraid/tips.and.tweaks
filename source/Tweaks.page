@@ -71,10 +71,10 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "yes", "Yes");?>
 	  </select>
 
-	> Set to 'Yes' to disable NIC TSO.  TSO (Transmit Segment Offload) was developed to offload some
-	> network processing to the NIC and off the main CPU.  This was intended to save some CPU processing
-	> load.  TSO has been known to cause network issues in certain circumstances.  It is recommended to
-	> disable NIC Offload.
+	> Set to 'Yes' to disable NIC offloads.  Offloads were developed to offload some network processing
+	> to the NIC and off the main CPU and deal with large packets.  This was intended to save some CPU processing
+	> load and increase network throughput.  TSO offload has been known to cause network issues in certain circumstances.
+	> It is recommended to disable NIC Offloads.
 
 	Ethernet NIC Rx Buffer:
 	: <select name="RX_BUFFER" size="1">
