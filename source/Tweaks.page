@@ -162,7 +162,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	> /usr/local/sbin/rc.tweaks set_governor 'governor'
 	> The 'governor' choices are: 'ondemand', 'performance', 'powersave', and 'conservative'.
 
-	Enable Intel Turbo Boost?
+	Enable Intel Turbo/AMD Performance Boost?
 	: <select name="TURBO_BOOST" size="1">
 		<?if ($cpu_turbo_boost == "yes"):?>
 			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "Yes");?>
@@ -172,7 +172,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 		<?endif;?>
 	  </select>
 
-	> Set to 'Yes' to enable the Intel Turbo Mode.
+	> Set to 'Yes' to enable the Intel Turbo or AMD Performance Boost Mode.
 
 	Time to set 'Performance':
 	: <input type="text" name="START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['START_TIME'];?>">

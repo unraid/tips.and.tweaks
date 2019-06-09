@@ -19,9 +19,9 @@ apply_tweaks()
 		sleep 0.25
 
 		if [ "$TSO_OFFLOAD" = "yes" ]; then
-			/usr/sbin/ethtool -K $nic tso off ufo off gso off gro off lro off &>/dev/null
+			/usr/sbin/ethtool -K $nic rx off tx off sg off tso off ufo off gso off gro off lro off rxvlan off txvlan off rxhash off &>/dev/null
 		else
-			/usr/sbin/ethtool -K $nic tso on ufo on gso on gro on lro on &>/dev/null
+			/usr/sbin/ethtool -K $nic rx on tx on sg on tso on ufo on gso on gro on lro on rxvlan on txvlan on rxhash on &>/dev/null
 		fi
 		sleep 0.25
 
