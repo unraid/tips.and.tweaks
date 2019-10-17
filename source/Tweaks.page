@@ -63,7 +63,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	> networks with mixed speed devices.  It doesn't seem to be as necessary on today's networks.  If you
 	> have a managed switch, flow control can generally be turned on and off on the switch.  If you have
 	> a consumer grade switch, you won't have that level of control.  Flow Control has been known to create
-	> network issues in certain circumstances.  It is recommended to disable Flow Control.
+	> network issues in certain circumstances.  It is recommended to disable Flow Control if you experience network issues.
 
 	Disable NIC Offload?
 	: <select name="TSO_OFFLOAD" size="1">
@@ -74,7 +74,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	> Set to 'Yes' to disable NIC offloads.  Offloads were developed to offload some network processing
 	> to the NIC and off the main CPU and deal with large packets.  This was intended to save some CPU processing
 	> load and increase network throughput.  TSO offload has been known to cause network issues in certain circumstances.
-	> It is recommended to disable NIC Offloads.
+	> It is recommended to disable NIC Offloads if you experience network issues.
 
 	Ethernet NIC Rx Buffer:
 	: <select name="RX_BUFFER" size="1">

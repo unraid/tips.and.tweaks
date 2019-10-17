@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2019.06.09">
+<!ENTITY version	"2019.10.17">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"db22c0ee00d647ade808db949eeaa393">
+<!ENTITY MD5		"73af019b7c37a13880119068f8e9fb8b">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,7 +22,10 @@
 <CHANGES>
 ##&name;
 ###&version;
-- FIx: Change wording on turbo boost setting to include AMD performance boost.
+- Fix: Revert offloads to gso, gro, and tso.
+
+###2019.06.09
+- Fix: Change wording on turbo boost setting to include AMD performance boost.
 
 ###2019.04.10a
 - Fix: Modificatons to NIC offload.
