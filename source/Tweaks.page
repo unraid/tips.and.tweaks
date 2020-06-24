@@ -41,14 +41,20 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 </table>
 
 <div style="width: 90%; float:left">
-	<p>_(The first thing you should do is to install the 'Fix Common Problems' plugin to find and fix common problems)_.
+	<p>
+	_(The first thing you should do is to install the 'Fix Common Problems' plugin to find and fix common problems)_.
 	_(Correct any problems that are identified before doing any 'tweaking')_.
-	_(You may actually cause more problems than you solve if there are problems with your Unraid configuration)_.</p>
-	<p>_(Make one change at a time and verify if it improves your situation)_.
+	_(You may actually cause more problems than you solve if there are problems with your Unraid configuration)_.
+	</p>
+	<p>
+	_(Make one change at a time and verify if it improves your situation)_.
 	_(Make changes slowly)_.
 	_(Making changes here can briefly interrupt your network operation)_.
-	_(Some of the settings will consume RAM and may end up causing Linux to terminate some processes to free up RAM)_.</p>
-	<p>_(Click on 'Help' for more information)_.</p>
+	_(Some of the settings will consume RAM and may end up causing Linux to terminate some processes to free up RAM)_.
+	</p>
+	<p>
+	_(Click on 'Help' for more information)_.
+	</p>
 </div>
 
 <div style="width: 75%; float:left">
@@ -68,8 +74,8 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 
 	_(Disable NIC Flow Control)_?
 	: <select name="FLOW_CONTROL" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "no", _(No)_);?>
-		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "yes", _(Yes)_);?>
+		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "no", "_(No)_");?>
+		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "yes", "_(Yes)_");?>
 	  </select>
 
 :tips_tweaks_nic_flow_control_plug:
@@ -82,8 +88,8 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 
 	_(Disable NIC Offload)_?
 	: <select name="TSO_OFFLOAD" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "no", _(No)_);?>
-		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "yes", _(Yes)_);?>
+		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "no", "_(No)_");?>
+		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "yes", "_(Yes)_");?>
 	  </select>
 
 :tips_tweaks_nic_offload_plug:
@@ -196,8 +202,8 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	_(Enable Intel Turbo/AMD Performance Boost)_?
 	: <select name="TURBO_BOOST" size="1">
 		<?if ($cpu_turbo_boost == "yes"):?>
-			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", _(Yes)_);?>
-			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", _(No)_);?>
+			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "_(Yes)_");?>
+			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "_(No)_");?>
 		<?else:?>
 			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "", "", 'disabled');?>
 		<?endif;?>
@@ -223,8 +229,8 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 
 	_(Disable FTP Server)_?
 	: <select name="FTP" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['FTP'], "no", "No");?>
-		<?=mk_option($tips_and_tweaks_cfg['FTP'], "yes", "Yes");?>
+		<?=mk_option($tips_and_tweaks_cfg['FTP'], "no", "_(No)_");?>
+		<?=mk_option($tips_and_tweaks_cfg['FTP'], "yes", "_(Yes)_");?>
 	  </select>
 
 :tips_tweaks_ftp_plug:
@@ -233,8 +239,8 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 
 	_(Enable syslog Archiving)_?
 	: <select name="ARCHIVE_LOGS" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "no", _(No)_);?>
-		<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "yes", _(Yes)_);?>
+		<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "no", "_(No)_");?>
+		<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "yes", "_(Yes)_");?>
 	  </select>
 
 :tips_tweaks_syslog_archive_plug:
