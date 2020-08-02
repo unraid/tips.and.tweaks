@@ -144,7 +144,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	_(Don't change the Disk Cache settings until you read and understand this)_ <u><a href='https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/', target='_blank'>_(Guide)_</a></u>.
 
 	_(Disk Cache)_ 'vm.dirty_background_ratio' (%):
-	: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>">
+	: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>" placeholder="10">
 
 :tips_tweaks_dirty_background_plug:
 	> For streaming and gaming VMs, set the values low in the single digits.  Recommended values are: vm.dirty_background_ratio=2% and vm.dirty_ratio=3%.
@@ -156,7 +156,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 :end
 
 	_(Disk Cache)_ 'vm.dirty_ratio' (%):
-	: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>">
+	: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>" placeholder="20">
 
 :tips_tweaks_dirty_ratio_plug:
 	> Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
@@ -164,7 +164,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 :end
 
 	_(Max Watches)_ 'fs.inotify.max_user_watches':
-	: <input type="text" name="MAX_WATCHES" class="narrow" maxlength="20" value="<?=$tips_and_tweaks_cfg['MAX_WATCHES'];?>">
+	: <input type="text" name="MAX_WATCHES" class="narrow" maxlength="20" value="<?=$tips_and_tweaks_cfg['MAX_WATCHES'];?>" placeholder="524288">
 
 :tips_tweaks_max_watches_plug:
 	> If inotify fails to start because there are not enough user watches, increase the max_user_watches.
@@ -248,7 +248,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 :end
 
 	_(Number of syslogs to Archive)_:
-	: <input type="text" name="LOGSAVE" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['LOGSAVE'];?>">
+	: <input type="text" name="LOGSAVE" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['LOGSAVE'];?>" placeholder="10">
 
 :tips_tweaks_number_syslogs_plug:
 	> Set the number of syslogs to save in the archive.

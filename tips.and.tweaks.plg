@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2020.06.24">
+<!ENTITY version	"2020.08.02">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"a4625fa3ddf0b14033d77b6ba6259166">
+<!ENTITY MD5		"c8f9c67a93c45308a164f3b40e727b8a">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Settings placeholder for selected settings.
+
+###2020.06.24
 - Add: Multi Language support.
 
 ###2019.10.17
@@ -220,17 +223,20 @@ chmod 755 -R /usr/local/emhttp/plugins/&name; 2>/dev/null
 <![CDATA[
 FLOW_CONTROL="no"
 TSO_OFFLOAD="no"
-ETHERNET_NICS="eth0"
 RX_BUFFER="256"
 TX_BUFFER="256"
-VM_BACKGROUND="10"
-VM_DIRTY="20"
-FTP_TELNET="no"
-ARCHIVE_LOGS="no"
-LOGSAVE="10"
-MAX_WATCHES="524288"
+ETHERNET_NICS="eth0"
+VM_BACKGROUND=""
+VM_DIRTY=""
+MAX_WATCHES=""
+CPU_GOVERNOR=""
 TURBO_BOOST="yes"
-PHP_WARNINGS="no"
+START_TIME=""
+STOP_TIME=""
+FTP="yes"
+ARCHIVE_LOGS="no"
+LOGSAVE=""
+KILL="ssh,bash"
 ]]>
 </INLINE>
 </FILE>

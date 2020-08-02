@@ -31,8 +31,16 @@ apply_tweaks()
 	done
 
 	# Disk cache settings.
-	sysctl -qw vm.dirty_ratio="$VM_DIRTY" &>/dev/null
-	sysctl -qw vm.dirty_background_ratio="$VM_BACKGROUND" &>/dev/null
+	if [ "$VM_DIRTY" = "" ]; then
+		sysctl -qw vm.dirty_ratio="20" &>/dev/null
+	else
+		sysctl -qw vm.dirty_ratio="$VM_DIRTY" &>/dev/null
+	fi
+	if [ "$VM_BACKGROUND" = "" ];then
+		sysctl -qw vm.dirty_background_ratio="10" &>/dev/null
+	else
+		sysctl -qw vm.dirty_background_ratio="$VM_BACKGROUND" &>/dev/null
+	fi
 
 	# Set the inotify max_user_watches.
 	if [ "$MAX_WATCHES" = "" ]; then
