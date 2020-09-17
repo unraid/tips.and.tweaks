@@ -11,22 +11,30 @@ apply_tweaks()
 	for ((i=0; i<${#list[@]}; ++i)); do
 		nic=${list[$i]}
 
-		if [ "$FLOW_CONTROL" = "yes" ]; then
-			/usr/sbin/ethtool -A $nic autoneg off rx off tx off &>/dev/null
-		else
-			/usr/sbin/ethtool -A $nic autoneg on rx on tx on &>/dev/null
+		if [ "$FLOW_CONTROL" != "default" ]; then
+			if [ "$FLOW_CONTROL" = "yes" ]; then
+				/usr/sbin/ethtool -A $nic autoneg off rx off tx off &>/dev/null
+			else
+				/usr/sbin/ethtool -A $nic autoneg on rx on tx on &>/dev/null
+			fi
+			sleep 0.25
 		fi
-		sleep 0.25
 
-		if [ "$TSO_OFFLOAD" = "yes" ]; then
-			/usr/sbin/ethtool -K $nic gso off gro off tso off &>/dev/null
-		else
-			/usr/sbin/ethtool -K $nic gso on gro on tso on &>/dev/null
+		if [ "$TSO_OFFLOAD" != "default" ]; then
+			if [ "$TSO_OFFLOAD" = "yes" ]; then
+				/usr/sbin/ethtool -K $nic gso off gro off tso off &>/dev/null
+			else
+				/usr/sbin/ethtool -K $nic gso on gro on tso on &>/dev/null
+			fi
+			sleep 0.25
 		fi
-		sleep 0.25
 
-		/usr/sbin/ethtool -G $nic rx "$RX_BUFFER" &>/dev/null 
-		/usr/sbin/ethtool -G $nic tx "$TX_BUFFER" &>/dev/null
+		if [ "$RX_BUFFER" != "default" ]; then
+			/usr/sbin/ethtool -G $nic rx "$RX_BUFFER" &>/dev/null 
+		fi
+		if [ "$TX_BUFFER" != "default" ]; then
+			/usr/sbin/ethtool -G $nic tx "$TX_BUFFER" &>/dev/null
+		fi
 		sleep 0.25
 	done
 

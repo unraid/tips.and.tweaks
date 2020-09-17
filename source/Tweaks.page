@@ -74,6 +74,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 
 	_(Disable NIC Flow Control)_?
 	: <select name="FLOW_CONTROL" size="1">
+		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "default", "_(Default)_");?>
 		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "no", "_(No)_");?>
 		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "yes", "_(Yes)_");?>
 	  </select>
@@ -84,10 +85,12 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	> have a managed switch, flow control can generally be turned on and off on the switch.  If you have
 	> a consumer grade switch, you won't have that level of control.  Flow Control has been known to create
 	> network issues in certain circumstances.  It is recommended to disable Flow Control if you experience network issues.
+	> Changing from any setting to 'Default' requires a reboot.
 :end
 
 	_(Disable NIC Offload)_?
 	: <select name="TSO_OFFLOAD" size="1">
+		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "default", "_(Default)_");?>
 		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "no", "_(No)_");?>
 		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "yes", "_(Yes)_");?>
 	  </select>
@@ -97,10 +100,12 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 	> to the NIC and off the main CPU and deal with large packets.  This was intended to save some CPU processing
 	> load and increase network throughput.  TSO offload has been known to cause network issues in certain circumstances.
 	> It is recommended to disable NIC Offloads if you experience network issues.
+	> Changing from any setting to 'Default' requires a reboot.
 :end
 
 	_(Ethernet NIC Rx Buffer)_:
 	: <select name="RX_BUFFER" size="1">
+		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "default", "_(Default)_");?>
 		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "256", "256");?>
 		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "512", "512");?>
 		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "768", "768");?>
@@ -114,10 +119,12 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 
 :tips_tweaks_rx_buffer_plug:
 	> Select the size of the NIC Rx ring buffer.  Some NICs have a limit on the size of the Rx ring buffer.  The default value of 256 is recommended.
+	> Changing from any setting to 'Default' requires a reboot.
 :end
 
 	_(Ethernet NIC Tx Buffer)_:
 	: <select name="TX_BUFFER" size="1">
+		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "default", "_(Default)_");?>
 		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "256", "256");?>
 		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "512", "512");?>
 		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "768", "768");?>
@@ -131,6 +138,7 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 
 :tips_tweaks_tx_buffer_plug:
 	> Select the size of the NIC Tx ring buffer.  Some NICs have a limit on the size of the Tx ring buffer.  The default value of 256 is recommended.
+	> Changing from any setting to 'Default' requires a reboot.
 :end
 
 	_(Ethernet NICS)_:

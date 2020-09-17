@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2020.08.02">
+<!ENTITY version	"2020.09.17">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"c8f9c67a93c45308a164f3b40e727b8a">
+<!ENTITY MD5		"bcaecb6c61414791d52bcdf29d6a0d07">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: 'Default' setting for NIC paramaters to leave NIC setting to the default.
+
+###2020.08.02
 - Add: Settings placeholder for selected settings.
 
 ###2020.06.24
@@ -221,10 +224,10 @@ chmod 755 -R /usr/local/emhttp/plugins/&name; 2>/dev/null
 <FILE Name="/boot/config/plugins/&name;/&name;.cfg">
 <INLINE>
 <![CDATA[
-FLOW_CONTROL="no"
-TSO_OFFLOAD="no"
-RX_BUFFER="256"
-TX_BUFFER="256"
+FLOW_CONTROL="default"
+TSO_OFFLOAD="default"
+RX_BUFFER="default"
+TX_BUFFER="default"
 ETHERNET_NICS="eth0"
 VM_BACKGROUND=""
 VM_DIRTY=""
