@@ -265,6 +265,9 @@ cpu_governor() {
 		'conservative')
 			echo "Conservative"
 		;;
+		'schedutil')
+			echo "Schedutil"
+		;;
 		*)
 			echo $value
 	esac
