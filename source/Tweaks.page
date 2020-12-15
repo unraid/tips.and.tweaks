@@ -34,6 +34,8 @@ $vm_background = exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
 $cpu_freq_driver = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
 $cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
+$nics = trim(exec( "plugins/{$plugin}/scripts/rc.tweaks get_nics" ));
+//$nics = str_replace(" ", ",", $nics);
 ?>
 
 <table class="tablesorter shift ups">
@@ -58,225 +60,225 @@ $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 </div>
 
 <div style="width: 75%; float:left">
-	<form markdown="1" name="tips_and_tweaks" method="POST" action="/update.php" target="progressFrame">
-	<input type="hidden" name="#file" value="tips.and.tweaks/tips.and.tweaks.cfg">
-	<input type="hidden" name="#command" value="/plugins/tips.and.tweaks/scripts/rc.tweaks">
-	<input type="hidden" name="#arg[1]" value="apply">
+<form markdown="1" name="tips_and_tweaks" method="POST" action="/update.php" target="progressFrame">
+<input type="hidden" name="#file" value="tips.and.tweaks/tips.and.tweaks.cfg">
+<input type="hidden" name="#command" value="/plugins/tips.and.tweaks/scripts/rc.tweaks">
+<input type="hidden" name="#arg[1]" value="apply">
 
 :tips_tweaks_general_plug:
-	> Some General Recommendations:
-	>
-	> + Use of a static IP address can help in certain cases.  NFS shares are referenced by IP address.  Be sure you reserve the IP address on your router, or set a very high IP address to prevent conflicts.
-	> + Use of Jumbo Frames is discouraged.  Jumbo Frames have been known to cause issues with some Dockers.
-	> + Don't set vm.dirty.ratio above 20% unless you have a UPS backup for your Unraid.  You may lose data that has not been written to disk on a power failure.
-	> + A value of vm.dirty_background_ratio over 1/2 of vm.dirty_ratio is not recommended unless using single digits for both values.
+> Some General Recommendations:
+>
+> + Use of a static IP address can help in certain cases.  NFS shares are referenced by IP address.  Be sure you reserve the IP address on your router, or set a very high IP address to prevent conflicts.
+> + Use of Jumbo Frames is discouraged.  Jumbo Frames have been known to cause issues with some Dockers.
+> + Don't set vm.dirty.ratio above 20% unless you have a UPS backup for your Unraid.  You may lose data that has not been written to disk on a power failure.
+> + A value of vm.dirty_background_ratio over 1/2 of vm.dirty_ratio is not recommended unless using single digits for both values.
 :end
 
-	_(Disable NIC Flow Control)_?
-	: <select name="FLOW_CONTROL" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "default", "_(Default)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "no", "_(No)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "yes", "_(Yes)_");?>
-	  </select>
+_(Disable NIC Flow Control)_?
+: <select name="FLOW_CONTROL" size="1">
+	<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "default", "_(Default)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "no", "_(No)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['FLOW_CONTROL'], "yes", "_(Yes)_");?>
+  </select>
 
 :tips_tweaks_nic_flow_control_plug:
-	> Set to 'Yes' to disable NIC Flow Control.  NIC Flow Control was originally implemented to help in
-	> networks with mixed speed devices.  It doesn't seem to be as necessary on today's networks.  If you
-	> have a managed switch, flow control can generally be turned on and off on the switch.  If you have
-	> a consumer grade switch, you won't have that level of control.  Flow Control has been known to create
-	> network issues in certain circumstances.  It is recommended to disable Flow Control if you experience network issues.
-	> Changing from any setting to 'Default' requires a reboot.
+> Set to 'Yes' to disable NIC Flow Control.  NIC Flow Control was originally implemented to help in
+> networks with mixed speed devices.  It doesn't seem to be as necessary on today's networks.  If you
+> have a managed switch, flow control can generally be turned on and off on the switch.  If you have
+> a consumer grade switch, you won't have that level of control.  Flow Control has been known to create
+> network issues in certain circumstances.  It is recommended to disable Flow Control if you experience network issues.
+> Changing from any setting to 'Default' requires a reboot.
 :end
 
-	_(Disable NIC Offload)_?
-	: <select name="TSO_OFFLOAD" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "default", "_(Default)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "no", "_(No)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "yes", "_(Yes)_");?>
-	  </select>
+_(Disable NIC Offload)_?
+: <select name="TSO_OFFLOAD" size="1">
+	<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "default", "_(Default)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "no", "_(No)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['TSO_OFFLOAD'], "yes", "_(Yes)_");?>
+  </select>
 
 :tips_tweaks_nic_offload_plug:
-	> Set to 'Yes' to disable NIC offloads.  Offloads were developed to offload some network processing
-	> to the NIC and off the main CPU and deal with large packets.  This was intended to save some CPU processing
-	> load and increase network throughput.  TSO offload has been known to cause network issues in certain circumstances.
-	> It is recommended to disable NIC Offloads if you experience network issues.
-	> Changing from any setting to 'Default' requires a reboot.
+> Set to 'Yes' to disable NIC offloads.  Offloads were developed to offload some network processing
+> to the NIC and off the main CPU and deal with large packets.  This was intended to save some CPU processing
+> load and increase network throughput.  TSO offload has been known to cause network issues in certain circumstances.
+> It is recommended to disable NIC Offloads if you experience network issues.
+> Changing from any setting to 'Default' requires a reboot.
 :end
 
-	_(Ethernet NIC Rx Buffer)_:
-	: <select name="RX_BUFFER" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "default", "_(Default)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "256", "256");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "512", "512");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "768", "768");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1024", "1024");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1280", "1280");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1536", "1536");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1792", "1792");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "2048", "2048");?>
-		<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "4096", "4096");?>
-	  </select>
+_(Ethernet NIC Rx Buffer)_:
+: <select name="RX_BUFFER" size="1">
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "default", "_(Default)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "256", "256");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "512", "512");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "768", "768");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1024", "1024");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1280", "1280");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1536", "1536");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1792", "1792");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "2048", "2048");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "4096", "4096");?>
+  </select>
 
 :tips_tweaks_rx_buffer_plug:
-	> Select the size of the NIC Rx ring buffer.  Some NICs have a limit on the size of the Rx ring buffer.  The default value of 256 is recommended.
-	> Changing from any setting to 'Default' requires a reboot.
+> Select the size of the NIC Rx ring buffer.  Some NICs have a limit on the size of the Rx ring buffer.  The default value of 256 is recommended.
+> Changing from any setting to 'Default' requires a reboot.
 :end
 
-	_(Ethernet NIC Tx Buffer)_:
-	: <select name="TX_BUFFER" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "default", "_(Default)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "256", "256");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "512", "512");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "768", "768");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1024", "1024");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1280", "1280");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1536", "1536");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1792", "1792");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "2048", "2048");?>
-		<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "4096", "4096");?>
+_(Ethernet NIC Tx Buffer)_:
+: <select name="TX_BUFFER" size="1">
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "default", "_(Default)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "256", "256");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "512", "512");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "768", "768");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1024", "1024");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1280", "1280");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1536", "1536");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1792", "1792");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "2048", "2048");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "4096", "4096");?>
 	  </select>
 
 :tips_tweaks_tx_buffer_plug:
-	> Select the size of the NIC Tx ring buffer.  Some NICs have a limit on the size of the Tx ring buffer.  The default value of 256 is recommended.
-	> Changing from any setting to 'Default' requires a reboot.
+> Select the size of the NIC Tx ring buffer.  Some NICs have a limit on the size of the Tx ring buffer.  The default value of 256 is recommended.
+> Changing from any setting to 'Default' requires a reboot.
 :end
 
-	_(Ethernet NICS)_:
-	: <input type="text" name="ETHERNET_NICS" class="narrow" maxlength="100" value="<?=$tips_and_tweaks_cfg['ETHERNET_NICS'];?>">
+_(Ethernet NICS)_:
+: <input type="text" name="ETHERNET_NICS" class="narrow" maxlength="100" value="<?=$tips_and_tweaks_cfg['ETHERNET_NICS'];?>" placeholder="<?=$nics;?>">
 
 :tips_tweaks_nics_plug:
-	> List the NICs to apply the above settings separated by commas.  If you have multiple NICs that are bonded, be sure to include all of them.  Flow Control, TSO, and NIC buffer settings will
-	> be applied to these NICs.
+> List the NICs to apply the above settings separated by commas.  If you have multiple NICs that are bonded, be sure to include all of them.  Flow Control, TSO, and NIC buffer settings will
+> be applied to these NICs.
 :end
 
-	_(Don't change the Disk Cache settings until you read and understand this)_ <u><a href='https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/', target='_blank'>_(Guide)_</a></u>.
+_(Don't change the Disk Cache settings until you read and understand this)_ <u><a href='https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/', target='_blank'>_(Guide)_</a></u>.
 
-	_(Disk Cache)_ 'vm.dirty_background_ratio' (%):
-	: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>" placeholder="10">
+_(Disk Cache)_ 'vm.dirty_background_ratio' (%):
+: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>" placeholder="10">
 
 :tips_tweaks_dirty_background_plug:
-	> For streaming and gaming VMs, set the values low in the single digits.  Recommended values are: vm.dirty_background_ratio=2% and vm.dirty_ratio=3%.
-	> If you have large amounts of RAM, smaller is better.
-	> Caution: Don't increase these values beyond the default settings unless you have a UPS that will reliably shut down Unraid.
-	>
-	> Set the 'vm.dirty_background_ratio' as a percentage of total RAM memory.
-	> The default setting of 10% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 2%.  If you experience OOM errors, it is recommended you set this to 1%.
+> For streaming and gaming VMs, set the values low in the single digits.  Recommended values are: vm.dirty_background_ratio=2% and vm.dirty_ratio=3%.
+> If you have large amounts of RAM, smaller is better.
+> Caution: Don't increase these values beyond the default settings unless you have a UPS that will reliably shut down Unraid.
+>
+> Set the 'vm.dirty_background_ratio' as a percentage of total RAM memory.
+> The default setting of 10% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 2%.  If you experience OOM errors, it is recommended you set this to 1%.
 :end
 
-	_(Disk Cache)_ 'vm.dirty_ratio' (%):
-	: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>" placeholder="20">
+_(Disk Cache)_ 'vm.dirty_ratio' (%):
+: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>" placeholder="20">
 
 :tips_tweaks_dirty_ratio_plug:
-	> Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
-	> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 3%.  If you experience OOM errors, it is recommended you set this to 2%.
+> Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
+> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 3%.  If you experience OOM errors, it is recommended you set this to 2%.
 :end
 
-	_(Max Watches)_ 'fs.inotify.max_user_watches':
-	: <input type="text" name="MAX_WATCHES" class="narrow" maxlength="20" value="<?=$tips_and_tweaks_cfg['MAX_WATCHES'];?>" placeholder="524288">
+_(Max Watches)_ 'fs.inotify.max_user_watches':
+: <input type="text" name="MAX_WATCHES" class="narrow" maxlength="20" value="<?=$tips_and_tweaks_cfg['MAX_WATCHES'];?>" placeholder="524288">
 
 :tips_tweaks_max_watches_plug:
-	> If inotify fails to start because there are not enough user watches, increase the max_user_watches.
-	>
-	> The default is 524288.
+> If inotify fails to start because there are not enough user watches, increase the max_user_watches.
+>
+> The default is 524288.
 :end
 
-	_(CPU Scaling Governor)_:
-	: <select name="CPU_GOVERNOR" size="1">
-		<?if ($cpu_freq_driver != "Intel Pstate"):?>
-			<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "ondemand", "On Demand");?>
-		<?endif;?>
-		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "powersave", "Power Save");?>
-		<?if ($cpu_freq_driver != "Intel Pstate"):?>
-			<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "conservative", "Conservative");?>
-		<?endif;?>
-		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "performance", "Performance");?>
-		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "schedutil", "Schedutil");?>
-		<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "timed", "Scheduled");?>
-	  </select>
+_(CPU Scaling Governor)_:
+: <select name="CPU_GOVERNOR" size="1">
+	<?if ($cpu_freq_driver != "Intel Pstate"):?>
+	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "ondemand", "On Demand");?>
+	<?endif;?>
+	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "powersave", "Power Save");?>
+	<?if ($cpu_freq_driver != "Intel Pstate"):?>
+	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "conservative", "Conservative");?>
+	<?endif;?>
+	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "performance", "Performance");?>
+	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "schedutil", "Schedutil");?>
+	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "timed", "Scheduled");?>
+  </select>
 
 :tips_tweaks_cpu_governor_plug:
-	> Select the CPU Scaling Governor you want to use.
-	>
-	> + "Power Save" - Default for the Intel Pstate driver.  Scales CPU frequency based on load.
-	> + "On Demand" - Default for ACPI CPU Freq driver.  Scales CPU frequency based on load.  Frequency stepping is aggressive.
-	> + "Conservative" - Scales CPU frequency based on load.  Frequency stepping is gentler.  Can cause some latency.
-	> + "Performance" - Set all CPUs at full frequency regardless of load.  This can have a positive influence on performance and latency.
-	> + "Schedutil" - Set all CPUs frequency scaling to schedutil.  This sets CPU frequency based on the Linux scheduler.  Note: This is still in development.
-	> + "Scheduled" - At start time set governor to "Performance".  At stop time set governor to "Powersave" or "On Demand" depending on driver used.
-	>
-	> You can now set the CPU governor with the rc.tweaks script.  Use the command:
-	> /usr/local/sbin/rc.tweaks set_governor 'governor'
-	> The 'governor' choices are: 'ondemand', 'performance', 'powersave', 'conservative', and 'schedutil'.
+> Select the CPU Scaling Governor you want to use.
+>
+> + "Power Save" - Default for the Intel Pstate driver.  Scales CPU frequency based on load.
+> + "On Demand" - Default for ACPI CPU Freq driver.  Scales CPU frequency based on load.  Frequency stepping is aggressive.
+> + "Conservative" - Scales CPU frequency based on load.  Frequency stepping is gentler.  Can cause some latency.
+> + "Performance" - Set all CPUs at full frequency regardless of load.  This can have a positive influence on performance and latency.
+> + "Schedutil" - Set all CPUs frequency scaling to schedutil.  This sets CPU frequency based on the Linux scheduler.  Note: This is still in development.
+> + "Scheduled" - At start time set governor to "Performance".  At stop time set governor to "Powersave" or "On Demand" depending on driver used.
+>
+> You can now set the CPU governor with the rc.tweaks script.  Use the command:
+> /usr/local/sbin/rc.tweaks set_governor 'governor'
+> The 'governor' choices are: 'ondemand', 'performance', 'powersave', 'conservative', and 'schedutil'.
 :end
 
-	_(Enable Intel Turbo/AMD Performance Boost)_?
-	: <select name="TURBO_BOOST" size="1">
-		<?if ($cpu_turbo_boost == "yes"):?>
-			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "_(Yes)_");?>
-			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "_(No)_");?>
-		<?else:?>
-			<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "", "", 'disabled');?>
-		<?endif;?>
-	  </select>
+_(Enable Intel Turbo/AMD Performance Boost)_?
+: <select name="TURBO_BOOST" size="1">
+	<?if ($cpu_turbo_boost == "yes"):?>
+		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "_(Yes)_");?>
+		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "_(No)_");?>
+	<?else:?>
+		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "", "", 'disabled');?>
+	<?endif;?>
+  </select>
 
 :tips_tweak_turbo_plug:
-	> Set to 'Yes' to enable the Intel Turbo or AMD Performance Boost Mode.
+> Set to 'Yes' to enable the Intel Turbo or AMD Performance Boost Mode.
 :end
 
-	_(Time to set)_ 'Performance':
-	: <input type="text" name="START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['START_TIME'];?>">
+_(Time to set)_ 'Performance':
+: <input type="text" name="START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['START_TIME'];?>">
 
 :tips_tweaks_performance_plug:
-	> Enter the time you want to set the governor to "Performance" in 24 hour format hh:mm.
+> Enter the time you want to set the governor to "Performance" in 24 hour format hh:mm.
 :end
 
-	_(Time to set)_ '<?=($cpu_freq_driver == "Intel Pstate" ? "Power Save" : "On Demand"); ?>':
-	: <input type="text" name="STOP_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['STOP_TIME'];?>">
+_(Time to set)_ '<?=($cpu_freq_driver == "Intel Pstate" ? "Power Save" : "On Demand"); ?>':
+: <input type="text" name="STOP_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['STOP_TIME'];?>">
 
 :tips_tweaks_cpu_state_plug:
-	> Enter the time you want to set the governor to "Power Save" for Intel Pstate or "On Demand" in 24 hour format hh:mm.
+> Enter the time you want to set the governor to "Power Save" for Intel Pstate or "On Demand" in 24 hour format hh:mm.
 :end
 
-	_(Disable FTP Server)_?
-	: <select name="FTP" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['FTP'], "no", "_(No)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['FTP'], "yes", "_(Yes)_");?>
-	  </select>
+_(Disable FTP Server)_?
+: <select name="FTP" size="1">
+	<?=mk_option($tips_and_tweaks_cfg['FTP'], "no", "_(No)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['FTP'], "yes", "_(Yes)_");?>
+</select>
 
 :tips_tweaks_ftp_plug:
-	> Set to 'Yes' to disable the FTP Server.  You will have to reboot to enable it again once you select 'No'.
+> Set to 'Yes' to disable the FTP Server.  You will have to reboot to enable it again once you select 'No'.
 :end
 
-	_(Enable syslog Archiving)_?
-	: <select name="ARCHIVE_LOGS" size="1">
-		<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "no", "_(No)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "yes", "_(Yes)_");?>
-	  </select>
+_(Enable syslog Archiving)_?
+: <select name="ARCHIVE_LOGS" size="1">
+	<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "no", "_(No)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "yes", "_(Yes)_");?>
+</select>
 
 :tips_tweaks_syslog_archive_plug:
-	> Set to 'Yes' to enable the capture and archive of syslogs and run a diagnostics on shutdown.  Logs and diagnostics are saved to /boot/logs/.
+> Set to 'Yes' to enable the capture and archive of syslogs and run a diagnostics on shutdown.  Logs and diagnostics are saved to /boot/logs/.
 :end
 
-	_(Number of syslogs to Archive)_:
-	: <input type="text" name="LOGSAVE" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['LOGSAVE'];?>" placeholder="10">
+_(Number of syslogs to Archive)_:
+: <input type="text" name="LOGSAVE" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['LOGSAVE'];?>" placeholder="10">
 
 :tips_tweaks_number_syslogs_plug:
-	> Set the number of syslogs to save in the archive.
-	> Set zero to save only last syslog.  Set to -1 to save all logs.  Default setting is 10.
+> Set the number of syslogs to save in the archive.
+> Set zero to save only last syslog.  Set to -1 to save all logs.  Default setting is 10.
 :end
 
-	_(Processes to kill before Array is Stopped)_:
-	: <input type="text" name="KILL" class="narrow" maxlength="30" value="<?=$tips_and_tweaks_cfg['KILL'];?>">
+_(Processes to kill before Array is Stopped)_:
+: <input type="text" name="KILL" class="narrow" maxlength="30" value="<?=$tips_and_tweaks_cfg['KILL'];?>">
 
 :tips_tweaks_kill_processes_plug:
-	> Enter the names of processes to kill before stopping the array, separated by commas.  For example, 'ssh' and 'bash'.  These processes can keep the array disks from unmounting causing Unraid to hang when the array is being stopped.
-	>
-	> Note: Be careful with the processes you kill here.  You could lose data!
+> Enter the names of processes to kill before stopping the array, separated by commas.  For example, 'ssh' and 'bash'.  These processes can keep the array disks from unmounting causing Unraid to hang when the array is being stopped.
+>
+> Note: Be careful with the processes you kill here.  You could lose data!
 :end
 
-	<input type="submit" name="#default" value="_(Default)_">
-	: <input type="submit" name="#apply" value="_(Apply)_"><input type="button" value="_(Done)_" onclick="done()"><u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>Unraid Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
-	</form>
+<input type="submit" name="#default" value="_(Default)_">
+: <input type="submit" name="#apply" value="_(Apply)_"><input type="button" value="_(Done)_" onclick="done()"><u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>Unraid Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
+</form>
 </div>
 
 <div>

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_mics.
 #
 
 apply_tweaks()
@@ -357,6 +357,13 @@ remove_syslog() {
 	fi
 }
 
+get_nics() {
+	# Get the installed nics
+	nics=`/sbin/ifconfig | /usr/bin/grep 'eth[0-9]:' | /usr/bin/tr -d ':' | /bin/awk '{ print $1 }'`
+	nics=${nics##*( )}
+	echo -n $nics | tr ' ' ',' > /tmp/nics
+}
+
 # read our configuration.
 plugin="tips.and.tweaks"
 CONFIG="/boot/config/plugins/${plugin}/${plugin}.cfg"
@@ -372,6 +379,12 @@ no_buffer="N/A"
 
 # Set LOG directory
 LOGDIR="/boot/logs/"
+
+# Default nics if $ETHERTNET_NICS is defined
+if [ -z ${ETHERNET_NICS} ]; then
+	get_nics
+	ETHERNET_NICS=`/usr/bin/cat /tmp/nics`
+fi
 
 # Be sure $LOGSAVE is defined.
 if [ -z ${LOGSAVE} ]; then
@@ -421,6 +434,10 @@ case "$1" in
 		'remove_syslog')
 		remove_syslog
 	;;
+		'get_nics')
+		get_nics
+		/usr/bin/cat /tmp/nics
+	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog"
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_nics"
 esac
