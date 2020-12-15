@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2020.09.27">
+<!ENTITY version	"2020.12.14">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"b08a2a4f422df8f7e0492db65a438637">
+<!ENTITY MD5		"444b78a201562f1ba8b90dd0e4d93313">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Set nic placeholder to the nics found on the system.
+
+###2020.08.27
 - Add: Schedutil CPU governor.  This is still in development and not implemented yet on the Intel Pstate driver.
 
 ###2020.090.17
