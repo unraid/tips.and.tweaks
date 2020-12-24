@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2020.12.14">
+<!ENTITY version	"2020.12.24">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"444b78a201562f1ba8b90dd0e4d93313">
+<!ENTITY MD5		"bfab32cfd7bbcb18248608fff7829379">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,10 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Set default nics to what is found in the system.
+- Add: Add comments about the use of 'Power Save' CPU Governor.
+
+###2020.12.24
 - Add: Set nic placeholder to the nics found on the system.
 
 ###2020.08.27
@@ -234,7 +238,7 @@ FLOW_CONTROL="default"
 TSO_OFFLOAD="default"
 RX_BUFFER="default"
 TX_BUFFER="default"
-ETHERNET_NICS="eth0"
+ETHERNET_NICS=""
 VM_BACKGROUND=""
 VM_DIRTY=""
 MAX_WATCHES=""
