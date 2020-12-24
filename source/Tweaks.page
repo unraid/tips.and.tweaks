@@ -35,7 +35,6 @@ $cpu_freq_driver = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" )
 $cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 $nics = trim(exec( "plugins/{$plugin}/scripts/rc.tweaks get_nics" ));
-//$nics = str_replace(" ", ",", $nics);
 ?>
 
 <table class="tablesorter shift ups">
