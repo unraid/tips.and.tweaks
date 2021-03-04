@@ -191,14 +191,16 @@ _(CPU Scaling Governor)_:
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "conservative", "Conservative");?>
 	<?endif;?>
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "performance", "Performance");?>
+	<?if ($cpu_freq_driver != "Intel Pstate"):?>
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "schedutil", "Schedutil");?>
+	<?endif;?>
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "timed", "Scheduled");?>
   </select>
 
 :tips_tweaks_cpu_governor_plug:
 > Select the CPU Scaling Governor you want to use.
 >
-> + "Power Save" - Default for the Intel Pstate driver.  Scales CPU frequency based on load.
+> + "Power Save" - Scales CPU frequency based on load.
 > + "On Demand" - Default for ACPI CPU Freq driver.  Scales CPU frequency based on load.  Frequency stepping is aggressive.
 > + "Conservative" - Scales CPU frequency based on load.  Frequency stepping is gentler.  Can cause some latency.
 > + "Performance" - Set all CPUs at full frequency regardless of load.  This can have a positive influence on performance and latency.
@@ -231,11 +233,11 @@ _(Time to set)_ 'Performance':
 > Enter the time you want to set the governor to "Performance" in 24 hour format hh:mm.
 :end
 
-_(Time to set)_ '<?=($cpu_freq_driver == "Intel Pstate" ? "Power Save" : "On Demand"); ?>':
+_(Time to set)_ '<?=($cpu_freq_driver == "Intel Pstate" || $cpu_freq_driver == "Intel CPU Freq" ? "Power Save" : "On Demand"); ?>':
 : <input type="text" name="STOP_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['STOP_TIME'];?>">
 
 :tips_tweaks_cpu_state_plug:
-> Enter the time you want to set the governor to "Power Save" for Intel Pstate or "On Demand" in 24 hour format hh:mm.
+> Enter the time you want to set the governor to "Power Save" for Intel Pstate and Intel CPU Freq or "On Demand" in 24 hour format hh:mm.
 :end
 
 _(Disable FTP Server)_?

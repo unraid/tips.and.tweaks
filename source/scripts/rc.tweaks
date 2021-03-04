@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_mics.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_nics.
 #
 
 apply_tweaks()
@@ -78,11 +78,15 @@ apply_tweaks()
 				if [ "$TURBO_BOOST" = "yes" ]; then
 					if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
 						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+					elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
+						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
 					else
 						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "1" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
 					fi
 				else
 					if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
+						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+					elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
 						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
 					else
 						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "0" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
@@ -238,6 +242,9 @@ cpu_freq_driver() {
 		'intel_pstate')
 			echo "Intel Pstate"
 		;;
+		'intel_cpufreq')
+			echo "Intel CPU Freq"
+		;;
 		'powernow_k8')
 			echo "Powernow K8/K10"
 		;;
@@ -287,8 +294,11 @@ turbo_mode() {
 		'acpi-cpufreq')
 			turbo_mode="yes"
 		;;
-		'intel_pstate')
-			turbo_mode="yes"
+			'intel_pstate')
+				turbo_mode="yes"
+		;;
+			'intel_cpufreq')
+				turbo_mode="yes"
 	esac
 	echo ${turbo_mode}
 }
