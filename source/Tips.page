@@ -26,7 +26,6 @@ require_once "$docroot/plugins/$plugin/include/Legacy.php";
 
 <div style="width: 90%; float:left">
 	<p>_(The Tips below are suggestions, workarounds for known problems, and potential fixes)_.  _(It is recommended that you update Unraid to the latest stable version to get the latest features, bug fixes, and security updates)_.  _(Support for older versions of Unraid is being phased out)_.  _(Many plugins are no longer compatible with older Unraid versons)_.</p>
-	<p><u>_(All versions)_</u></p>
 	<li>_(Install the 'Fix Common Problems' plugin and resolve any Unraid configuration problems)_.</il>
 	<li>_(Use the 'Update Assistant' that is part of the Fix Common Problems plugin)_.  _(This will identify potential problems to be solved before you upgrade the Unraid OS)_.</li>
 	<li>_(Check the)_ <u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>_(Tips and Tweaks wiki)_</a></u> _(for additional ideas on improving your Unraid performance and solving problems)_.</li>
