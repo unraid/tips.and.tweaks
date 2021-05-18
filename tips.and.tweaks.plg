@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2021.03.09">
+<!ENTITY version	"2021.05.18">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"e8965f3f503486d4dc640558bfc93656">
+<!ENTITY MD5		"98f6fa9e499473f522f14390a1e3c4f7">
 ]>
 
 <PLUGIN	name="&name;"
@@ -17,11 +17,17 @@
 		pluginURL="&pluginURL;"
 		support="&supportURL;"
 		icon="gear"
-		min="6.4.0">
+		min="6.7.0">
 
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Minimum version changed to 6.7.
+- Fix: Keep tips and tweaks configuration file on flash drive when uninstalling.
+- Fix: Remove unneeded images folder.
+- Fix: Remove unneeded event script.
+
+###2021.03.09
 - Fix: Plugin permissions.
 
 ###2021.03.05
@@ -268,16 +274,21 @@ The 'post-install' script.
 <INLINE>
 # Restore the kill tasks event
 if [ -f /tmp/stopping_svcs ]; then
+	mkdir -p /usr/local/emhttp/plugins/&name;/event/
 	mv /tmp/stopping_svcs /usr/local/emhttp/plugins/&name;/event/
 fi
 
 # Create a symlink to tips.and.tweaks script.
 ln -sf /usr/local/emhttp/plugins/&name;/scripts/rc.tweaks /usr/local/sbin
 
+# Apply tweaks
+echo "Applying Tweaks..."
+/usr/local/sbin/rc.tweaks apply
+
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; is installed."
-echo " Copyright 2016-2019 &author;"
+echo " Copyright 2016-2021 &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
@@ -302,8 +313,10 @@ rm -f /boot/config/plugins/dynamix/cpu_governor.cron
 rm -f /usr/local/sbin/rc.tweaks
 
 # Remove all plugin files.
-rm -rf /boot/config/plugins/&name; 2>/dev/null
 rm -rf /usr/local/emhttp/plugins/&name; 2>/dev/null
+
+# Remove the tips and tweaks 'bundle' so it will be downloaded if re-installed.
+rm -rf /boot/config/plugins/&name;/&name;-&version;.tgz
 
 echo ""
 echo "-----------------------------------------------------------"
