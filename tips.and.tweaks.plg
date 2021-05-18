@@ -283,7 +283,7 @@ ln -sf /usr/local/emhttp/plugins/&name;/scripts/rc.tweaks /usr/local/sbin
 
 # Apply tweaks
 echo "Applying Tweaks..."
-/usr/local/sbin/rc.tweaks apply
+at -M -f /usr/local/sbin/rc.tweaks apply
 
 echo ""
 echo "-----------------------------------------------------------"
