@@ -2,7 +2,7 @@ Menu="TipsAndTweaks:2"
 Title="Tweaks"
 ---
 <?PHP
-/* Copyright 2016-2020 Dan Landon.
+/* Copyright 2016-2021, Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -59,7 +59,7 @@ $nics = trim(exec( "plugins/{$plugin}/scripts/rc.tweaks get_nics" ));
 </div>
 
 <div style="width: 75%; float:left">
-<form markdown="1" name="tips_and_tweaks" method="POST" action="/update.php" target="progressFrame">
+<form class="js-confirm-leave" markdown="1" name="tips_and_tweaks" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="tips.and.tweaks/tips.and.tweaks.cfg">
 <input type="hidden" name="#command" value="/plugins/tips.and.tweaks/scripts/rc.tweaks">
 <input type="hidden" name="#arg[1]" value="apply">
