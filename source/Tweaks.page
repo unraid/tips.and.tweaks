@@ -282,13 +282,7 @@ _(Processes to kill before Array is Stopped)_:
 :end
 
 <input type="submit" name="#default" value="_(Default)_">
-: <input type="submit" name="#apply" value="_(Apply)_">
-<button onclick="done()">_(Done)_</button>
-<u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>Unraid Forum</a></u>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
+: <input type="submit" name="#apply" value="_(Apply)_"><input type="button" value="_(Done)_" onclick="done()"><u><a href='http://lime-technology.com/forum/index.php?topic=49233.0', target='_blank'>Unraid Forum</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>Tips and Tweaks wiki</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href='http://lime-technology.com/forum/index.php?topic=49163', target='_blank'>Tips and Tweaks feedback</a></u></dd>
 </form>
 </div>
 
