@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2021.05.28">
+<!ENTITY version	"2021.08.08">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"7ba311ea6767ae83fedc0f974a768e33">
+<!ENTITY MD5		"5d36115a73d0344b74cd5609b96f65af">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Remove 'Disable FTP?' setting.  Ftp is disabled by default in 6.10.
+
+###2021.05.28
 - Fix: Restore event script.
 
 ###2021.05.18
