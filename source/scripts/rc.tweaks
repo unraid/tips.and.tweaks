@@ -108,11 +108,6 @@ apply_tweaks()
 
 	IFS=$OIFS
 
-	if [ "$FTP" = "yes" ]; then
-		sed -i -e 's/^ftp/#ftp/' /etc/inetd.conf
-		/etc/rc.d/rc.inetd restart &>/dev/null
-	fi
-
 	remove_syslog
 
 	if [ "$ARCHIVE_LOGS" = "yes" ]; then

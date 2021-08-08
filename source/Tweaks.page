@@ -244,16 +244,6 @@ _(Time to set)_ '<?=($cpu_freq_driver == "Intel Pstate" || $cpu_freq_driver == "
 > Enter the time you want to set the governor to "Power Save" for Intel Pstate and Intel CPU Freq or "On Demand" in 24 hour format hh:mm.
 :end
 
-_(Disable FTP Server)_?
-: <select name="FTP" size="1">
-	<?=mk_option($tips_and_tweaks_cfg['FTP'], "no", "_(No)_");?>
-	<?=mk_option($tips_and_tweaks_cfg['FTP'], "yes", "_(Yes)_");?>
-</select>
-
-:tips_tweaks_ftp_plug:
-> Set to 'Yes' to disable the FTP Server.  You will have to reboot to enable it again once you select 'No'.
-:end
-
 _(Enable syslog Archiving)_?
 : <select name="ARCHIVE_LOGS" size="1">
 	<?=mk_option($tips_and_tweaks_cfg['ARCHIVE_LOGS'], "no", "_(No)_");?>
