@@ -1,13 +1,13 @@
 <?xml version='1.0' standalone='yes'?>
-
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2021.12.22">
+<!ENTITY version	"2022.08.19">
 <!ENTITY launch		"Settings/TipsAndTweaks">
-<!ENTITY pluginURL	"https://github.com/dlandon/tips.and.tweaks/raw/master/tips.and.tweaks.plg">
+<!ENTITY gitURL		"https://raw.githubusercontent.com/&author;/&name;/master">
+<!ENTITY pluginURL	"&gitURL;/&name;.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"b372e2ecf6c34eaf4e609d50f2a662ee">
+<!ENTITY MD5		"aa974a97b45876a98c69a10df41364ae">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Reference to GitHub repository.
+
+###2021.12.22
 - Fix: Apply settings at 'started' event instead of 'array_started'  event.  This event is later in the start up of Unraid.
 
 ###2021.08.08
@@ -206,9 +209,17 @@
 </CHANGES>
 
 <!--
-Copyright 2016-2021, Dan Landon
+Copyright 2016-2022, Dan Landon
 This plugin lets you set certain settings to adjust Linux and Unraid for better performance.
 -->
+
+<!--
+Get the plugin bundle.
+-->
+<FILE Name="/boot/config/plugins/&name;/&name;-&version;.tgz">
+<URL>"&gitURL;/&name;-&version;.tgz"</URL>
+<MD5>&MD5;</MD5>
+</FILE>
 
 <!--
 The 'pre-install' script.
@@ -226,14 +237,6 @@ rm -rf /usr/local/emhttp/plugins/&name;/* 2>/dev/null
 # Remove old 'bundle' files.
 rm -f $(ls /boot/config/plugins/&name;/&name;*.tgz 2>/dev/null | grep -v '&version;')
 </INLINE>
-</FILE>
-
-<!--
-Get the plugin bundle.
--->
-<FILE Name="/boot/config/plugins/&name;/&name;-&version;.tgz">
-<URL>"https://github.com/dlandon/&name;/raw/master/&name;-&version;.tgz"</URL>
-<MD5>&MD5;</MD5>
 </FILE>
 
 <!--
@@ -290,7 +293,7 @@ ln -sf /usr/local/emhttp/plugins/&name;/scripts/rc.tweaks /usr/local/sbin
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; is installed."
-echo " Copyright 2016-2021 &author;"
+echo " Copyright 2016-2022 &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
