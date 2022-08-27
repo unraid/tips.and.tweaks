@@ -60,14 +60,14 @@ apply_tweaks()
 	fi
 
 	if [ ! -z $CPU_GOVERNOR ]; then
-		if [ "$CPU_GOVERNOR" = "timed" ]; then
+		if [ "$SCHEDULED" = "yes" ]; then
 			IFS=":"
 			list=($START_TIME)
-			printf "# Set cpu governor to performance:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
-			printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor performance &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+			printf "# Set cpu governor to power saving mode:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
+			printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor ${POWER_SAVE_CPU_GOVERNOR} &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
 			list=($STOP_TIME)
-			printf "# Set cpu governor to powersave:\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
-			printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor powersave &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+			printf "# Set cpu governor to normal mode:\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+			printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor ${CPU_GOVERNOR} &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
 		else
 			# Remove dynamix set governor cron file.
 			rm -f /boot/config/plugins/dynamix/cpu_governor.cron
@@ -373,6 +373,13 @@ get_nics() {
 plugin="tips.and.tweaks"
 CONFIG="/boot/config/plugins/${plugin}/${plugin}.cfg"
 source $CONFIG
+if [ -z $START_TIME ]; then
+	START_TIME="23:00"
+fi
+if [ -z $STOP_TIME ]; then
+	STOP_TIME="05:00"
+fi
+
 PROG_NAME=${plugin}
 DOCROOT=`grep -Po '^chdir = \K.*' /etc/php-fpm.d/www.conf`
 if [ -z ${DOCROOT} ];then
