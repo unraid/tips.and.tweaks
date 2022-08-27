@@ -2,12 +2,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2022.08.19">
+<!ENTITY version	"2022.08.27">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY gitURL		"https://raw.githubusercontent.com/&author;/&name;/master">
 <!ENTITY pluginURL	"&gitURL;/&name;.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"aa974a97b45876a98c69a10df41364ae">
+<!ENTITY MD5		"2ec82611f2375006288e0a980bac72d7">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,10 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Ability to set CPU Scaling for normal and power saving modes and enable cron to switch modes.
+- Add: Powertop package and ability to run powertop from GUI.
+
+###2022.08.19
 - Fix: Reference to GitHub repository.
 
 ###2021.12.22
@@ -222,6 +226,14 @@ Get the plugin bundle.
 </FILE>
 
 <!--
+powertop-2.14-x86_64.txz
+-->
+<FILE Name="/boot/config/plugins/&name;/powertop-2.14-x86_64.txz" Run="upgradepkg --install-new">
+<URL>"&gitURL;/packages/powertop-2.14-x86_64.txz"</URL>
+<MD5>a540f5e2df9d37b8266d876ce588223a</MD5>
+</FILE>
+
+<!--
 The 'pre-install' script.
 -->
 <FILE Run="/bin/bash">
@@ -263,8 +275,10 @@ ETHERNET_NICS=""
 VM_BACKGROUND=""
 VM_DIRTY=""
 MAX_WATCHES=""
-CPU_GOVERNOR=""
+CPU_GOVERNOR="performance"
 TURBO_BOOST="yes"
+POWER_SAVE_CPU_GOVERNOR=""
+SCHEDULED="no"
 START_TIME=""
 STOP_TIME=""
 FTP="yes"
@@ -322,6 +336,11 @@ rm -rf /usr/local/emhttp/plugins/&name; 2>/dev/null
 
 # Remove the tips and tweaks 'bundle' so it will be downloaded if re-installed.
 rm -rf /boot/config/plugins/&name;/&name;-&version;.tgz
+
+echo "Removing packages..."
+
+# Remove all installed packages.
+removepkg powertop-2.14-x86_64.txz >/dev/null
 
 echo ""
 echo "-----------------------------------------------------------"
