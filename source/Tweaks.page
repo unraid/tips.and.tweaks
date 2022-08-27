@@ -35,6 +35,9 @@ $cpu_freq_driver = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" )
 $cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 $cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 $nics = trim(exec( "plugins/{$plugin}/scripts/rc.tweaks get_nics" ));
+
+/* Get the version of Unraid we are running. */
+$version = parse_ini_file("/etc/unraid-version");
 ?>
 
 <table class="tablesorter shift ups">
@@ -277,7 +280,12 @@ _(Time to set Normal CPU Scaling)_:
 > Enter the time you want to set the governor to Normal CPU Scaling Governor in 24 hour format hh:mm.
 :end
 
+<?if (version_compare($version['version'],"6.9.9", "<")):?>
+_(For additional power savings, open a terminal and execute 'powertop')_.
+<br />
+<?else:?>
 <input type="button" value="_(powertop)_" title="_(Use powertop for additional power savings)_." onclick="openTerminal('ttyd','Web Terminal','')">
+<?endif;?>
 _(Click)_ <u><a href='https://forums.unraid.net/topic/98070-reduce-power-consumption-with-powertop/#comment-904898', target='_blank'>_(here)_</a></u> _(for information on how to use powertop)_.
 
 :tips_tweaks_powertop_plug:
