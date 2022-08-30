@@ -2,12 +2,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2022.08.27a">
+<!ENTITY version	"2022.08.30">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY gitURL		"https://raw.githubusercontent.com/&author;/&name;/master">
 <!ENTITY pluginURL	"&gitURL;/&name;.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"56fcb23032533c162728a7256841bf0b">
+<!ENTITY MD5		"152f67fdd743bc62f3746fdafed1259c">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Remove powertop.  The power savings are very minimal and it causes issues with some sata controllers.  It is not worth the headaches it can create.
+
+###2022.08.27a
 - Add: Ability to set CPU Scaling for normal and power saving modes and enable cron to switch modes.
 - Add: Powertop package and ability to run powertop from GUI.
 
@@ -226,14 +229,6 @@ Get the plugin bundle.
 </FILE>
 
 <!--
-powertop-2.14-x86_64.txz
--->
-<FILE Name="/boot/config/plugins/&name;/powertop-2.14-x86_64.txz" Run="upgradepkg --install-new">
-<URL>"&gitURL;/packages/powertop-2.14-x86_64.txz"</URL>
-<MD5>a540f5e2df9d37b8266d876ce588223a</MD5>
-</FILE>
-
-<!--
 The 'pre-install' script.
 -->
 <FILE Run="/bin/bash">
@@ -338,9 +333,6 @@ rm -rf /usr/local/emhttp/plugins/&name; 2>/dev/null
 rm -rf /boot/config/plugins/&name;/&name;-&version;.tgz
 
 echo "Removing packages..."
-
-# Remove all installed packages.
-removepkg powertop-2.14-x86_64.txz >/dev/null
 
 echo ""
 echo "-----------------------------------------------------------"
