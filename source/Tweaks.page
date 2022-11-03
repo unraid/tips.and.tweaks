@@ -277,7 +277,7 @@ _(Time to set Normal CPU Scaling)_:
 > Enter the time you want to set the governor to Normal CPU Scaling Governor in 24 hour format hh:mm.
 :end
 
-==================================================
+===================================================
 
 _(Enable syslog Archiving)_?
 : <select name="ARCHIVE_LOGS" size="1">
