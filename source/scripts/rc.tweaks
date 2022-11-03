@@ -59,38 +59,38 @@ apply_tweaks()
 		sysctl -qw fs.inotify.max_user_watches="$MAX_WATCHES" > /dev/null
 	fi
 
-	if [ ! -z $CPU_GOVERNOR ]; then
-		if [ "$SCHEDULED" = "yes" ]; then
-			IFS=":"
-			list=($START_TIME)
-			printf "# Set cpu governor to power saving mode:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
-			printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor ${POWER_SAVE_CPU_GOVERNOR} &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
-			list=($STOP_TIME)
-			printf "# Set cpu governor to normal mode:\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
-			printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor ${CPU_GOVERNOR} &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
-		else
-			# Remove dynamix set governor cron file.
-			rm -f /boot/config/plugins/dynamix/cpu_governor.cron
+	if [ "$SCHEDULED" = "yes" ]; then
+		IFS=":"
+		list=($START_TIME)
+		printf "# Set cpu governor to power saving mode:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
+		printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor ${POWER_SAVE_CPU_GOVERNOR} &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+		list=($STOP_TIME)
+		printf "# Set cpu governor to normal mode:\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+		printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_governor ${CPU_GOVERNOR} &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_governor.cron
+	else
+		# Remove dynamix set governor cron file.
+		rm -f /boot/config/plugins/dynamix/cpu_governor.cron
+	fi
 
-			set_governor "$CPU_GOVERNOR"
+	if [ "$CPU_GOVERNOR" != "" ]; then
+		set_governor "$CPU_GOVERNOR"
 
-			if [ `turbo_mode` == "yes" ]; then
-				if [ "$TURBO_BOOST" = "yes" ]; then
-					if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
-						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
-					elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
-						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
-					else
-						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "1" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
-					fi
+		if [ `turbo_mode` == "yes" ]; then
+			if [ "$TURBO_BOOST" = "yes" ]; then
+				if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
+					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+				elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
+					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
 				else
-					if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
-						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
-					elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
-						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
-					else
-						/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "0" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
-					fi
+					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "1" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
+				fi
+			else
+				if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
+					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+				elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
+					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+				else
+					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "0" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
 				fi
 			fi
 		fi
