@@ -2,12 +2,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2022.08.30">
+<!ENTITY version	"2022.11.03">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY gitURL		"https://raw.githubusercontent.com/&author;/&name;/master">
 <!ENTITY pluginURL	"&gitURL;/&name;.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"152f67fdd743bc62f3746fdafed1259c">
+<!ENTITY MD5		"d71b64eeb2c8282dbdc88e7eba15cd72">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Governor setting does not change when schedule setting is set to 'Yes'.
+
+2022.08.30
 - Fix: Remove powertop.  The power savings are very minimal and it causes issues with some sata controllers.  It is not worth the headaches it can create.
 
 ###2022.08.27a
