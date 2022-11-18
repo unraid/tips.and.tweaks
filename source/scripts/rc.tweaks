@@ -59,6 +59,25 @@ apply_tweaks()
 		sysctl -qw fs.inotify.max_user_watches="$MAX_WATCHES" > /dev/null
 	fi
 
+	# Set the ulimit.
+	if [ "$MAX_OPEN_FILES" = "" ]; then
+		# Set default ulimit.
+		ulimit -n 40960
+	else
+		max_files=$(($MAX_OPEN_FILES))
+		if [ $max_files -lt 40960 ]; then
+			max_files=40960
+		fi
+		if [ $max_files -gt 65535 ]; then
+			max_files=65535
+		fi
+		# Set new ulimit.
+		ulimit -n $max_files
+	fi
+
+	# Restart samba
+	/etc/rc.d/rc.samba restart &>/dev/null
+
 	if [ "$SCHEDULED" = "yes" ]; then
 		IFS=":"
 		list=($START_TIME)
@@ -349,7 +368,7 @@ save_syslog()
 			# -l (convert lf to crlf on the fly!)
 			zip -o -l /boot/logs/syslog.zip syslog.txt
 			rm -f  syslog.txt  # remove symlink
-			chmod a-x /boot/logs/syslog.zip # remove samba attributes
+			chmod a-x /boot/logs/syslog.zip
 	fi
 }
 

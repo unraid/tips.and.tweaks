@@ -2,7 +2,7 @@ Menu="TipsAndTweaks:2"
 Title="Tweaks"
 ---
 <?PHP
-/* Copyright 2016-2021, Dan Landon.
+/* Copyright 2016-2022, Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -23,18 +23,22 @@ require_once "$docroot/plugins/$plugin/include/Legacy.php";
 <?eval('?>'.parse_file("$docroot/plugins/$plugin/Tweaks.page"))?>
 <?else:?>
 <?
-$tips_and_tweaks_cfg = parse_ini_file( "/boot/config/plugins/{$plugin}/{$plugin}.cfg" );
-$flow_control = exec( "plugins/{$plugin}/scripts/rc.tweaks flow" );
-$tso_offload = exec( "plugins/{$plugin}/scripts/rc.tweaks offload" );
-$rx_buffer = exec( "plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
-$tx_buffer = exec( "plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
-$vm_dirty = exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
-$max_user_watches = exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_watches");
-$vm_background = exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
-$cpu_freq_driver = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
-$cpu_governor = exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
-$cpu_turbo_boost = exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
-$nics = trim(exec( "plugins/{$plugin}/scripts/rc.tweaks get_nics" ));
+$tips_and_tweaks_cfg	= parse_ini_file( "/boot/config/plugins/{$plugin}/{$plugin}.cfg" );
+$flow_control			= exec( "plugins/{$plugin}/scripts/rc.tweaks flow" );
+$tso_offload			= exec( "plugins/{$plugin}/scripts/rc.tweaks offload" );
+$rx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
+$tx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
+$vm_dirty				= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
+$max_user_watches		= exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_watches");
+$max_smb_files			= exec( "testparm -s --parameter-name='max open files' 2>/dev/null");
+$vm_background			= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
+$cpu_freq_driver		= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
+$cpu_governor			= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
+$cpu_turbo_boost		= exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
+$nics					= trim(exec( "plugins/{$plugin}/scripts/rc.tweaks get_nics" ));
+
+/* Get the version of Unraid we are running. */
+$version = parse_ini_file("/etc/unraid-version");
 ?>
 
 <table class="tablesorter shift ups">
@@ -185,6 +189,15 @@ _(Max Watches)_ 'fs.inotify.max_user_watches':
 > The default is 524288.
 :end
 
+_(Max SMB Open Files)_ :
+: <input type="text" name="MAX_OPEN_FILES" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['MAX_OPEN_FILES'];?>" placeholder="40960" <?if (version_compare($version['version'],"6.11.4", "<")):?>disabled<?endif;?>>&nbsp;_(Version 6.11.4 and later)_.
+
+:tips_tweaks_max_files_plug:
+> This value is used by samba to set the maximum number of open files allowed in SMB shares.
+>
+> The default is 40960 and the allowed range is 40960 to 65535.
+:end
+
 ================== Power Saving Settings ==================
 
 _(Enable Intel Turbo/AMD Performance Boost)_?
@@ -329,6 +342,10 @@ _(Processes to kill before Array is Stopped)_:
 		<p><?=$vm_dirty?> %</p>
 		<p><u>_(Current Inotify Settings)_</u></p>
 		<p><?=$max_user_watches?></p>
+<?if (version_compare($version['version'],"6.11.3", ">")):?>
+		<p><u>_(Current SMB Max Files)_</u></p>
+		<p>max open files = <?=$max_smb_files?></p>
+<?endif;?>
 		<p><u>_(CPU Frequency Scaling)_</u></p>
 		<p>_(Driver)_: <?=$cpu_freq_driver?></p>
 		<p>_(Governor)_: <?=$cpu_governor?></p>
