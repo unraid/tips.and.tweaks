@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_nics.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|current_user_watches|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_nics.
 #
 
 apply_tweaks()
@@ -243,8 +243,12 @@ vm_background() {
 	sysctl vm.dirty_background_ratio
 }
 
+current_user_watches() {
+	find /proc/*/fd -lname anon_inode:inotify | cut -d/ -f3 | awk '{s+=$1} END {print s}'
+}
+
 max_user_watches() {
-	sysctl fs.inotify.max_user_watches
+	sysctl fs.inotify.max_user_watches | /bin/awk '{print $3}'
 }
 
 cpu_freq_driver() {
@@ -444,6 +448,9 @@ case "$1" in
 	'vm_background')
 		vm_background
 	;;
+	'current_user_watches')
+		current_user_watches
+	;;
 	'max_user_watches')
 		max_user_watches
 	;;
@@ -470,5 +477,5 @@ case "$1" in
 		/usr/bin/cat /tmp/nics
 	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_nics"
+		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|current_user_watches|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_nics"
 esac

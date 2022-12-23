@@ -36,6 +36,8 @@ $cpu_freq_driver		= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" 
 $cpu_governor			= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 $cpu_turbo_boost		= exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
 $nics					= trim(exec( "plugins/{$plugin}/scripts/rc.tweaks get_nics" ));
+$current_user_watches	= exec( "plugins/{$plugin}/scripts/rc.tweaks current_user_watches" );
+
 
 /* Get the version of Unraid we are running. */
 $version = parse_ini_file("/etc/unraid-version");
@@ -180,7 +182,7 @@ _(Disk Cache)_ 'vm.dirty_ratio' (%):
 > Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 3%.  If you experience OOM errors, it is recommended you set this to 2%.
 :end
 
-_(Max Watches)_ 'fs.inotify.max_user_watches':
+_(Max User Watches)_:
 : <input type="text" name="MAX_WATCHES" class="narrow" maxlength="20" value="<?=$tips_and_tweaks_cfg['MAX_WATCHES'];?>" placeholder="524288">
 
 :tips_tweaks_max_watches_plug:
@@ -190,7 +192,7 @@ _(Max Watches)_ 'fs.inotify.max_user_watches':
 :end
 
 _(Max SMB Open Files)_ :
-: <input type="text" name="MAX_OPEN_FILES" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['MAX_OPEN_FILES'];?>" placeholder="40960" <?if (version_compare($version['version'],"6.11.4", "<")):?>disabled<?endif;?>>&nbsp;_(Version 6.11.4 and later)_.
+: <input type="text" name="MAX_OPEN_FILES" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['MAX_OPEN_FILES'];?>" placeholder="40960" <?if (version_compare($version['version'],"6.11.4", "<")):?>disabled<?endif;?>>
 
 :tips_tweaks_max_files_plug:
 > This value is used by samba to set the maximum number of open files allowed in SMB shares.
@@ -338,13 +340,15 @@ _(Processes to kill before Array is Stopped)_:
 		<p>_(NIC Tx Buffer)_: <?=$tx_buffer?></p>
 		<p>* N/A - _(The feature is not available on any of your NICs)_.</p>
 		<p><u>_(Current Disk Cache Settings)_</u></p>
-		<p><?=$vm_background?> %</p>
-		<p><?=$vm_dirty?> %</p>
+		<p><?=$vm_background?>%</p>
+		<p><?=$vm_dirty?>%</p>
 		<p><u>_(Current Inotify Settings)_</u></p>
-		<p><?=$max_user_watches?></p>
+		<p>_(Max User Watches)_ = <?=$max_user_watches?></p>
+		<p>_(Current User Watches)_ = <?=$current_user_watches?></p>
+		<p>_(Available User Watches)_ = <?=$max_user_watches-$current_user_watches?></p>
 <?if (version_compare($version['version'],"6.11.3", ">")):?>
 		<p><u>_(Current SMB Max Files)_</u></p>
-		<p>max open files = <?=$max_smb_files?></p>
+		<p>_(Max Open Files)_ = <?=$max_smb_files?></p>
 <?endif;?>
 		<p><u>_(CPU Frequency Scaling)_</u></p>
 		<p>_(Driver)_: <?=$cpu_freq_driver?></p>
