@@ -116,10 +116,11 @@ apply_tweaks()
 	fi
 
 	rm -f ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
+	IFS=","
 	list=($KILL)
 	for ((i=0; i<${#list[@]}; ++i)); do
 		process=${list[$i]}
-		echo "killall -eq -sSIGKILL ${process}" >> ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
+		echo "killall -eq ${process}" >> ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
 	done
 	if [ -f ${DOCROOT}/plugins/${plugin}/event/stopping_svcs ]; then
 		chmod +x ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
