@@ -2,7 +2,7 @@ Menu="TipsAndTweaks:1"
 Title="Tips"
 ---
 <?PHP
-/* Copyright 2016-2022, Dan Landon.
+/* Copyright 2016-2023, Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -28,10 +28,8 @@ require_once "$docroot/plugins/$plugin/include/Legacy.php";
 	<p>_(The Tips below are suggestions, workarounds for known problems, and potential fixes)_.  _(It is recommended that you update Unraid to the latest stable version to get the latest features, bug fixes, and security updates)_.  _(Support for older versions of Unraid is being phased out)_.  _(Many plugins are no longer compatible with older Unraid versons)_.</p>
 	<li>_(Install the 'Fix Common Problems' plugin and resolve any Unraid configuration problems)_.</il>
 	<li>_(Use the 'Update Assistant' that is part of the Fix Common Problems plugin)_.  _(This will identify potential problems to be solved before you upgrade the Unraid OS)_.</li>
-	<li>_(Check the)_ <u><a href='http://lime-technology.com/wiki/index.php/Tips_and_Tweaks', target='_blank'>_(Tips and Tweaks wiki)_</a></u> _(for additional ideas on improving your Unraid performance and solving problems)_.</li>
-	<li>_(Some have reported better VM performance with media streaming and gaming VMs with the suggestions on this)_ <u><a href='http://lime-technology.com/forum/index.php?topic=49051.0', target='_blank'>_(post)_</a></u>.</li>
 	<li>_(Some have reported faster and more consistent network performance by making changes in networking parameters on the 'Tweaks' tab of this plugin)_.</li>
-	<li>_(If you have an Intel Processor, it may appear that all CPUs are constantly running at full speed)_.  _(They may show full speed, but the scaling governor is working properly)_.  _(Read this)_ <u><a href='http://lime-technology.com/forum/index.php?topic=36575.0', target='_blank'>_(post)_</a></u> _(for information on the issue)_.  _(It is recommended to use the pstate driver on Intel processors if you want the most performance)_.  _(Note)_: _(The dashboard shows CPU loading and not CPU frequency)_.  _(You can check CPU frequencies on the command line with)_ 'watch grep \"cpu MHz\" /proc/cpuinfo'.</li>
+	<li>_(If you have an Intel Processor, it may appear that all CPUs are constantly running at full speed)_.  _(They may show full speed, but the scaling governor is working properly)_.  _(It is recommended to use the pstate driver on Intel processors if you want the most performance)_.  _(Note)_: _(The dashboard shows CPU loading and not CPU frequency)_.  _(You can check CPU frequencies on the command line with)_ 'watch grep \"cpu MHz\" /proc/cpuinfo'.</li>
 	<li>_(If you set the 'Power Save' CPU Governor, you may see your processors stuck at 800 MHz)_.  _(It is recommended you use the 'Performance' Governor for best performance and power savings)_.
 	<li>_(If you configure VLANs on Unraid, you should make Unraid the Master Browser)_.  _(If you don't Unraid may not detect the Master Browser for all network interfaces correctly)_.</li>
 	<li>_(Some people are reporting OOM (out of memory) errors)_.  _(This seems to be occurring more now because of the large amounts of memory being installed in Unraid and the default Disk Cache settings too high)_.  _(If you are experiencing OOM errors, try adjusting the Disk Cache settings on the Tweaks page)_.</li>
