@@ -30,7 +30,7 @@ $rx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
 $tx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
 $vm_dirty				= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
 $max_user_watches		= exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_watches");
-$max_smb_files			= exec( "testparm -s --parameter-name='max open files' 2>/dev/null");
+$max_smb_files			= exec( "/usr/bin/testparm -s --parameter-name='max open files' 2>/dev/null");
 $vm_background			= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
 $cpu_freq_driver		= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
 $cpu_governor			= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
@@ -191,6 +191,7 @@ _(Max User Watches)_:
 > The default is 524288.
 :end
 
+<?if (version_compare($version['version'],"6.11.3", ">")):?>
 _(Max SMB Open Files)_ :
 : <input type="text" name="MAX_OPEN_FILES" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['MAX_OPEN_FILES'];?>" placeholder="40960" <?if (version_compare($version['version'],"6.11.4", "<")):?>disabled<?endif;?>>
 
@@ -199,6 +200,7 @@ _(Max SMB Open Files)_ :
 >
 > The default is 40960 and the allowed range is 40960 to 65535.
 :end
+<?endif;?>
 
 ================== Power Saving Settings ==================
 
