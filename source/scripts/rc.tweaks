@@ -62,7 +62,7 @@ apply_tweaks()
 	# Set the ulimit.
 	if [ "$MAX_OPEN_FILES" = "" ]; then
 		# Set default ulimit.
-		ulimit -n 40960
+		max_files=40960
 	else
 		max_files=$(($MAX_OPEN_FILES))
 		if [ $max_files -lt 40960 ]; then
@@ -71,12 +71,15 @@ apply_tweaks()
 		if [ $max_files -gt 65535 ]; then
 			max_files=65535
 		fi
-		# Set new ulimit.
-		ulimit -n $max_files
 	fi
+	# Set new ulimit.
+	ulimit -n $max_files
 
-	# Restart samba
-	/etc/rc.d/rc.samba restart &>/dev/null
+	max_smb_files=$((`/usr/bin/testparm -s --parameter-name='max open files' 2>/dev/null`))
+	if [ $max_files -ne $max_smb_files ]; then
+		# Restart samba if max smb files is changed
+		/etc/rc.d/rc.samba restart &>/dev/null
+	fi
 
 	if [ "$SCHEDULED" = "yes" ]; then
 		IFS=":"
@@ -467,13 +470,13 @@ case "$1" in
 	'turbo_mode')
 		turbo_mode
 	;;
-		'save_syslog')
+	'save_syslog')
 		save_syslog
 	;;
-		'remove_syslog')
+	'remove_syslog')
 		remove_syslog
 	;;
-		'get_nics')
+	'get_nics')
 		get_nics
 		/usr/bin/cat /tmp/nics
 	;;
