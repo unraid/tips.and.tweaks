@@ -72,11 +72,12 @@ apply_tweaks()
 			max_files=65535
 		fi
 	fi
-	# Set new ulimit.
-	ulimit -n $max_files
 
 	max_smb_files=$((`/usr/bin/testparm -s --parameter-name='max open files' 2>/dev/null`))
 	if [ $max_files -ne $max_smb_files ]; then
+		# Set new ulimit.
+		ulimit -n $max_files
+
 		# Restart samba if max smb files is changed
 		/etc/rc.d/rc.samba restart &>/dev/null
 	fi
