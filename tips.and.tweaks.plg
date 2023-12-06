@@ -2,12 +2,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2023.07.23">
+<!ENTITY version	"2023.12.06">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY gitURL		"https://raw.githubusercontent.com/&author;/&name;/master">
 <!ENTITY pluginURL	"&gitURL;/&name;.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"a54d8d66c10edf6a83179ab7f833f029">
+<!ENTITY MD5		"805c2aa178eec7705c4fa90ce23c8355">
 ]>
 
 <PLUGIN	name="&name;"
@@ -17,11 +17,15 @@
 		pluginURL="&pluginURL;"
 		support="&supportURL;"
 		icon="gear"
-		min="6.7.0">
+		min="6.11.0">
 
 <CHANGES>
 ##&name;
 ###&version;
+- Fix: Set minimum version to 6.11.
+- Add: Ability to schedule Turbo Mode on/off.
+
+###2023.07.23
 - Fix: Incorrect current inotify calculation.
 
 ###2023.07.23
