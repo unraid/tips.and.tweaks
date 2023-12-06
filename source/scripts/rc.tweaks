@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|current_user_watches|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_nics.
+# apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|current_user_watches|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|set_turbo|get_turbo|turbo_mode|save_syslog|remove_syslog|get_nics.
 #
 
 apply_tweaks()
@@ -12,7 +12,7 @@ apply_tweaks()
 		nic=${list[$i]}
 
 		if [ "$FLOW_CONTROL" != "default" ]; then
-			if [ "$FLOW_CONTROL" = "yes" ]; then
+			if [ "$FLOW_CONTROL" == "yes" ]; then
 				/usr/sbin/ethtool -A $nic autoneg off rx off tx off &>/dev/null
 			else
 				/usr/sbin/ethtool -A $nic autoneg on rx on tx on &>/dev/null
@@ -21,7 +21,7 @@ apply_tweaks()
 		fi
 
 		if [ "$TSO_OFFLOAD" != "default" ]; then
-			if [ "$TSO_OFFLOAD" = "yes" ]; then
+			if [ "$TSO_OFFLOAD" == "yes" ]; then
 				/usr/sbin/ethtool -K $nic gso off gro off tso off &>/dev/null
 			else
 				/usr/sbin/ethtool -K $nic gso on gro on tso on &>/dev/null
@@ -39,40 +39,22 @@ apply_tweaks()
 	done
 
 	# Disk cache settings.
-	if [ "$VM_DIRTY" = "" ]; then
-		sysctl -qw vm.dirty_ratio="20" &>/dev/null
-	else
-		sysctl -qw vm.dirty_ratio="$VM_DIRTY" &>/dev/null
-	fi
-	if [ "$VM_BACKGROUND" = "" ];then
-		sysctl -qw vm.dirty_background_ratio="10" &>/dev/null
-	else
-		sysctl -qw vm.dirty_background_ratio="$VM_BACKGROUND" &>/dev/null
-	fi
+	sysctl -qw vm.dirty_ratio="$VM_DIRTY" &>/dev/null
+	sysctl -qw vm.dirty_background_ratio="$VM_BACKGROUND" &>/dev/null
 
 	# Set the inotify max_user_watches.
-	if [ "$MAX_WATCHES" = "" ]; then
-		# Set the inotify max_user_watches.
-		sysctl -qw fs.inotify.max_user_watches="524288" > /dev/null
-	else
-		# Set the inotify max_user_watches.
-		sysctl -qw fs.inotify.max_user_watches="$MAX_WATCHES" > /dev/null
-	fi
+	sysctl -qw fs.inotify.max_user_watches="$MAX_WATCHES" > /dev/null
 
-	# Set the ulimit.
-	if [ "$MAX_OPEN_FILES" = "" ]; then
-		# Set default ulimit.
+	# Be sure samba max open files is in range
+	max_files=$(($MAX_OPEN_FILES))
+	if [ $max_files -lt 40960 ]; then
 		max_files=40960
-	else
-		max_files=$(($MAX_OPEN_FILES))
-		if [ $max_files -lt 40960 ]; then
-			max_files=40960
-		fi
-		if [ $max_files -gt 65535 ]; then
-			max_files=65535
-		fi
+	fi
+	if [ $max_files -gt 65535 ]; then
+		max_files=65535
 	fi
 
+	# Set the samba max ope files
 	max_smb_files=$((`/usr/bin/testparm -s --parameter-name='max open files' 2>/dev/null`))
 	if [ $max_files -ne $max_smb_files ]; then
 		# Set new ulimit.
@@ -82,7 +64,7 @@ apply_tweaks()
 		/etc/rc.d/rc.samba restart &>/dev/null
 	fi
 
-	if [ "$SCHEDULED" = "yes" ]; then
+	if [ "$SCHEDULED" == "yes" ]; then
 		IFS=":"
 		list=($START_TIME)
 		printf "# Set cpu governor to power saving mode:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
@@ -99,22 +81,29 @@ apply_tweaks()
 		set_governor "$CPU_GOVERNOR"
 
 		if [ `turbo_mode` == "yes" ]; then
-			if [ "$TURBO_BOOST" = "yes" ]; then
-				if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
-					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
-				elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
-					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
-				else
-					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "1" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
-				fi
+			if [ "$TURBO_BOOST" == "schedule" ]; then
+				IFS=":"
+				list=($TURBO_STOP_TIME)
+				printf "# Set cpu turbo boost off:\n" > /boot/config/plugins/dynamix/cpu_turbo_boost.cron
+				printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_turbo off &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_turbo_boost.cron
+				list=($TURBO_START_TIME)
+				printf "# Set cpu turbo boost on:\n" >> /boot/config/plugins/dynamix/cpu_turbo_boost.cron
+				printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_turbo on &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_turbo_boost.cron
+
+				# Set cpu turbo on
+				set_turbo "on";
+			elif [ "$TURBO_BOOST" == "yes" ]; then
+				# Remove dynamix turbo boost cron file.
+				rm -f /boot/config/plugins/dynamix/cpu_turbo_boost.cron
+
+				# Set cpu turbo on
+				set_turbo "on";
 			else
-				if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
-					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
-				elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
-					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
-				else
-					/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "0" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
-				fi
+				# Remove dynamix turbo boost cron file.
+				rm -f /boot/config/plugins/dynamix/cpu_turbo_boost.cron
+
+				# Set cpu turbo off
+				set_turbo "off";
 			fi
 		fi
 	fi
@@ -134,7 +123,7 @@ apply_tweaks()
 
 	remove_syslog
 
-	if [ "$ARCHIVE_LOGS" = "yes" ]; then
+	if [ "$ARCHIVE_LOGS" == "yes" ]; then
 		echo -e "\n\n#archive_logs_start\n${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks save_syslog\n#archive_logs_end" >> /etc/rc.d/rc.local_shutdown
 	fi
 
@@ -162,7 +151,7 @@ flow_control() {
 	done
 	IFS=$OIFS
 
-	if [ "$avail" = "yes"  ]; then
+	if [ "$avail" == "yes"  ]; then
 		echo $flow
 	else
 		echo $not_avail
@@ -187,7 +176,7 @@ tso_offload() {
 	done
 	IFS=$OIFS
 
-	if [ "$avail" = "yes"  ]; then
+	if [ "$avail" == "yes"  ]; then
 		echo $offload
 	else
 		echo $not_avail
@@ -210,7 +199,7 @@ rx_buffer() {
 	done
 	IFS=$OIFS
 
-	if [ "$avail" = "yes"  ]; then
+	if [ "$avail" == "yes"  ]; then
 		echo $rx
 	else
 		echo $no_buffer
@@ -233,7 +222,7 @@ tx_buffer() {
 	done
 	IFS=$OIFS
 
-	if [ "$avail" = "yes"  ]; then
+	if [ "$avail" == "yes"  ]; then
 		echo $tx
 	else
 		echo $no_buffer
@@ -326,6 +315,48 @@ turbo_mode() {
 	echo ${turbo_mode}
 }
 
+get_turbo() {
+	turbo_enabled="Off";
+	if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
+		n=`cat /sys/devices/system/cpu/intel_pstate/no_turbo`
+		if [ "$n" == "0" ]; then
+			turbo_enabled="On"
+		fi
+	elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
+		n=`cat /sys/devices/system/cpu/intel_pstate/no_turbo`
+		if [ "$n" == "0" ]; then
+			turbo_enabled="On"
+		fi
+	else
+		n=`cat /sys/devices/system/cpu/cpufreq/boost`
+		if [ "$n" == "1" ]; then
+			turbo_enabled="On"
+		fi
+	fi
+
+	echo ${turbo_enabled}
+}
+
+set_turbo() {
+	if [ "$1" == "on" ]; then
+		if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
+			/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+		elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
+			/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "0" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+		else
+			/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "1" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
+		fi
+	else
+		if [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_pstate" ]; then
+			/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+		elif [ "`/usr/bin/cpufreq-info -d 2>/dev/null`" == "intel_cpufreq" ]; then
+			/usr/bin/flock -x -w 1 /sys/devices/system/cpu/intel_pstate/no_turbo -c 'echo "1" > /sys/devices/system/cpu/intel_pstate/no_turbo' &>/dev/null
+		else
+			/usr/bin/flock -x -w 1 /sys/devices/system/cpu/cpufreq/boost -c 'echo "0" > /sys/devices/system/cpu/cpufreq/boost' &>/dev/null
+		fi
+	fi
+}
+
 save_syslog()
 {
 	# capture the system diagnostics
@@ -401,11 +432,33 @@ get_nics() {
 plugin="tips.and.tweaks"
 CONFIG="/boot/config/plugins/${plugin}/${plugin}.cfg"
 source $CONFIG
+if [ -z $VM_DIRTY ]; then
+	VM_DIRTY="20"
+fi
+if [ -z $VM_BACKGROUND ];then
+	VM_BACKGROUND="10"
+fi
+
+if [ -z $MAX_WATCHES ]; then
+	MAX_WATCHES="524288"
+fi
+
+if [ -z $MAX_OPEN_FILES ]; then
+	MAX_OPEN_FILES=40960
+fi
+
 if [ -z $START_TIME ]; then
 	START_TIME="23:00"
 fi
 if [ -z $STOP_TIME ]; then
 	STOP_TIME="05:00"
+fi
+
+if [ -z $TURBO_START_TIME ]; then
+	TURBO_START_TIME="05:00"
+fi
+if [ -z $TURBO_STOP_TIME ]; then
+	TURBO_STOP_TIME="23:00"
 fi
 
 PROG_NAME=${plugin}
@@ -471,6 +524,12 @@ case "$1" in
 	'turbo_mode')
 		turbo_mode
 	;;
+	'set_turbo')
+		set_turbo $2
+	;;
+	'get_turbo')
+		get_turbo
+	;;
 	'save_syslog')
 		save_syslog
 	;;
@@ -482,5 +541,5 @@ case "$1" in
 		/usr/bin/cat /tmp/nics
 	;;
 	*)
-		echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|current_user_watches|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|turbo_mode|save_syslog|remove_syslog|get_nics"
+	echo "usage $0 apply|flow|offload|rx_buffer|tx_buffer|vm_dirty|vm_background|current_user_watches|max_user_watches|cpu_freq_driver|cpu_governor|set_governor|set_turbo|get_turbo|turbo_mode|save_syslog|remove_syslog|get_nics"
 esac
