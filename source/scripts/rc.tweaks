@@ -306,11 +306,11 @@ turbo_mode() {
 		'acpi-cpufreq')
 			turbo_mode="yes"
 		;;
-			'intel_pstate')
-				turbo_mode="yes"
+		'intel_pstate')
+			turbo_mode="yes"
 		;;
-			'intel_cpufreq')
-				turbo_mode="yes"
+		'intel_cpufreq')
+			turbo_mode="yes"
 	esac
 	echo ${turbo_mode}
 }
