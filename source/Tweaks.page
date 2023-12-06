@@ -24,6 +24,11 @@ require_once "$docroot/plugins/$plugin/include/Legacy.php";
 <?else:?>
 <?
 $tips_and_tweaks_cfg	= parse_ini_file( "/boot/config/plugins/{$plugin}/{$plugin}.cfg" );
+$tips_and_tweaks_cfg['TURBO_START_TIME']	= $tips_and_tweaks_cfg['TURBO_START_TIME'] ?? "";
+$tips_and_tweaks_cfg['TURBO_STOP_TIME']		= $tips_and_tweaks_cfg['TURBO_STOP_TIME'] ?? "";
+$tips_and_tweaks_cfg['START_TIME']			= $tips_and_tweaks_cfg['START_TIME'] ?? "";
+$tips_and_tweaks_cfg['STOP_TIME']			= $tips_and_tweaks_cfg['STOP_TIME'] ?? "";
+
 $flow_control			= exec( "plugins/{$plugin}/scripts/rc.tweaks flow" );
 $tso_offload			= exec( "plugins/{$plugin}/scripts/rc.tweaks offload" );
 $rx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
@@ -39,6 +44,7 @@ $cpu_turbo_enabled		= exec( "plugins/{$plugin}/scripts/rc.tweaks get_turbo" );
 $nics					= trim(exec( "plugins/{$plugin}/scripts/rc.tweaks get_nics" ));
 $current_user_watches	= exec( "plugins/{$plugin}/scripts/rc.tweaks current_user_watches" );
 
+$turbo_disabled	= ($cpu_turbo_mode == "yes") ? "" : "disabled";
 
 /* Get the version of Unraid we are running. */
 $version = parse_ini_file("/etc/unraid-version");
@@ -207,7 +213,7 @@ _(Max SMB Open Files)_ :
 
 _(Enable Intel Turbo/AMD Performance Boost)_?
 : <select name="TURBO_BOOST" size="1">
-	<?if ($cpu_turbo_mode == "yes"):?>
+	<?if (! $turbo_disabled):?>
 		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "_(Yes)_");?>
 		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "_(No)_");?>
 		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "schedule", "_(Schedule)_");?>
@@ -221,14 +227,14 @@ _(Enable Intel Turbo/AMD Performance Boost)_?
 :end
 
 _(Time to set Turbo/Performance Boost Off)_:
-: <input type="text" name="TURBO_STOP_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['TURBO_STOP_TIME'];?>" placeholder="23:00">
+: <input type="text" name="TURBO_STOP_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['TURBO_STOP_TIME'];?>" placeholder="23:00" <?=$turbo_disabled;?>>
 
 :tips_tweaks_turbo_state_off_plug:
 > Enter the time you want to set Intel Turbo/AMD Performance Boost Off in 24 hour format hh:mm.
 :end
 
 _(Time to set Turbo/Performance Boost On)_:
-: <input type="text" name="TURBO_START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['TURBO_START_TIME'];?>" placeholder="05:00">
+: <input type="text" name="TURBO_START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['TURBO_START_TIME'];?>" placeholder="05:00" <?=$turbo_disabled;?>>
 
 :tips_tweaks_turbo_state_on_plug:
 > Enter the time you want to set Intel Turbo/AMD Performance Boost On in 24 hour format hh:mm.
