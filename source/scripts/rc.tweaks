@@ -81,7 +81,15 @@ apply_tweaks()
 		set_governor "$CPU_GOVERNOR"
 
 		if [ `turbo_mode` == "yes" ]; then
-			if [ "$TURBO_BOOST" == "schedule" ]; then
+			if [ "$TURBO_BOOST" == "yes" ]; then
+				# Set cpu turbo on
+				set_turbo "on";
+			else
+				# Set cpu turbo off
+				set_turbo "off";
+			fi
+
+			if [ "$TURBO_SCHEDULE" == "yes" ]; then
 				IFS=":"
 				list=($TURBO_STOP_TIME)
 				printf "# Set cpu turbo boost off:\n" > /boot/config/plugins/dynamix/cpu_turbo_boost.cron
@@ -89,21 +97,9 @@ apply_tweaks()
 				list=($TURBO_START_TIME)
 				printf "# Set cpu turbo boost on:\n" >> /boot/config/plugins/dynamix/cpu_turbo_boost.cron
 				printf "${list[1]} ${list[0]} * * * ${DOCROOT}/plugins/${plugin}/scripts/rc.tweaks set_turbo on &> /dev/null\n\n" >> /boot/config/plugins/dynamix/cpu_turbo_boost.cron
-
-				# Set cpu turbo on
-				set_turbo "on";
-			elif [ "$TURBO_BOOST" == "yes" ]; then
-				# Remove dynamix turbo boost cron file.
-				rm -f /boot/config/plugins/dynamix/cpu_turbo_boost.cron
-
-				# Set cpu turbo on
-				set_turbo "on";
 			else
 				# Remove dynamix turbo boost cron file.
 				rm -f /boot/config/plugins/dynamix/cpu_turbo_boost.cron
-
-				# Set cpu turbo off
-				set_turbo "off";
 			fi
 		fi
 	fi
