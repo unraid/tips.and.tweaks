@@ -2,7 +2,7 @@ Menu="TipsAndTweaks:2"
 Title="Tweaks"
 ---
 <?PHP
-/* Copyright 2016-2023, Dan Landon.
+/* Copyright 2016-2024, Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -24,6 +24,7 @@ require_once "$docroot/plugins/$plugin/include/Legacy.php";
 <?else:?>
 <?
 $tips_and_tweaks_cfg	= parse_ini_file( "/boot/config/plugins/{$plugin}/{$plugin}.cfg" );
+$tips_and_tweaks_cfg['TURBO_SCHEDULE']		= $tips_and_tweaks_cfg['TURBO_SCHEDULE'] ?? "";
 $tips_and_tweaks_cfg['TURBO_START_TIME']	= $tips_and_tweaks_cfg['TURBO_START_TIME'] ?? "";
 $tips_and_tweaks_cfg['TURBO_STOP_TIME']		= $tips_and_tweaks_cfg['TURBO_STOP_TIME'] ?? "";
 $tips_and_tweaks_cfg['START_TIME']			= $tips_and_tweaks_cfg['START_TIME'] ?? "";
@@ -214,16 +215,29 @@ _(Max SMB Open Files)_ :
 _(Enable Intel Turbo/AMD Performance Boost)_?
 : <select name="TURBO_BOOST" size="1">
 	<?if (! $turbo_disabled):?>
-		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "_(Yes)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "_(No)_");?>
-		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "schedule", "_(Schedule)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "yes", "_(Yes)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "no", "_(No)_");?>
 	<?else:?>
-		<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "", "", 'disabled');?>
+	<?=mk_option($tips_and_tweaks_cfg['TURBO_BOOST'], "", "", 'disabled');?>
 	<?endif;?>
   </select>
 
 :tips_tweak_turbo_plug:
 > Set to 'Yes' to enable the Intel Turbo or AMD Performance Boost Mode.  Set 'No' to disable.  Set to 'Schedule' to enable Turbo/AMD Performance Boost mode on/off based on the times set below.
+:end
+
+_(Schedule Intel Turbo/AMD Performance Boost)_?
+: <select name="TURBO_SCHEDULE" size="1">
+	<?if (! $turbo_disabled):?>
+	<?=mk_option($tips_and_tweaks_cfg['TURBO_SCHEDULE'], "no", "_(No)_");?>
+	<?=mk_option($tips_and_tweaks_cfg['TURBO_SCHEDULE'], "yes", "_(Yes)_");?>
+	<?else:?>
+	<?=mk_option($tips_and_tweaks_cfg['TURBO_SCHEDULE'], "", "", 'disabled');?>
+	<?endif;?>
+  </select>
+
+:tips_tweaks_turbo_schedule_plug:
+> Set to 'Yes' to enable the Intel Turbo or AMD Performance Boost Mode schedule to enable Turbo/AMD Performance Boost mode on/off based on the times set below.
 :end
 
 _(Time to set Turbo/Performance Boost Off)_:
