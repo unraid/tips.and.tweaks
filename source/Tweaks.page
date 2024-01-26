@@ -29,6 +29,7 @@ $tips_and_tweaks_cfg['TURBO_START_TIME']	= $tips_and_tweaks_cfg['TURBO_START_TIM
 $tips_and_tweaks_cfg['TURBO_STOP_TIME']		= $tips_and_tweaks_cfg['TURBO_STOP_TIME'] ?? "";
 $tips_and_tweaks_cfg['START_TIME']			= $tips_and_tweaks_cfg['START_TIME'] ?? "";
 $tips_and_tweaks_cfg['STOP_TIME']			= $tips_and_tweaks_cfg['STOP_TIME'] ?? "";
+$tips_and_tweaks_cfg['MAX_INSTANCES']		= $tips_and_tweaks_cfg['MAX_INSTANCES'] ?? "";
 
 $flow_control			= exec( "plugins/{$plugin}/scripts/rc.tweaks flow" );
 $tso_offload			= exec( "plugins/{$plugin}/scripts/rc.tweaks offload" );
