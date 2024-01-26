@@ -36,6 +36,7 @@ $rx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
 $tx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
 $vm_dirty				= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
 $max_user_watches		= exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_watches");
+$max_user_instances		= exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_instances");
 $max_smb_files			= exec( "/usr/bin/testparm -s --parameter-name='max open files' 2>/dev/null");
 $vm_background			= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
 $cpu_freq_driver		= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
@@ -199,6 +200,15 @@ _(Max User Watches)_:
 > The default is 524288.
 :end
 
+_(Max User Instances)_:
+: <input type="text" name="MAX_INSTANCES" class="narrow" maxlength="20" value="<?=$tips_and_tweaks_cfg['MAX_INSTANCES'];?>" placeholder="128">
+
+:tips_tweaks_max_instances_plug:
+> This is maximum number of inotify instances that a user can create.
+>
+> The default is 128.
+:end
+
 <?if (version_compare($version['version'],"6.11.3", ">")):?>
 _(Max SMB Open Files)_ :
 : <input type="text" name="MAX_OPEN_FILES" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['MAX_OPEN_FILES'];?>" placeholder="40960" <?if (version_compare($version['version'],"6.11.4", "<")):?>disabled<?endif;?>>
@@ -210,7 +220,9 @@ _(Max SMB Open Files)_ :
 :end
 <?endif;?>
 
-================== Power Saving Settings ==================
+<div>
+<span class='left'>================== _(Power Saving Settings)_ ==================</span>
+</div>
 
 _(Enable Intel Turbo/AMD Performance Boost)_?
 : <select name="TURBO_BOOST" size="1">
@@ -330,7 +342,10 @@ _(Time to set Normal CPU Scaling)_:
 > Enter the time you want to set the governor to Normal CPU Scaling Governor in 24 hour format hh:mm.
 :end
 
-===================================================
+<div>
+<span class='left'>===================================================</span>
+</div>
+
 
 _(Enable syslog Archiving)_?
 : <select name="ARCHIVE_LOGS" size="1">
@@ -380,6 +395,7 @@ _(Processes to kill before Array is Stopped)_:
 		<p>_(Max User Watches)_ = <?=$max_user_watches?></p>
 		<p>_(Current User Watches)_ = <?=$current_user_watches?></p>
 		<p>_(Available User Watches)_ = <?=$max_user_watches-$current_user_watches?></p>
+		<p>_(Max User instances)_ = <?=$max_user_instances?></p>
 <?if (version_compare($version['version'],"6.11.3", ">")):?>
 		<p><u>_(Current SMB Max Files)_</u></p>
 		<p>_(Max Open Files)_ = <?=$max_smb_files?></p>
