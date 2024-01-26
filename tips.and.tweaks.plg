@@ -2,12 +2,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2024.01.26">
+<!ENTITY version	"2024.01.26a">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY gitURL		"https://raw.githubusercontent.com/&author;/&name;/master">
 <!ENTITY pluginURL	"&gitURL;/&name;.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"2f2f82ec75ba91533f2f69b72cba8592">
+<!ENTITY MD5		"0ceb6f411b994af8641096fa331f028c">
 ]>
 
 <PLUGIN	name="&name;"
