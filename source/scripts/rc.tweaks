@@ -41,6 +41,8 @@ apply_tweaks()
 	# Disk cache settings.
 	sysctl -qw vm.dirty_ratio="$VM_DIRTY" &>/dev/null
 	sysctl -qw vm.dirty_background_ratio="$VM_BACKGROUND" &>/dev/null
+	sysctl -qw vm.dirty_writeback_centisecs="$VM_WRITEBACK" &>/dev/null
+	sysctl -qw vm.dirty_expire_centisecs="$VM_EXPIRE" &>/dev/null
 
 	# Set the inotify max_user_watches.
 	sysctl -qw fs.inotify.max_user_watches="$MAX_WATCHES" > /dev/null
@@ -112,7 +114,7 @@ apply_tweaks()
 	list=($KILL)
 	for ((i=0; i<${#list[@]}; ++i)); do
 		process=${list[$i]}
-		echo "killall -eq -s SIGKILL ${process}" >> ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
+		echo "killall --ns $$ -eq -s SIGKILL ${process}" >> ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
 	done
 	if [ -f ${DOCROOT}/plugins/${plugin}/event/stopping_svcs ]; then
 		chmod +x ${DOCROOT}/plugins/${plugin}/event/stopping_svcs
@@ -234,6 +236,14 @@ vm_dirty() {
 
 vm_background() {
 	sysctl vm.dirty_background_ratio
+}
+
+vm_dirty_writeback() {
+	sysctl vm.dirty_writeback_centisecs
+}
+
+vm_dirty_expire() {
+	sysctl vm.dirty_expire_centisecs
 }
 
 current_user_watches() {
@@ -436,10 +446,18 @@ plugin="tips.and.tweaks"
 CONFIG="/boot/config/plugins/${plugin}/${plugin}.cfg"
 source $CONFIG
 if [ -z $VM_DIRTY ]; then
-	VM_DIRTY="20"
+	VM_DIRTY="5"
 fi
 if [ -z $VM_BACKGROUND ];then
-	VM_BACKGROUND="10"
+	VM_BACKGROUND="3"
+fi
+
+if [ -z "$VM_WRITEBACK" ] || [ "$VM_WRITEBACK" -lt 100 ]; then
+	VM_WRITEBACK="200"
+fi
+
+if [ -z "$VM_EXPIRE" ] || [ "$VM_EXPIRE" -lt 500 ]; then
+	VM_EXPIRE="1000"
 fi
 
 if [ -z $MAX_WATCHES ]; then
@@ -512,6 +530,12 @@ case "$1" in
 	;;
 	'vm_background')
 		vm_background
+	;;
+	'vm_dirty_writeback')
+		vm_dirty_writeback
+	;;
+	'vm_dirty_expire')
+		vm_dirty_expire
 	;;
 	'current_user_watches')
 		current_user_watches

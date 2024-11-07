@@ -30,16 +30,33 @@ $tips_and_tweaks_cfg['TURBO_STOP_TIME']		= $tips_and_tweaks_cfg['TURBO_STOP_TIME
 $tips_and_tweaks_cfg['START_TIME']			= $tips_and_tweaks_cfg['START_TIME'] ?? "";
 $tips_and_tweaks_cfg['STOP_TIME']			= $tips_and_tweaks_cfg['STOP_TIME'] ?? "";
 $tips_and_tweaks_cfg['MAX_INSTANCES']		= $tips_and_tweaks_cfg['MAX_INSTANCES'] ?? "";
+$tips_and_tweaks_cfg['VM_WRITEBACK']		= $tips_and_tweaks_cfg['VM_WRITEBACK'] ?? "";
+$tips_and_tweaks_cfg['VM_EXPIRE']			= $tips_and_tweaks_cfg['VM_EXPIRE'] ?? "";
+
+
+/* Check and set VM_WRITEBACK with minimum value */
+$min_writeback = 100;   // Minimum 100 centiseconds (1 second)
+if (empty($tips_and_tweaks_cfg['VM_WRITEBACK']) || $tips_and_tweaks_cfg['VM_WRITEBACK'] < $min_writeback) {
+	$tips_and_tweaks_cfg['VM_WRITEBACK'] = "";
+}
+
+/* Check and set VM_EXPIRE with minimum value */
+$min_expire = 500;      // Minimum 500 centiseconds (5 seconds)
+if (empty($tips_and_tweaks_cfg['VM_EXPIRE']) || $tips_and_tweaks_cfg['VM_EXPIRE'] < $min_expire) {
+	$tips_and_tweaks_cfg['VM_EXPIRE'] = "";
+}
 
 $flow_control			= exec( "plugins/{$plugin}/scripts/rc.tweaks flow" );
 $tso_offload			= exec( "plugins/{$plugin}/scripts/rc.tweaks offload" );
 $rx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
 $tx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
 $vm_dirty				= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
+$vm_background			= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
+$vm_writeback			= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty_writeback" );
+$vm_expire				= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty_expire" );
 $max_user_watches		= exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_watches");
 $max_user_instances		= exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_instances");
 $max_smb_files			= exec( "/usr/bin/testparm -s --parameter-name='max open files' 2>/dev/null");
-$vm_background			= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
 $cpu_freq_driver		= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
 $cpu_governor			= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
 $cpu_turbo_mode			= exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
@@ -173,23 +190,37 @@ _(Ethernet NICS)_:
 _(Don't change the Disk Cache settings until you read and understand this)_ <u><a href='https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/', target='_blank'>_(Guide)_</a></u>.
 
 _(Disk Cache)_ 'vm.dirty_background_ratio' (%):
-: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>" placeholder="10">
+: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>" placeholder="3">
 
 :tips_tweaks_dirty_background_plug:
-> For streaming and gaming VMs, set the values low in the single digits.  Recommended values are: vm.dirty_background_ratio=2% and vm.dirty_ratio=3%.
-> If you have large amounts of RAM, smaller is better.
+> Recommended values are: vm.dirty_background_ratio to 3% and vm.dirty_ratio to 5%.
+> If you have large amount of RAM, set the vm.dirty_background_ratio to 1% and vm.dirty_ratio to 2%.
 > Caution: Don't increase these values beyond the default settings unless you have a UPS that will reliably shut down Unraid.
 >
 > Set the 'vm.dirty_background_ratio' as a percentage of total RAM memory.
-> The default setting of 10% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 2%.  If you experience OOM errors, it is recommended you set this to 1%.
+> The default setting of 3% is recommended unless you have largve amounts of RAM.  If you have a media streaming or gaming VM, use a value of 1%.
 :end
 
 _(Disk Cache)_ 'vm.dirty_ratio' (%):
-: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>" placeholder="20">
+: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>" placeholder="5">
 
 :tips_tweaks_dirty_ratio_plug:
 > Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
-> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 20% is recommended in most cases.  If you have a media streaming or gaming VM, use a value of 3%.  If you experience OOM errors, it is recommended you set this to 2%.
+> Setting this too high may cause Linux to terminate some processes to gain more memory.  The default setting of 5% is recommended unless you have a large amount of RAM.
+:end
+
+_(Disk Cache)_ 'vm.dirty_writeback_centisecs':
+: <input type="text" name="VM_WRITEBACK" class="narrow" maxlength="6" value="<?=$tips_and_tweaks_cfg['VM_WRITEBACK'];?>" placeholder="200">
+
+:tips_tweaks_writeback_plug:
+> The default is 200 centiseconds (2 seconds) to control how often the kernel checks for dirty data to flush in the background.
+:end
+
+_(Disk Cache)_ 'vm.dirty_expire_centisecs':
+: <input type="text" name="VM_EXPIRE" class="narrow" maxlength="6" value="<?=$tips_and_tweaks_cfg['VM_EXPIRE'];?>" placeholder="1000">
+
+:tips_tweaks_expire_plug:
+> The default is 1000 centiseconds (10 seconds) to specify how long data can stay dirty before it is considered for write-back.
 :end
 
 _(Max User Watches)_:
@@ -392,6 +423,8 @@ _(Processes to kill before Array is Stopped)_:
 		<p><u>_(Current Disk Cache Settings)_</u></p>
 		<p><?=$vm_background?>%</p>
 		<p><?=$vm_dirty?>%</p>
+		<p><?=$vm_writeback?></p>
+		<p><?=$vm_expire?></p>
 		<p><u>_(Current Inotify Settings)_</u></p>
 		<p>_(Max User Watches)_ = <?=$max_user_watches?></p>
 		<p>_(Current User Watches)_ = <?=$current_user_watches?></p>
