@@ -2,12 +2,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
 <!ENTITY author		"dlandon">
-<!ENTITY version	"2024.01.26a">
+<!ENTITY version	"2024.11.07">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY gitURL		"https://raw.githubusercontent.com/&author;/&name;/master">
 <!ENTITY pluginURL	"&gitURL;/&name;.plg">
 <!ENTITY supportURL	"https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/?tab=comments#comment-468361">
-<!ENTITY MD5		"0ceb6f411b994af8641096fa331f028c">
+<!ENTITY MD5		"b086caa86e3cdd58d339296fa307239e">
 ]>
 
 <PLUGIN	name="&name;"
@@ -22,6 +22,12 @@
 <CHANGES>
 ##&name;
 ###&version;
+- Add: Cache writeback and expire settings.
+
+###2024.01.26a
+- Add: Limit killing processes to the current name space before array is stopped.
+
+###2024.01.26a
 - Add: Setting for Max User Instances.
 
 ###2024.01.10
@@ -306,6 +312,8 @@ TX_BUFFER="default"
 ETHERNET_NICS=""
 VM_BACKGROUND=""
 VM_DIRTY=""
+VM_WRITEBACK=""
+VM_EXPIRE=""
 MAX_WATCHES=""
 MAX_OPEN_FILES=""
 CPU_GOVERNOR="performance"
