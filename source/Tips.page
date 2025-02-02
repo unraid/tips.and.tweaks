@@ -2,7 +2,7 @@ Menu="TipsAndTweaks:1"
 Title="Tips"
 ---
 <?PHP
-/* Copyright 2016-2024, Dan Landon.
+/* Copyright 2016-2025, Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -11,14 +11,17 @@ Title="Tips"
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
  */
-$plugin			= "tips.and.tweaks";
-$docroot		= $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
-$translations	= file_exists("$docroot/webGui/include/Translations.php");
-require_once "$docroot/plugins/$plugin/include/Legacy.php";
 ?>
-<?if (! $translations):?>
-<?eval('?>'.parse_file("$docroot/plugins/$plugin/Tips.page"))?>
-<?else:?>
+
+<?
+/* Define our plugin name. */
+define('TIPS_AND_TWEAKS_PLUGIN', 'tips.and.tweaks');
+
+/* Define the docroot path. */
+if (!defined('DOCROOT')) {
+	define('DOCROOT', $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp');
+}
+?>
 
 <table class="tablesorter shift ups">
 <thead><tr><th>_(Tips)_</th></tr></thead>
@@ -35,7 +38,6 @@ require_once "$docroot/plugins/$plugin/include/Legacy.php";
 	<li>_(Some people are reporting OOM (out of memory) errors)_.  _(This seems to be occurring more now because of the large amounts of memory being installed in Unraid and the default Disk Cache settings too high)_.  _(If you are experiencing OOM errors, try adjusting the Disk Cache settings on the Tweaks page)_.</li>
 	<p>_(There is a very cool feature in Unraid 6 and up that can be used to capture your logs and help in troubleshooting a situation where your server locks up or becomes unresponsive)_.  _(Go to Settings->Syslog Server and enable the Syslog Server)_.  _(Put the IP address of your server in the 'Remote syslog server' field)_.  _(This will log all your server log enries to the Syslog Server and save the log to an array share)_.  _(After a reboot from a lockup or hung server, you can view the saved log using the Syslog viewer)_.</p>
 </div>
-<?endif;?>
 
 <script>
 	$(function() {
