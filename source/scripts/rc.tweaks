@@ -59,7 +59,7 @@ apply_tweaks()
 		max_files=65535
 	fi
 
-	# Set the samba max ope files
+	# Set the samba max open files
 	max_smb_files=$((`/usr/bin/testparm -s --parameter-name='max open files' 2>/dev/null`))
 	if [ $max_files -ne $max_smb_files ]; then
 		# Set new ulimit.
@@ -452,11 +452,11 @@ if [ -z $VM_BACKGROUND ];then
 	VM_BACKGROUND="3"
 fi
 
-if [ -z "$VM_WRITEBACK" ] || [ "$VM_WRITEBACK" -lt 100 ]; then
+if [ -z "$VM_WRITEBACK" ] || [ "$VM_WRITEBACK" -lt 200 ]; then
 	VM_WRITEBACK="200"
 fi
 
-if [ -z "$VM_EXPIRE" ] || [ "$VM_EXPIRE" -lt 500 ]; then
+if [ -z "$VM_EXPIRE" ] || [ "$VM_EXPIRE" -lt 1000 ]; then
 	VM_EXPIRE="1000"
 fi
 
