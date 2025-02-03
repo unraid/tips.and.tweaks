@@ -2,7 +2,7 @@ Menu="TipsAndTweaks:2"
 Title="Tweaks"
 ---
 <?PHP
-/* Copyright 2016-2024, Dan Landon.
+/* Copyright 2016-2025, Dan Landon.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2,
@@ -13,47 +13,40 @@ Title="Tweaks"
  */
 ?>
 
-<?PHP
-$plugin = "tips.and.tweaks";
-$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
-$translations = file_exists("$docroot/webGui/include/Translations.php");
-require_once "$docroot/plugins/$plugin/include/Legacy.php";
-?>
-<?if (!$translations):?>
-<?eval('?>'.parse_file("$docroot/plugins/$plugin/Tweaks.page"))?>
-<?else:?>
 <?
-$tips_and_tweaks_cfg	= parse_plugin_cfg("$plugin");
+$tips_and_tweaks_cfg	= parse_plugin_cfg(TIPS_AND_TWEAKS_PLUGIN);
 
 /* Check and set VM_WRITEBACK with minimum value */
-$min_writeback = 100;   // Minimum 100 centiseconds (1 second)
+/* Minimum 200 centiseconds (2 second). */
+$min_writeback = 200;
 if (empty($tips_and_tweaks_cfg['VM_WRITEBACK']) || $tips_and_tweaks_cfg['VM_WRITEBACK'] < $min_writeback) {
 	$tips_and_tweaks_cfg['VM_WRITEBACK'] = "";
 }
 
 /* Check and set VM_EXPIRE with minimum value */
-$min_expire = 500;      // Minimum 500 centiseconds (5 seconds)
+/* Minimum 1000 centiseconds (10 seconds). */
+$min_expire = 1000;
 if (empty($tips_and_tweaks_cfg['VM_EXPIRE']) || $tips_and_tweaks_cfg['VM_EXPIRE'] < $min_expire) {
 	$tips_and_tweaks_cfg['VM_EXPIRE'] = "";
 }
 
-$flow_control			= exec( "plugins/{$plugin}/scripts/rc.tweaks flow" );
-$tso_offload			= exec( "plugins/{$plugin}/scripts/rc.tweaks offload" );
-$rx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks rx_buffer" );
-$tx_buffer				= exec( "plugins/{$plugin}/scripts/rc.tweaks tx_buffer" );
-$vm_dirty				= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty" );
-$vm_background			= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_background" );
-$vm_writeback			= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty_writeback" );
-$vm_expire				= exec( "plugins/{$plugin}/scripts/rc.tweaks vm_dirty_expire" );
-$max_user_watches		= exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_watches");
-$max_user_instances		= exec( "plugins/{$plugin}/scripts/rc.tweaks max_user_instances");
+$flow_control			= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks flow" );
+$tso_offload			= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks offload" );
+$rx_buffer				= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks rx_buffer" );
+$tx_buffer				= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks tx_buffer" );
+$vm_dirty				= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks vm_dirty" );
+$vm_background			= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks vm_background" );
+$vm_writeback			= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks vm_dirty_writeback" );
+$vm_expire				= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks vm_dirty_expire" );
+$max_user_watches		= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks max_user_watches");
+$max_user_instances		= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks max_user_instances");
 $max_smb_files			= exec( "/usr/bin/testparm -s --parameter-name='max open files' 2>/dev/null");
-$cpu_freq_driver		= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_freq_driver" );
-$cpu_governor			= exec( "plugins/{$plugin}/scripts/rc.tweaks cpu_governor" );
-$cpu_turbo_mode			= exec( "plugins/{$plugin}/scripts/rc.tweaks turbo_mode" );
-$cpu_turbo_enabled		= exec( "plugins/{$plugin}/scripts/rc.tweaks get_turbo" );
-$nics					= trim(exec( "plugins/{$plugin}/scripts/rc.tweaks get_nics" ));
-$current_user_watches	= exec( "plugins/{$plugin}/scripts/rc.tweaks current_user_watches" );
+$cpu_freq_driver		= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks cpu_freq_driver" );
+$cpu_governor			= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks cpu_governor" );
+$cpu_turbo_mode			= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks turbo_mode" );
+$cpu_turbo_enabled		= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks get_turbo" );
+$nics					= trim(exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks get_nics" ));
+$current_user_watches	= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.tweaks current_user_watches" );
 
 $turbo_disabled	= ($cpu_turbo_mode == "yes") ? "" : "disabled";
 
@@ -171,7 +164,7 @@ _(Ethernet NIC Tx Buffer)_:
 :end
 
 _(Ethernet NICS)_:
-: <input type="text" name="ETHERNET_NICS" class="narrow" maxlength="100" value="<?=$tips_and_tweaks_cfg['ETHERNET_NICS'];?>" placeholder="<?=$nics;?>">
+: <input type="text" name="ETHERNET_NICS" class="narrow" maxlength="100" value="<?=htmlspecialchars($tips_and_tweaks_cfg['ETHERNET_NICS']);?>" placeholder="<?=$nics;?>">
 
 :tips_tweaks_nics_plug:
 > List the NICs to apply the above settings separated by commas.  If you have multiple NICs that are bonded, be sure to include all of them.  Flow Control, TSO, and NIC buffer settings will
@@ -181,7 +174,7 @@ _(Ethernet NICS)_:
 _(Don't change the Disk Cache settings until you read and understand this)_ <u><a href='https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/', target='_blank'>_(Guide)_</a></u>.
 
 _(Disk Cache)_ 'vm.dirty_background_ratio' (%):
-: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_BACKGROUND'];?>" placeholder="3">
+: <input type="text" name="VM_BACKGROUND" class="narrow" maxlength="3" value="<?=htmlspecialchars($tips_and_tweaks_cfg['VM_BACKGROUND']);?>" placeholder="3">
 
 :tips_tweaks_dirty_background_plug:
 > Recommended values are: vm.dirty_background_ratio to 3% and vm.dirty_ratio to 5%.
@@ -193,7 +186,7 @@ _(Disk Cache)_ 'vm.dirty_background_ratio' (%):
 :end
 
 _(Disk Cache)_ 'vm.dirty_ratio' (%):
-: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['VM_DIRTY'];?>" placeholder="5">
+: <input type="text" name="VM_DIRTY" class="narrow" maxlength="3" value="<?=htmlspecialchars($tips_and_tweaks_cfg['VM_DIRTY']);?>" placeholder="5">
 
 :tips_tweaks_dirty_ratio_plug:
 > Set the 'vm.dirty_ratio' as a percentage of total RAM memory.
@@ -201,21 +194,21 @@ _(Disk Cache)_ 'vm.dirty_ratio' (%):
 :end
 
 _(Disk Cache)_ 'vm.dirty_writeback_centisecs':
-: <input type="text" name="VM_WRITEBACK" class="narrow" maxlength="6" value="<?=$tips_and_tweaks_cfg['VM_WRITEBACK'];?>" placeholder="200">
+: <input type="text" name="VM_WRITEBACK" class="narrow" maxlength="6" value="<?=htmlspecialchars($tips_and_tweaks_cfg['VM_WRITEBACK']);?>" placeholder="200">
 
 :tips_tweaks_writeback_plug:
 > The default is 200 centiseconds (2 seconds) to control how often the kernel checks for dirty data to flush in the background.
 :end
 
 _(Disk Cache)_ 'vm.dirty_expire_centisecs':
-: <input type="text" name="VM_EXPIRE" class="narrow" maxlength="6" value="<?=$tips_and_tweaks_cfg['VM_EXPIRE'];?>" placeholder="1000">
+: <input type="text" name="VM_EXPIRE" class="narrow" maxlength="6" value="<?=htmlspecialchars($tips_and_tweaks_cfg['VM_EXPIRE']);?>" placeholder="1000">
 
 :tips_tweaks_expire_plug:
 > The default is 1000 centiseconds (10 seconds) to specify how long data can stay dirty before it is considered for write-back.
 :end
 
 _(Max User Watches)_:
-: <input type="text" name="MAX_WATCHES" class="narrow" maxlength="20" value="<?=$tips_and_tweaks_cfg['MAX_WATCHES'];?>" placeholder="524288">
+: <input type="text" name="MAX_WATCHES" class="narrow" maxlength="20" value="<?=htmlspecialchars($tips_and_tweaks_cfg['MAX_WATCHES']);?>" placeholder="524288">
 
 :tips_tweaks_max_watches_plug:
 > If inotify fails to start because there are not enough user watches, increase the max_user_watches.
@@ -224,7 +217,7 @@ _(Max User Watches)_:
 :end
 
 _(Max User Instances)_:
-: <input type="text" name="MAX_INSTANCES" class="narrow" maxlength="20" value="<?=$tips_and_tweaks_cfg['MAX_INSTANCES'];?>" placeholder="128">
+: <input type="text" name="MAX_INSTANCES" class="narrow" maxlength="20" value="<?=htmlspecialchars($tips_and_tweaks_cfg['MAX_INSTANCES']);?>" placeholder="128">
 
 :tips_tweaks_max_instances_plug:
 > This is maximum number of inotify instances that a user can create.
@@ -234,7 +227,7 @@ _(Max User Instances)_:
 
 <?if (version_compare($version['version'],"6.11.3", ">")):?>
 _(Max SMB Open Files)_ :
-: <input type="text" name="MAX_OPEN_FILES" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['MAX_OPEN_FILES'];?>" placeholder="40960" <?if (version_compare($version['version'],"6.11.4", "<")):?>disabled<?endif;?>>
+: <input type="text" name="MAX_OPEN_FILES" class="narrow" maxlength="10" value="<?=htmlspecialchars($tips_and_tweaks_cfg['MAX_OPEN_FILES']);?>" placeholder="40960" <?if (version_compare($version['version'],"6.11.4", "<")):?>disabled<?endif;?>>
 
 :tips_tweaks_max_files_plug:
 > This value is used by samba to set the maximum number of open files allowed in SMB shares.
@@ -243,8 +236,10 @@ _(Max SMB Open Files)_ :
 :end
 <?endif;?>
 
-<div>
-<span class='left'>================== _(Power Saving Settings)_ ==================</span>
+<div style="text-align: left; width: 75%;">
+	<span class="left" style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+		<span style="border: none; padding: 0 10px;">==================== _(Power Saving Settings)_ ===================</span>
+	</span>
 </div>
 
 _(Enable Intel Turbo/AMD Performance Boost)_?
@@ -276,14 +271,14 @@ _(Schedule Intel Turbo/AMD Performance Boost)_?
 :end
 
 _(Time to set Turbo/Performance Boost Off)_:
-: <input type="text" name="TURBO_STOP_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['TURBO_STOP_TIME'];?>" placeholder="23:00" <?=$turbo_disabled;?>>
+: <input type="text" name="TURBO_STOP_TIME" class="narrow" maxlength="10" value="<?=htmlspecialchars($tips_and_tweaks_cfg['TURBO_STOP_TIME']);?>" placeholder="23:00" <?=$turbo_disabled;?>>
 
 :tips_tweaks_turbo_state_off_plug:
 > Enter the time you want to set Intel Turbo/AMD Performance Boost Off in 24 hour format hh:mm.
 :end
 
 _(Time to set Turbo/Performance Boost On)_:
-: <input type="text" name="TURBO_START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['TURBO_START_TIME'];?>" placeholder="05:00" <?=$turbo_disabled;?>>
+: <input type="text" name="TURBO_START_TIME" class="narrow" maxlength="10" value="<?=htmlspecialchars($tips_and_tweaks_cfg['TURBO_START_TIME']);?>" placeholder="05:00" <?=$turbo_disabled;?>>
 
 :tips_tweaks_turbo_state_on_plug:
 > Enter the time you want to set Intel Turbo/AMD Performance Boost On in 24 hour format hh:mm.
@@ -352,23 +347,24 @@ _(Schedule CPU Power Saving Mode)_?
 :end
 
 _(Time to set Power Saving CPU Scaling)_:
-: <input type="text" name="START_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['START_TIME'];?>" placeholder="23:00">
+: <input type="text" name="START_TIME" class="narrow" maxlength="10" value="<?=htmlspecialchars($tips_and_tweaks_cfg['START_TIME']);?>" placeholder="23:00">
 
 :tips_tweaks_cpu_state_plug:
 > Enter the time you want to set the governor to selected Power Saving mode in 24 hour format hh:mm.
 :end
 
 _(Time to set Normal CPU Scaling)_:
-: <input type="text" name="STOP_TIME" class="narrow" maxlength="10" value="<?=$tips_and_tweaks_cfg['STOP_TIME'];?>" placeholder="05:00">
+: <input type="text" name="STOP_TIME" class="narrow" maxlength="10" value="<?=htmlspecialchars($tips_and_tweaks_cfg['STOP_TIME']);?>" placeholder="05:00">
 
 :tips_tweaks_performance_plug:
 > Enter the time you want to set the governor to Normal CPU Scaling Governor in 24 hour format hh:mm.
 :end
 
-<div>
-<span class='left'>===================================================</span>
+<div style="text-align: left; width: 75%;">
+	<span class="left" style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+		<span style="border: none; padding: 0 10px;">======================================================</span>
+	</span>
 </div>
-
 
 _(Enable syslog Archiving)_?
 : <select name="ARCHIVE_LOGS" size="1">
@@ -381,7 +377,7 @@ _(Enable syslog Archiving)_?
 :end
 
 _(Number of syslogs to Archive)_:
-: <input type="text" name="LOGSAVE" class="narrow" maxlength="3" value="<?=$tips_and_tweaks_cfg['LOGSAVE'];?>" placeholder="10">
+: <input type="text" name="LOGSAVE" class="narrow" maxlength="3" value="<?=htmlspecialchars($tips_and_tweaks_cfg['LOGSAVE']);?>" placeholder="10">
 
 :tips_tweaks_number_syslogs_plug:
 > Set the number of syslogs to save in the archive.
@@ -389,7 +385,7 @@ _(Number of syslogs to Archive)_:
 :end
 
 _(Processes to kill before Array is Stopped)_:
-: <input type="text" name="KILL" class="narrow" maxlength="30" value="<?=$tips_and_tweaks_cfg['KILL'];?>">
+: <input type="text" name="KILL" class="narrow" maxlength="30" value="<?=htmlspecialchars($tips_and_tweaks_cfg['KILL']);?>">
 
 :tips_tweaks_kill_processes_plug:
 > Enter the names of processes to kill before stopping the array, separated by commas.  For example, 'ssh' and 'bash'.  These processes can keep the array disks from unmounting causing Unraid to hang when the array is being stopped.
@@ -433,4 +429,3 @@ _(Processes to kill before Array is Stopped)_:
 <?endif;?>
 	</div>
 </div>
-<?endif;?>
