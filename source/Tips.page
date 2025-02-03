@@ -21,6 +21,9 @@ define('TIPS_AND_TWEAKS_PLUGIN', 'tips.and.tweaks');
 if (!defined('DOCROOT')) {
 	define('DOCROOT', $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp');
 }
+
+/* add translations */
+require_once(DOCROOT."/webGui/include/Translations.php");
 ?>
 
 <table class="tablesorter shift ups">
