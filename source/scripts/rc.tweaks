@@ -273,6 +273,9 @@ cpu_freq_driver() {
 		'powernow_k8')
 			echo "Powernow K8/K10"
 		;;
+		'amd-pstate-epp')
+			echo "AMD Pstate"
+		;;
 		*)
 			if [ "$value" != "" ]; then
 				echo $value
@@ -324,6 +327,10 @@ turbo_mode() {
 		;;
 		'intel_cpufreq')
 			turbo_mode="yes"
+		;;
+		'amd-pstate-epp')
+			turbo_mode="no"
+		;;
 	esac
 	echo ${turbo_mode}
 }
@@ -341,7 +348,7 @@ get_turbo() {
 			turbo_enabled="On"
 		fi
 	else
-		n=`cat /sys/devices/system/cpu/cpufreq/boost`
+		n=`cat /sys/devices/system/cpu/cpufreq/boost 2>/dev/null`
 		if [ "$n" == "1" ]; then
 			turbo_enabled="On"
 		fi
