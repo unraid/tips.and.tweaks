@@ -273,8 +273,11 @@ cpu_freq_driver() {
 		'powernow_k8')
 			echo "Powernow K8/K10"
 		;;
-		'amd-pstate-epp')
+		'amd-pstate')
 			echo "AMD Pstate"
+		;;
+		'amd-pstate-epp')
+			echo "AMD Pstate EPP"
 		;;
 		*)
 			if [ "$value" != "" ]; then
@@ -299,6 +302,12 @@ cpu_governor() {
 		;;
 		'conservative')
 			echo "Conservative"
+		;;
+		'balanced_performance')
+			echo "Balanced Performance"
+		;;
+		'balanced_power')
+			echo "Balanced Power"
 		;;
 		'schedutil')
 			echo "Schedutil"
@@ -326,6 +335,9 @@ turbo_mode() {
 			turbo_mode="yes"
 		;;
 		'intel_cpufreq')
+			turbo_mode="yes"
+		;;
+		'amd-pstate')
 			turbo_mode="yes"
 		;;
 		'amd-pstate-epp')

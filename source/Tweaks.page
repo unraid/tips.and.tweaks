@@ -286,16 +286,19 @@ _(Time to set Turbo/Performance Boost On)_:
 
 _(Normal CPU Scaling Governor)_:
 : <select name="CPU_GOVERNOR" size="1">
-	<?if ($cpu_freq_driver != "Intel Pstate"):?>
+	<?if (($cpu_freq_driver != "Intel Pstate") && ($cpu_freq_driver != "AMD Pstate") && ($cpu_freq_driver != "AMD Pstate EPP")):?>
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "ondemand", "On Demand");?>
 	<?endif;?>
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "powersave", "Power Save");?>
-	<?if ($cpu_freq_driver != "Intel Pstate"):?>
+	<?if (($cpu_freq_driver != "Intel Pstate") && ($cpu_freq_driver != "AMD Pstate") && ($cpu_freq_driver != "AMD Pstate EPP")):?>
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "conservative", "Conservative");?>
 	<?endif;?>
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "performance", "Performance");?>
-	<?if ($cpu_freq_driver != "Intel Pstate"):?>
+	<?if (($cpu_freq_driver != "Intel Pstate") && ($cpu_freq_driver != "AMD Pstate EPP")):?>
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "schedutil", "Schedutil");?>
+	<?endif;?>
+	<?if ($cpu_freq_driver == "AMD Pstate EPP"):?>
+	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "balanced_performance", "Balanced Performance");?>
 	<?endif;?>
   </select>
 
@@ -315,15 +318,18 @@ _(Normal CPU Scaling Governor)_:
 
 _(Power Saving CPU Scaling Governor)_:
 : <select name="POWER_SAVE_CPU_GOVERNOR" size="1">
-	<?if ($cpu_freq_driver != "Intel Pstate"):?>
+	<?if (($cpu_freq_driver != "Intel Pstate") && ($cpu_freq_driver != "AMD Pstate") && ($cpu_freq_driver != "AMD Pstate EPP")):?>
 	<?=mk_option($tips_and_tweaks_cfg['POWER_SAVE_CPU_GOVERNOR'], "ondemand", "On Demand");?>
 	<?endif;?>
 	<?=mk_option($tips_and_tweaks_cfg['POWER_SAVE_CPU_GOVERNOR'], "powersave", "Power Save");?>
-	<?if ($cpu_freq_driver != "Intel Pstate"):?>
+	<?if (($cpu_freq_driver != "Intel Pstate") && ($cpu_freq_driver != "AMD Pstate") && ($cpu_freq_driver != "AMD Pstate EPP")):?>
 	<?=mk_option($tips_and_tweaks_cfg['POWER_SAVE_CPU_GOVERNOR'], "conservative", "Conservative");?>
 	<?endif;?>
-	<?if ($cpu_freq_driver != "Intel Pstate"):?>
+	<?if (($cpu_freq_driver != "Intel Pstate") && ($cpu_freq_driver != "AMD Pstate EPP")):?>
 	<?=mk_option($tips_and_tweaks_cfg['POWER_SAVE_CPU_GOVERNOR'], "schedutil", "Schedutil");?>
+	<?endif;?>
+	<?if ($cpu_freq_driver == "AMD Pstate EPP"):?>
+	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "balanced_power", "Balanced Power");?>
 	<?endif;?>
   </select>
 
