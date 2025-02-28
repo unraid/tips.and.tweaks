@@ -299,6 +299,7 @@ _(Normal CPU Scaling Governor)_:
 	<?endif;?>
 	<?if ($cpu_freq_driver == "AMD Pstate EPP"):?>
 	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "balanced_performance", "Balanced Performance");?>
+	<?=mk_option($tips_and_tweaks_cfg['CPU_GOVERNOR'], "balanced_power", "Balanced Power");?>
 	<?endif;?>
   </select>
 
@@ -310,10 +311,12 @@ _(Normal CPU Scaling Governor)_:
 > + "Conservative" - Scales CPU frequency based on load.  Frequency stepping is gentler.  Can cause some latency.
 > + "Performance" - Set all CPUs at full frequency regardless of load.  This can have a positive influence on performance and latency.
 > + "Schedutil" - Set all CPUs frequency scaling to schedutil.  This sets CPU frequency based on the Linux scheduler.  Note: This is still in development.
+> + "Balanced Performance" - Set all CPUs frequency scaling to balanced_performance.  Balances performance and power usage, with a slight bias toward efficiency.
+> + "Balanced Power" - Set all CPUs frequency scaling to balanced_power.  Balances power and performance, but with a slight performance bias.
 >
 > You can now set the CPU governor with the rc.tweaks script.  Use the command:
 > /usr/local/sbin/rc.tweaks set_governor 'governor'
-> The 'governor' choices are: 'ondemand', 'performance', 'powersave', 'conservative', and 'schedutil'.
+> The 'governor' choices are: 'ondemand', 'performance', 'powersave', 'conservative', 'balanced_performance', 'balanced_power', and 'schedutil'.
 :end
 
 _(Power Saving CPU Scaling Governor)_:
@@ -340,6 +343,7 @@ _(Power Saving CPU Scaling Governor)_:
 > + "On Demand" - Default for ACPI CPU Freq driver.  Scales CPU frequency based on load.  Frequency stepping is aggressive.
 > + "Conservative" - Scales CPU frequency based on load.  Frequency stepping is gentler.  Can cause some latency.
 > + "Schedutil" - Set all CPUs frequency scaling to schedutil.  This sets CPU frequency based on the Linux scheduler.  Note: This is still in development.
+> + "Balanced Power" - Set all CPUs frequency scaling to balanced_power.  Balances power and performance, but with a slight performance bias.
 :end
 
 _(Schedule CPU Power Saving Mode)_?
