@@ -1,7 +1,7 @@
 <?xml version='1.0' standalone='yes'?>
 <!DOCTYPE PLUGIN [
 <!ENTITY name		"tips.and.tweaks">
-<!ENTITY author		"dlandon">
+<!ENTITY author		"Limetech">
 <!ENTITY version	"2025.03.06">
 <!ENTITY launch		"Settings/TipsAndTweaks">
 <!ENTITY gitURL		"https://raw.githubusercontent.com/unraid/&name;/master">
