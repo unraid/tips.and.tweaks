@@ -404,7 +404,7 @@ _(Processes to kill before Array is Stopped)_:
 :end
 
 <input type="submit" name="#default" value="_(Default)_">
-: <input type="submit" name="#apply" value="_(Apply)_"><input type="button" value="_(Done)_" onclick="done()">
+: <span><input type="submit" name="#apply" value="_(Apply)_"><input type="button" value="_(Done)_" onclick="done()"></span>
 <u><a href='https://forums.unraid.net/topic/47527-tips-and-tweaks-plugin-to-possibly-improve-performance-of-unraid-and-vms/', target='_blank'>Unraid Forum</a></u>
 </form>
 </div>
