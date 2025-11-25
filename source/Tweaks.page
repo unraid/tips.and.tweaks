@@ -135,6 +135,7 @@ _(Ethernet NIC Rx Buffer)_:
 	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "1792", "1792");?>
 	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "2048", "2048");?>
 	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "4096", "4096");?>
+	<?=mk_option($tips_and_tweaks_cfg['RX_BUFFER'], "8192", "8192");?>
   </select>
 
 :tips_tweaks_rx_buffer_plug:
@@ -155,6 +156,7 @@ _(Ethernet NIC Tx Buffer)_:
 	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "1792", "1792");?>
 	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "2048", "2048");?>
 	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "4096", "4096");?>
+	<?=mk_option($tips_and_tweaks_cfg['TX_BUFFER'], "8192", "8192");?>
 	  </select>
 
 :tips_tweaks_tx_buffer_plug:
