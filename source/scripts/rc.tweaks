@@ -518,7 +518,7 @@ no_buffer="N/A"
 LOGDIR="/boot/logs/"
 
 # Default nics if $ETHERTNET_NICS is defined
-if [ -z ${ETHERNET_NICS} ]; then
+if [ -z "${ETHERNET_NICS}" ]; then
 	get_nics
 	ETHERNET_NICS=`/usr/bin/cat /tmp/nics`
 fi
