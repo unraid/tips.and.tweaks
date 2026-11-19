@@ -365,8 +365,9 @@ The 'remove' script.
 # Remove the hook for log archiving
 /usr/local/emhttp/plugins/&name;/scripts/rc.tweaks remove_syslog
 
-# Remove dynamix set governor cron file.
+# Remove dynamix set governor and turbo boost cron files.
 rm -f /boot/config/plugins/dynamix/cpu_governor.cron
+rm -f /boot/config/plugins/dynamix/cpu_turbo_boost.cron
 
 # Reload dynamix crons.
 /usr/local/sbin/update_cron
