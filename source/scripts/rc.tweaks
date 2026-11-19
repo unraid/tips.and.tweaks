@@ -69,7 +69,11 @@ apply_tweaks()
 		/etc/rc.d/rc.samba restart &>/dev/null
 	fi
 
-	if [ "$SCHEDULED" == "yes" ]; then
+	if [ -f "${UNRAID_POWERMODE}" ]; then
+		# Unraid 7.0 and later set the CPU governor with their own Power Mode setting.
+		# Leave the governor to Unraid and remove any governor schedule.
+		rm -f /boot/config/plugins/dynamix/cpu_governor.cron
+	elif [ "$SCHEDULED" == "yes" ]; then
 		IFS=":"
 		list=($START_TIME)
 		printf "# Set cpu governor to power saving mode:\n" > /boot/config/plugins/dynamix/cpu_governor.cron
@@ -82,8 +86,12 @@ apply_tweaks()
 		rm -f /boot/config/plugins/dynamix/cpu_governor.cron
 	fi
 
-	if [ "$CPU_GOVERNOR" != "" ]; then
-		set_governor "$CPU_GOVERNOR"
+	# CPU settings are applied once they have been saved from the Tweaks page.
+	# With Unraid's Power Mode the page no longer saves CPU_GOVERNOR, so TURBO_BOOST shows that instead.
+	if [ "$CPU_GOVERNOR" != "" ] || { [ -f "${UNRAID_POWERMODE}" ] && [ "$TURBO_BOOST" != "" ]; }; then
+		if [ ! -f "${UNRAID_POWERMODE}" ] && [ "$CPU_GOVERNOR" != "" ]; then
+			set_governor "$CPU_GOVERNOR"
+		fi
 
 		if [ `turbo_mode` == "yes" ]; then
 			if [ "$TURBO_BOOST" == "yes" ]; then
@@ -510,6 +518,9 @@ DOCROOT=`grep -Po '^chdir = \K.*' /etc/php-fpm.d/www.conf`
 if [ -z ${DOCROOT} ];then
 	DOCROOT="/usr/local/emhttp"
 fi
+
+# Unraid 7.0 and later have their own CPU governor setting (Power Mode).
+UNRAID_POWERMODE="${DOCROOT}/plugins/dynamix/scripts/powermode"
 
 not_avail="N/A (Off)"
 no_buffer="N/A"

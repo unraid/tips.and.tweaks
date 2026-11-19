@@ -346,6 +346,12 @@ fi
 # Create a symlink to tips.and.tweaks script.
 ln -sf /usr/local/emhttp/plugins/&name;/scripts/rc.tweaks /usr/local/sbin
 
+# Unraid 7.0 and later set the CPU governor with Power Mode, so remove an old governor schedule.
+if [ -f /usr/local/emhttp/plugins/dynamix/scripts/powermode ] &amp;&amp; [ -f /boot/config/plugins/dynamix/cpu_governor.cron ]; then
+	rm -f /boot/config/plugins/dynamix/cpu_governor.cron
+	/usr/local/sbin/update_cron
+fi
+
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; is installed."

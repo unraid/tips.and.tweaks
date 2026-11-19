@@ -50,6 +50,32 @@ $current_user_watches	= exec( "plugins/".TIPS_AND_TWEAKS_PLUGIN."/scripts/rc.twe
 
 $turbo_disabled	= ($cpu_turbo_mode == "yes") ? "" : "disabled";
 
+/* Unraid 7.0 and later set the CPU governor with their own Power Mode setting. */
+/* It is saved as [powermode] powermode="..." in dynamix.cfg and applied at boot by rc.cpufreq. */
+/* When it exists, the governor is left to Unraid and only shown here. */
+$unraid_power_mode	= is_file(DOCROOT."/plugins/dynamix/scripts/powermode");
+if ($unraid_power_mode) {
+	$dynamix_cfg		= @parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg", true) ?: [];
+	$unraid_governor	= $dynamix_cfg['powermode']['powermode'] ?? "";
+	switch ($unraid_governor) {
+		case "powersave":
+			$unraid_governor_text = _("Best power efficiency")." (powersave)";
+			break;
+		case "ondemand":
+		case "balance_power":
+			$unraid_governor_text = _("Balanced operation")." ($unraid_governor)";
+			break;
+		case "performance":
+			$unraid_governor_text = _("Best performance")." (performance)";
+			break;
+		case "":
+			$unraid_governor_text = ($cpu_freq_driver == "* no driver *") ? _("Not available on this server") : _("Not chosen yet")." ("._("now").": $cpu_governor)";
+			break;
+		default:
+			$unraid_governor_text = $unraid_governor;
+	}
+}
+
 /* Get the version of Unraid we are running. */
 $version = parse_ini_file("/etc/unraid-version");
 ?>
@@ -284,6 +310,43 @@ _(Time to set Turbo/Performance Boost On)_:
 > Enter the time you want to set Intel Turbo/AMD Performance Boost On in 24 hour format hh:mm.
 :end
 
+<?if ($unraid_power_mode):?>
+_(CPU Scaling Governor)_:
+: <select size="1" disabled>
+	<option selected><?=htmlspecialchars($unraid_governor_text);?></option>
+  </select> <a href="/Settings/PowerMode">_(Set in Unraid Power Mode)_</a>
+
+:tips_tweaks_unraid_power_mode_plug:
+> Unraid 7.0 and later set the CPU governor in Settings > Power Mode (Settings > Power Options > Power Mode from Unraid 7.4).
+> Tips and Tweaks shows Unraid's choice here and does not change the governor, because the plugin applies its settings when the array starts and would replace the Power Mode that Unraid applied at boot.
+>
+> Example: to save power, select 'Best power efficiency' on the Power Mode page.  Unraid then uses the 'powersave' governor, and it stays in effect after the array starts.
+:end
+
+_(Power Saving CPU Scaling Governor)_:
+: <select size="1" disabled>
+	<option selected>_(Not used)_</option>
+  </select>
+
+_(Schedule CPU Power Saving Mode)_?
+: <select size="1" disabled>
+	<option selected>_(No)_</option>
+  </select> <a href="/Settings/PowerMode">_(Set in Unraid Power Mode)_</a>
+
+:tips_tweaks_unraid_scheduled_plug:
+> The governor schedule is off because Unraid's Power Mode sets the CPU governor.
+> A schedule would replace that choice twice a day.
+>
+> Example: a schedule with 23:00 and 05:00 would set 'Power Save' at 23:00 and the normal governor at 05:00, whatever you chose on the Power Mode page.
+:end
+
+_(Time to set Power Saving CPU Scaling)_:
+: <input type="text" class="narrow" maxlength="10" placeholder="23:00" disabled>
+
+_(Time to set Normal CPU Scaling)_:
+: <input type="text" class="narrow" maxlength="10" placeholder="05:00" disabled>
+
+<?else:?>
 _(Normal CPU Scaling Governor)_:
 : <select name="CPU_GOVERNOR" size="1">
 	<?if (($cpu_freq_driver != "Intel Pstate") && ($cpu_freq_driver != "AMD Pstate") && ($cpu_freq_driver != "AMD Pstate EPP")):?>
@@ -369,6 +432,8 @@ _(Time to set Normal CPU Scaling)_:
 :tips_tweaks_performance_plug:
 > Enter the time you want to set the governor to Normal CPU Scaling Governor in 24 hour format hh:mm.
 :end
+
+<?endif;?>
 
 <div style="text-align: left; width: 75%;">
 	<span class="left" style="display: inline-block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
